@@ -1,0 +1,112 @@
+// Cargoxo database schema.
+// Using SQLite for the demo (zero setup, single file at prisma/dev.db).
+// To move to production, change `provider` below to "postgresql" and
+// point `url` at a real Postgres connection string — everything else
+// (models, relations, the rest of the app) stays the same.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EXPORTER
+  LOGISTICS
+  ADMIN
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum SubscriptionPlan {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  NONE
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String
+  role         Role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  exporterProfile  ExporterProfile?
+  logisticsProfile LogisticsProfile?
+  subscription     Subscription?
+
+  connectionsSent     Connection[] @relation("ExporterConnections")
+  connectionsReceived Connection[] @relation("LogisticsConnections")
+}
+
+// Profile fields specific to exporters.
+model ExporterProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName String?
+  address     String?
+}
+
+// Profile fields specific to logistics companies, incl. verification.
+model LogisticsProfile {
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName        String
+  anclaNumber        String             @unique
+  address            String
+  location           String // Nigerian state/city, used for search & filtering
+  verificationStatus VerificationStatus @default(PENDING)
+  verifiedAt         DateTime?
+  createdAt          DateTime           @default(now())
+}
+
+// One active subscription record per user (currently only exporters subscribe).
+model Subscription {
+  id                   String              @id @default(cuid())
+  userId               String              @unique
+  user                 User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                 SubscriptionPlan?
+  status               SubscriptionStatus  @default(NONE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?             @unique
+  currentPeriodEnd     DateTime?
+  updatedAt            DateTime            @updatedAt
+}
+
+// An exporter reaching out to a verified logistics company.
+model Connection {
+  id         String           @id @default(cuid())
+  exporterId String
+  exporter   User             @relation("ExporterConnections", fields: [exporterId], references: [id], onDelete: Cascade)
+  logisticsId String
+  logistics  User             @relation("LogisticsConnections", fields: [logisticsId], references: [id], onDelete: Cascade)
+  message    String
+  status     ConnectionStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+
+  @@unique([exporterId, logisticsId])
+}
