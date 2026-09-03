@@ -1,0 +1,33 @@
+import { z } from "zod";
+
+// Shared between the registration Server Actions and (if reused later)
+// any client-side form validation.
+
+const email = z.string().trim().toLowerCase().email("Enter a valid email address.");
+const password = z.string().min(8, "Password must be at least 8 characters.");
+const name = z.string().trim().min(2, "Enter your full name.");
+// Loose Nigerian phone check: optional +234 or leading 0, then 10 digits.
+const phone = z
+  .string()
+  .trim()
+  .regex(/^(\+234|0)\d{10}$/, "Enter a valid Nigerian phone number, e.g. 08012345678.");
+
+export const exporterRegisterSchema = z.object({
+  name,
+  email,
+  phone,
+  password,
+  companyName: z.string().trim().optional(),
+  address: z.string().trim().optional(),
+});
+
+export const logisticsRegisterSchema = z.object({
+  name,
+  email,
+  phone,
+  password,
+  companyName: z.string().trim().min(2, "Enter your company name."),
+  anclaNumber: z.string().trim().min(4, "Enter a valid ANCLA number."),
+  address: z.string().trim().min(4, "Enter your business address."),
+  location: z.string().trim().min(2, "Enter your state/city."),
+});
