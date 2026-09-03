@@ -24,11 +24,12 @@ export function DashboardHeader({
   userName: string;
   subtitle?: string | null;
   statusLabel?: string;
-  statusTone?: "positive" | "warning" | "neutral";
+  statusTone?: "positive" | "warning" | "negative" | "neutral";
 }) {
   const toneClasses = {
     positive: "bg-green-100 text-green-700",
     warning: "bg-amber-100 text-amber-700",
+    negative: "bg-red-100 text-red-700",
     neutral: "bg-gray-100 text-gray-600",
   }[statusTone];
 

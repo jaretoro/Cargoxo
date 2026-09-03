@@ -25,7 +25,7 @@ export default async function LogisticsThread(props: PageProps<"/dashboard/logis
   const messages = await prisma.message.findMany({ where: { connectionId }, orderBy: { createdAt: "asc" } });
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-2xl">
       <h1 className="text-xl font-bold text-brand-navy">{connection.exporter.exporterProfile?.companyName ?? connection.exporter.name}</h1>
       {connection.exporter.exporterProfile?.address && <p className="text-sm text-gray-500">{connection.exporter.exporterProfile.address}</p>}
 

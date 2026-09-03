@@ -1,0 +1,161 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { respondConnectionAction } from "@/app/actions/connections";
+
+const STATUS_STYLES: Record<string, string> = {
+  ACCEPTED: "bg-green-100 text-green-700",
+  DECLINED: "bg-red-100 text-red-700",
+  PENDING: "bg-amber-100 text-amber-700",
+};
+
+const AVATAR_STYLES = [
+  "bg-brand-navy text-white",
+  "bg-brand-blue text-white",
+  "bg-purple-600 text-white",
+  "bg-amber-700 text-white",
+  "bg-emerald-700 text-white",
+  "bg-rose-600 text-white",
+];
+
+function avatarStyle(seed: string) {
+  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
+}
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join("");
+}
+
+export default async function LogisticsRequests(props: PageProps<"/dashboard/logistics/requests">) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "LOGISTICS") redirect("/login");
+
+  const sp = await props.searchParams;
+  const error = typeof sp.error === "string" ? sp.error : null;
+
+  const requests = await prisma.connection.findMany({
+    where: { logisticsId: session.user.id },
+    include: {
+      exporter: { select: { name: true, email: true, phone: true, exporterProfile: { select: { companyName: true, address: true } } } },
+      _count: { select: { messages: { where: { readAt: null, senderId: { not: session.user.id } } } } },
+    },
+    orderBy: [{ status: "asc" }, { createdAt: "desc" }],
+  });
+
+  const pending = requests.filter((r) => r.status === "PENDING").length;
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-brand-navy">Connection requests</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            {pending > 0
+              ? `${pending} ${pending === 1 ? "exporter is" : "exporters are"} waiting on your response.`
+              : "Exporters who have reached out to you."}
+          </p>
+        </div>
+      </div>
+
+      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+
+      <div className="mt-6 space-y-3">
+        {requests.map((r) => {
+          const name = r.exporter.exporterProfile?.companyName ?? r.exporter.name;
+          return (
+            <div key={r.id} className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+              <div className="flex items-start gap-4">
+                <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(name)}`}>
+                  {initials(name)}
+                </span>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="truncate font-semibold text-brand-navy">{name}</h2>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[r.status]}`}>{r.status}</span>
+                    {r._count.messages > 0 && (
+                      <span className="rounded-full bg-brand-blue px-1.5 py-0.5 text-xs font-semibold text-white">
+                        {r._count.messages} new
+                      </span>
+                    )}
+                  </div>
+
+                  {/* The exporter reached out first, so their contact details
+                      are shown here without a paywall — the subscription
+                      gates exporters seeing agents, not the other way round. */}
+                  <p className="mt-0.5 text-xs text-gray-500">
+                    {r.exporter.email} · {r.exporter.phone}
+                    {r.exporter.exporterProfile?.address && <> · {r.exporter.exporterProfile.address}</>}
+                  </p>
+
+                  <p className="mt-2 line-clamp-3 text-sm text-gray-600">{r.message}</p>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    {r.status === "PENDING" && (
+                      <>
+                        <form action={respondConnectionAction}>
+                          <input type="hidden" name="connectionId" value={r.id} />
+                          <input type="hidden" name="status" value="ACCEPTED" />
+                          <button type="submit" className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
+                            Accept
+                          </button>
+                        </form>
+                        <form action={respondConnectionAction}>
+                          <input type="hidden" name="connectionId" value={r.id} />
+                          <input type="hidden" name="status" value="DECLINED" />
+                          <button type="submit" className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Decline
+                          </button>
+                        </form>
+                      </>
+                    )}
+
+                    {/* Previously only Accept/Decline existed, and only while
+                        pending — so once you accepted there was no way to
+                        reply without hunting for the thread under Messages. */}
+                    <Link
+                      href={`/dashboard/logistics/messages/${r.id}`}
+                      className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                        r.status === "PENDING"
+                          ? "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                          : "bg-brand-blue text-white hover:bg-brand-navy"
+                      }`}
+                    >
+                      Open conversation
+                    </Link>
+
+                    <span className="ml-auto text-xs text-gray-400">
+                      {r.createdAt.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {requests.length === 0 && (
+          <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
+            <p className="text-sm font-medium text-gray-700">No requests yet</p>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
+              Exporters find you through search. A complete profile with cargo types and trade routes makes that far more likely.
+            </p>
+            <Link
+              href="/dashboard/logistics/profile"
+              className="mt-4 inline-block rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+            >
+              Complete your profile
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

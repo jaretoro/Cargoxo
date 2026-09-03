@@ -75,7 +75,20 @@ export type AgentCardData = {
   connectionStatus: "PENDING" | "ACCEPTED" | "DECLINED" | null;
 };
 
-export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardData; isSubscribed: boolean; backTo: string }) {
+export function AgentCard({
+  agent,
+  isSubscribed,
+  backTo,
+  // Renders the card without its action row, for showing a logistics company
+  // their own listing as exporters see it — Message/Call/Save all point at
+  // exporter-only routes and make no sense pointed at yourself.
+  preview = false,
+}: {
+  agent: AgentCardData;
+  isSubscribed: boolean;
+  backTo: string;
+  preview?: boolean;
+}) {
   const visibleRoutes = agent.routes.slice(0, 2);
   const extraRoutes = agent.routes.length - visibleRoutes.length;
   const visibleCargo = agent.cargoTypes.slice(0, 3);
@@ -166,7 +179,7 @@ export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardDat
       {/* mt-auto keeps the actions pinned to the card's bottom edge, so they
           line up across a row even when cards carry different amounts of
           detail (tags, routes, membership). */}
-      <div className="mt-auto flex items-center gap-2 pt-4">
+      <div className={`mt-auto flex items-center gap-2 pt-4 ${preview ? "hidden" : ""}`}>
         {agent.verificationStatus === "PENDING" ? (
           <p className="flex-1 rounded-md bg-gray-50 px-3 py-2 text-center text-xs text-gray-400">Not yet verified</p>
         ) : !isSubscribed ? (

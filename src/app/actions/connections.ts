@@ -18,15 +18,19 @@ export async function respondConnectionAction(formData: FormData) {
   const connectionId = formData.get("connectionId") as string;
   const status = formData.get("status") as "ACCEPTED" | "DECLINED";
   if (!["ACCEPTED", "DECLINED"].includes(status)) {
-    redirect("/dashboard/logistics?error=Invalid+status.");
+    redirect("/dashboard/logistics/requests?error=Invalid+status.");
   }
 
   const connection = await prisma.connection.findUnique({ where: { id: connectionId } });
   if (!connection || connection.logisticsId !== session.user.id) {
-    redirect("/dashboard/logistics?error=Connection+request+not+found.");
+    redirect("/dashboard/logistics/requests?error=Connection+request+not+found.");
   }
 
   await prisma.connection.update({ where: { id: connectionId }, data: { status } });
+  // The overview's counters and the tab badge both read this, so they have
+  // to be refreshed alongside the list the button was pressed on.
+  revalidatePath("/dashboard/logistics/requests");
   revalidatePath("/dashboard/logistics");
+  revalidatePath("/dashboard/exporter/connections");
   revalidatePath("/dashboard/exporter");
 }

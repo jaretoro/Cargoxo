@@ -34,15 +34,14 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
   const isIncomplete = selectedCargoIds.size === 0 || profile.tradeRoutes.length === 0;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-brand-navy">Company profile</h1>
-        <Link href="/dashboard/logistics" className="text-sm font-medium text-brand-blue hover:underline">
-          ← Back to dashboard
-        </Link>
-      </div>
+    <div className="mx-auto max-w-2xl">
+      <h1 className="text-2xl font-bold text-brand-navy">Company profile</h1>
       <p className="mt-1 text-sm text-gray-500">
-        This is what exporters see about you in search results.
+        This is what exporters see about you in search results.{" "}
+        <Link href="/dashboard/logistics" className="font-medium text-brand-blue hover:underline">
+          See the preview
+        </Link>
+        .
       </p>
 
       {saved && <div className="mt-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">Profile saved.</div>}

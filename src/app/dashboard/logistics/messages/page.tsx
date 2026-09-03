@@ -27,7 +27,7 @@ export default async function LogisticsMessages() {
     .sort((a, b) => b.lastAt.getTime() - a.lastAt.getTime());
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-2xl">
       <h1 className="text-2xl font-bold text-brand-navy">Messages</h1>
 
       <div className="mt-6 divide-y divide-gray-100 rounded-xl border border-black/5 bg-white">
