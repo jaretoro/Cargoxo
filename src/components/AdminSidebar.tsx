@@ -106,7 +106,10 @@ export function AdminSidebar({
   const isActive = (to: string, end?: boolean) => (end ? pathname === to : pathname.startsWith(to));
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col bg-brand-navy text-white">
+    // Below lg the sidebar becomes a horizontal strip across the top: a
+    // fixed 16rem column leaves ~145px of content on a 390px phone, which
+    // is unusable, and a lot of Nigerian exporters and agents are on phones.
+    <aside className="flex w-full shrink-0 flex-col bg-brand-navy text-white lg:h-auto lg:w-64">
       <div className="flex items-center gap-2.5 px-5 py-5">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-amber text-brand-navy font-bold">C</span>
         <div>
@@ -115,10 +118,10 @@ export function AdminSidebar({
         </div>
       </div>
 
-      <nav className="mt-4 flex-1 space-y-6 overflow-y-auto px-3">
+      <nav className="mt-4 flex-1 gap-6 space-y-6 overflow-x-auto px-3 max-lg:flex max-lg:space-y-0 lg:overflow-y-auto">
         <div>
           <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/35">Management</p>
-          <div className="mt-2 space-y-1">
+          <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {managementLinks.map((l) => (
               <Link
                 key={l.to}
@@ -139,7 +142,7 @@ export function AdminSidebar({
 
         <div>
           <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/35">Reports</p>
-          <div className="mt-2 space-y-1">
+          <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {reportLinks.map((l) => (
               <Link
                 key={l.to}
@@ -156,8 +159,8 @@ export function AdminSidebar({
         </div>
       </nav>
 
-      <div className="border-t border-white/10 px-3 py-3">
-        <div className="space-y-1">
+      <div className="border-t border-white/10 px-3 py-3 max-lg:flex max-lg:items-center max-lg:justify-between max-lg:gap-3">
+        <div className="space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
           <Link
             href="/admin/notifications"
             className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
@@ -178,7 +181,7 @@ export function AdminSidebar({
           </Link>
         </div>
 
-        <div className="mt-3 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2.5">
+        <div className="mt-3 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2.5 max-lg:mt-0 max-lg:hidden xl:flex">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-amber text-xs font-bold text-brand-navy">
             {adminName
               .split(/\s+/)
@@ -193,8 +196,8 @@ export function AdminSidebar({
           </div>
         </div>
 
-        <form action={logoutAction}>
-          <button type="submit" className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white">
+        <form action={logoutAction} className="max-lg:shrink-0">
+          <button type="submit" className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
             <Icon name="signout" />
             Sign Out
           </button>

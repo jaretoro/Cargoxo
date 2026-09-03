@@ -140,6 +140,43 @@ const EXTRA_EXPORTERS = [
   { email: "exporter4@cargoxo.com", name: "Blessing Adeyemi", phone: "+2348013131313", companyName: "Adeyemi Rubber Exports", plan: "YEARLY" as const, monthsAgo: 2 },
 ];
 
+// Applies the descriptive half of a logistics profile to an account that
+// already exists.
+//
+// Nested `create` under `user.upsert` only fires when the *user* is new, so
+// on a re-seed (or after new columns are added to the schema) existing
+// companies silently keep their old, emptier profile. Doing it explicitly
+// here keeps the seed genuinely idempotent — re-running it converges every
+// company on the intended state instead of only the ones created that run.
+async function applyLogisticsDetails(
+  userId: string,
+  details: {
+    establishedYear?: number;
+    shipmentCount?: number;
+    cargoTypeIds: string[];
+    routes: { origin: string; destination: string }[];
+  },
+) {
+  const profile = await prisma.logisticsProfile.findUniqueOrThrow({ where: { userId } });
+
+  await prisma.logisticsProfile.update({
+    where: { id: profile.id },
+    data: {
+      establishedYear: details.establishedYear ?? null,
+      shipmentCount: details.shipmentCount ?? 0,
+      cargoTypes: { set: details.cargoTypeIds.map((id) => ({ id })) },
+    },
+  });
+
+  // Routes have no natural key, so replace rather than diff.
+  await prisma.tradeRoute.deleteMany({ where: { logisticsProfileId: profile.id } });
+  if (details.routes.length > 0) {
+    await prisma.tradeRoute.createMany({
+      data: details.routes.map((r) => ({ ...r, logisticsProfileId: profile.id })),
+    });
+  }
+}
+
 async function main() {
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
 
@@ -220,16 +257,22 @@ async function main() {
           location: "Lagos",
           verificationStatus: "VERIFIED",
           verifiedAt: new Date(),
-          establishedYear: 2017,
-          shipmentCount: 860,
-          cargoTypes: { connect: [{ id: cargoTypeId("Agricultural Products") }, { id: cargoTypeId("Manufactured Goods") }] },
-          tradeRoutes: { create: [{ origin: "Lagos", destination: "Rotterdam" }, { origin: "Lagos", destination: "Dubai" }] },
         },
       },
     },
   });
 
-  await prisma.user.upsert({
+  await applyLogisticsDetails(verifiedLogistics.id, {
+    establishedYear: 2017,
+    shipmentCount: 860,
+    cargoTypeIds: [cargoTypeId("Agricultural Products"), cargoTypeId("Manufactured Goods")],
+    routes: [
+      { origin: "Lagos", destination: "Rotterdam" },
+      { origin: "Lagos", destination: "Dubai" },
+    ],
+  });
+
+  const portlink = await prisma.user.upsert({
     where: { email: "portlinkfreight@cargoxo.com" },
     update: {},
     create: {
@@ -246,13 +289,16 @@ async function main() {
           location: "Port Harcourt",
           verificationStatus: "VERIFIED",
           verifiedAt: new Date(),
-          establishedYear: 2014,
-          shipmentCount: 1500,
-          cargoTypes: { connect: [{ id: cargoTypeId("Crude Oil & Petroleum") }, { id: cargoTypeId("Chemicals") }] },
-          tradeRoutes: { create: [{ origin: "Port Harcourt", destination: "Houston" }] },
         },
       },
     },
+  });
+
+  await applyLogisticsDetails(portlink.id, {
+    establishedYear: 2014,
+    shipmentCount: 1500,
+    cargoTypeIds: [cargoTypeId("Crude Oil & Petroleum"), cargoTypeId("Chemicals")],
+    routes: [{ origin: "Port Harcourt", destination: "Houston" }],
   });
 
   await prisma.user.upsert({
@@ -294,13 +340,16 @@ async function main() {
             location: c.location,
             verificationStatus: c.verificationStatus ?? "VERIFIED",
             verifiedAt: c.verificationStatus === "PENDING" ? null : new Date(),
-            establishedYear: c.establishedYear,
-            shipmentCount: c.shipmentCount,
-            cargoTypes: { connect: c.cargoTypes.map((name) => ({ id: cargoTypeId(name) })) },
-            tradeRoutes: { create: c.routes },
           },
         },
       },
+    });
+
+    await applyLogisticsDetails(user.id, {
+      establishedYear: c.establishedYear,
+      shipmentCount: c.shipmentCount,
+      cargoTypeIds: c.cargoTypes.map((name) => cargoTypeId(name)),
+      routes: c.routes,
     });
 
     if (c.membership) {

@@ -7,14 +7,22 @@
   --brand-navy: #0b2d52;
   --brand-blue: #1a8fe3;
   --brand-sky: #6fd0ff;
+  /* One step up from navy — active nav items and the MRR card's gradient
+     need something that reads as "same colour, lifted" against the sidebar. */
+  --brand-navy-light: #16436f;
+  /* Warm accent, used sparingly in the admin portal for badges, avatars and
+     the sidebar mark, so counts needing attention stand out against navy. */
+  --brand-amber: #f0a500;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-light: var(--brand-navy-light);
   --color-brand-blue: var(--brand-blue);
   --color-brand-sky: var(--brand-sky);
+  --color-brand-amber: var(--brand-amber);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

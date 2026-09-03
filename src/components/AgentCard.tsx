@@ -75,13 +75,19 @@ export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardDat
   return (
     <div className="flex flex-col rounded-xl border border-black/5 bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(agent.companyName)}`}>
             {initials(agent.companyName)}
           </span>
-          <div>
-            <h3 className="font-semibold text-brand-navy leading-tight">{agent.companyName}</h3>
-            <p className="text-xs text-gray-500">{agent.location}</p>
+          <div className="min-w-0">
+            {/* Capped at two lines: unbounded wrapping ran long names to
+                three lines and threw the row out of alignment, but a single
+                truncated line cut most names down to a few characters.
+                Full name stays available on hover. */}
+            <h3 className="line-clamp-2 font-semibold leading-tight text-brand-navy" title={agent.companyName}>
+              {agent.companyName}
+            </h3>
+            <p className="truncate text-xs text-gray-500">{agent.location}</p>
           </div>
         </div>
         <span
@@ -97,7 +103,7 @@ export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardDat
         ANCLA: <span className="font-medium text-gray-800">{agent.anclaNumber}</span>
       </div>
 
-      <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+      <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
         {agent.reviewCount > 0 ? (
           <>
             <Stars rating={agent.rating} />
@@ -148,7 +154,10 @@ export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardDat
         <span className="text-gray-400">{agent.shipmentCount}+ shipments</span>
       </div>
 
-      <div className="mt-4 flex items-center gap-2">
+      {/* mt-auto keeps the actions pinned to the card's bottom edge, so they
+          line up across a row even when cards carry different amounts of
+          detail (tags, routes, membership). */}
+      <div className="mt-auto flex items-center gap-2 pt-4">
         {agent.verificationStatus === "PENDING" ? (
           <p className="flex-1 rounded-md bg-gray-50 px-3 py-2 text-center text-xs text-gray-400">Not yet verified</p>
         ) : !isSubscribed ? (
