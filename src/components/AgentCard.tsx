@@ -24,6 +24,15 @@ function initials(name: string) {
     .join("");
 }
 
+function LockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="10.5" width="16" height="10" rx="2" />
+      <path d="M8 10.5V7.5a4 4 0 018 0v3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function Stars({ rating }: { rating: number }) {
   const rounded = Math.round(rating);
   return (
@@ -161,33 +170,49 @@ export function AgentCard({ agent, isSubscribed, backTo }: { agent: AgentCardDat
         {agent.verificationStatus === "PENDING" ? (
           <p className="flex-1 rounded-md bg-gray-50 px-3 py-2 text-center text-xs text-gray-400">Not yet verified</p>
         ) : !isSubscribed ? (
-          <Link href="/pricing" className="flex-1 rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy">
-            Subscribe to contact
+          /* Short label so it stays on one line — "Subscribe to contact"
+             wrapped and left this button taller than the ones beside it. */
+          <Link
+            href="/dashboard/exporter/billing"
+            className="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-sm font-medium text-white hover:bg-brand-navy"
+          >
+            <LockIcon />
+            Unlock
           </Link>
         ) : agent.connectionId ? (
           <Link
             href={`/dashboard/exporter/messages/${agent.connectionId}`}
-            className="flex-1 rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
+            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
           >
-            {agent.connectionStatus === "ACCEPTED" ? "Message" : "View conversation"}
+            {agent.connectionStatus === "ACCEPTED" ? "Message" : "View chat"}
           </Link>
         ) : (
           <Link
             href={`/dashboard/exporter/messages/new?logistics=${agent.userId}`}
-            className="flex-1 rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
+            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
           >
             Message
           </Link>
         )}
 
-        {agent.verificationStatus === "VERIFIED" && (
-          <a
-            href={isSubscribed ? `tel:${agent.phone}` : "/pricing"}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            Call
-          </a>
-        )}
+        {/* Only a real tel: link when it can actually dial. Unsubscribed, this
+            used to be a "Call" button that silently navigated to pricing. */}
+        {agent.verificationStatus === "VERIFIED" &&
+          (isSubscribed ? (
+            <a
+              href={`tel:${agent.phone}`}
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Call
+            </a>
+          ) : (
+            <span
+              title="Subscribe to see phone numbers"
+              className="cursor-not-allowed rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-300"
+            >
+              Call
+            </span>
+          ))}
 
         <form action={toggleSaveAction}>
           <input type="hidden" name="logisticsId" value={agent.userId} />

@@ -155,9 +155,11 @@ async function applyLogisticsDetails(
     shipmentCount?: number;
     cargoTypeIds: string[];
     routes: { origin: string; destination: string }[];
+    verificationStatus?: "PENDING" | "VERIFIED" | "REJECTED";
   },
 ) {
   const profile = await prisma.logisticsProfile.findUniqueOrThrow({ where: { userId } });
+  const status = details.verificationStatus ?? "VERIFIED";
 
   await prisma.logisticsProfile.update({
     where: { id: profile.id },
@@ -165,6 +167,11 @@ async function applyLogisticsDetails(
       establishedYear: details.establishedYear ?? null,
       shipmentCount: details.shipmentCount ?? 0,
       cargoTypes: { set: details.cargoTypeIds.map((id) => ({ id })) },
+      // Reset verification too, so re-seeding restores the demo scenario the
+      // README promises (one company still pending review) rather than
+      // leaving whatever an admin clicked through while testing.
+      verificationStatus: status,
+      verifiedAt: status === "VERIFIED" ? profile.verifiedAt ?? new Date() : null,
     },
   });
 
@@ -301,7 +308,7 @@ async function main() {
     routes: [{ origin: "Port Harcourt", destination: "Houston" }],
   });
 
-  await prisma.user.upsert({
+  const newAgent = await prisma.user.upsert({
     where: { email: "newagentco@cargoxo.com" },
     update: {},
     create: {
@@ -320,6 +327,14 @@ async function main() {
         },
       },
     },
+  });
+
+  // Deliberately left with no cargo types or routes: this is the "brand new
+  // signup" case, and it's what an unfinished listing actually looks like.
+  await applyLogisticsDetails(newAgent.id, {
+    cargoTypeIds: [],
+    routes: [],
+    verificationStatus: "PENDING",
   });
 
   for (const c of EXTRA_LOGISTICS) {
@@ -350,6 +365,7 @@ async function main() {
       shipmentCount: c.shipmentCount,
       cargoTypeIds: c.cargoTypes.map((name) => cargoTypeId(name)),
       routes: c.routes,
+      verificationStatus: c.verificationStatus ?? "VERIFIED",
     });
 
     if (c.membership) {
@@ -411,23 +427,32 @@ async function main() {
     });
   }
 
+  const openingMessage =
+    "Hi, I have a 2-container shipment of cocoa beans headed to Rotterdam next month. Can you handle customs clearance and freight booking?";
+
   const connection = await prisma.connection.upsert({
     where: { exporterId_logisticsId: { exporterId: subscribedExporter.id, logisticsId: verifiedLogistics.id } },
-    update: {},
+    // Converge on the declared state instead of leaving whatever an earlier
+    // run created — this thread is meant to demo an accepted connection.
+    update: { message: openingMessage, status: "ACCEPTED" },
     create: {
       exporterId: subscribedExporter.id,
       logisticsId: verifiedLogistics.id,
-      message: "Hi, I have a 2-container shipment of cocoa beans headed to Rotterdam next month. Can you handle customs clearance and freight booking?",
+      message: openingMessage,
       status: "ACCEPTED",
     },
   });
 
+  // Replace rather than append: createMany has no upsert, so re-running the
+  // seed was stacking another copy of this exchange onto the thread every
+  // time (it had reached eleven messages).
+  await prisma.message.deleteMany({ where: { connectionId: connection.id } });
   await prisma.message.createMany({
     data: [
       {
         connectionId: connection.id,
         senderId: subscribedExporter.id,
-        body: "Hi, I have a 2-container shipment of cocoa beans headed to Rotterdam next month. Can you handle customs clearance and freight booking?",
+        body: openingMessage,
       },
       {
         connectionId: connection.id,

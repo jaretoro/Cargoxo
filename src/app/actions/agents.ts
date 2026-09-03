@@ -8,12 +8,22 @@ import { prisma } from "@/lib/prisma";
 // Toggles a logistics company in/out of the current exporter's saved list.
 // Saving doesn't require a subscription — it's just a bookmark, not a
 // contact reveal — so this is only gated on being a logged-in exporter.
+// `redirectTo` comes back from a form field so the save button can return
+// the exporter to whatever filtered view they were looking at. That means it
+// is attacker-controllable, so it's only honoured when it's a path on this
+// site — "//evil.com" and "https://evil.com" both fall back to the default
+// rather than becoming an open redirect.
+function safeRedirectPath(value: FormDataEntryValue | null, fallback: string): string {
+  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) return fallback;
+  return value;
+}
+
 export async function toggleSaveAction(formData: FormData) {
   const session = await auth();
   if (!session?.user || session.user.role !== "EXPORTER") redirect("/login");
 
   const logisticsId = formData.get("logisticsId") as string;
-  const redirectTo = (formData.get("redirectTo") as string) || "/dashboard/exporter";
+  const redirectTo = safeRedirectPath(formData.get("redirectTo"), "/dashboard/exporter");
   if (!logisticsId) redirect(redirectTo);
 
   const existing = await prisma.savedAgent.findUnique({
