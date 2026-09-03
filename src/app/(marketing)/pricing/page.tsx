@@ -52,7 +52,10 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
               plan.id === "YEARLY" ? "border-brand-blue ring-1 ring-brand-blue" : "border-black/10"
             }`}
           >
-            {plan.id === "YEARLY" && (
+            {/* Only advertise a discount when there actually is one. At the
+                current prices ($5/mo, $60/yr) the yearly plan costs exactly
+                12 months, so this would otherwise render "Save 0%". */}
+            {plan.id === "YEARLY" && yearlySavingsPercent() > 0 && (
               <span className="absolute -top-3 left-6 rounded-full bg-brand-blue px-3 py-1 text-xs font-semibold text-white">
                 Save {yearlySavingsPercent()}%
               </span>
