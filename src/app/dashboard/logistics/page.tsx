@@ -14,8 +14,15 @@ export default async function LogisticsDashboard(props: PageProps<"/dashboard/lo
   const session = await auth();
   if (!session?.user || session.user.role !== "LOGISTICS") redirect("/login");
 
-  const profile = await prisma.logisticsProfile.findUnique({ where: { userId: session.user.id } });
+  const profile = await prisma.logisticsProfile.findUnique({
+    where: { userId: session.user.id },
+    include: { _count: { select: { cargoTypes: true, tradeRoutes: true } } },
+  });
   if (!profile) redirect("/login");
+
+  // A listing with no cargo types or routes is invisible to the filters
+  // exporters actually search with, so it's worth nudging about.
+  const profileIncomplete = profile._count.cargoTypes === 0 || profile._count.tradeRoutes === 0;
 
   const searchParams = await props.searchParams;
   const error = typeof searchParams.error === "string" ? searchParams.error : null;
@@ -46,11 +53,27 @@ export default async function LogisticsDashboard(props: PageProps<"/dashboard/lo
               Messages
               {unreadCount > 0 && <span className="rounded-full bg-brand-blue px-1.5 py-0.5 text-xs font-semibold text-white">{unreadCount}</span>}
             </Link>
+            <Link href="/dashboard/logistics/profile" className="text-sm font-medium text-brand-blue hover:underline">
+              Edit profile
+            </Link>
             <span className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_STYLES[profile.verificationStatus]}`}>
               {profile.verificationStatus}
             </span>
           </div>
         </div>
+
+        {profileIncomplete && (
+          <p className="mt-3 rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">
+            Your listing has no {profile._count.cargoTypes === 0 ? "cargo types" : null}
+            {profile._count.cargoTypes === 0 && profile._count.tradeRoutes === 0 ? " or " : null}
+            {profile._count.tradeRoutes === 0 ? "trade routes" : null} yet — exporters filter by both, so you won&apos;t show up
+            in most searches.{" "}
+            <Link href="/dashboard/logistics/profile" className="font-medium underline">
+              Complete your profile
+            </Link>
+            .
+          </p>
+        )}
 
         {profile.verificationStatus === "PENDING" && (
           <p className="mt-3 rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">

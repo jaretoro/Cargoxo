@@ -31,3 +31,18 @@ export const logisticsRegisterSchema = z.object({
   address: z.string().trim().min(4, "Enter your business address."),
   location: z.string().trim().min(2, "Enter your state/city."),
 });
+
+// What a logistics company may change about itself after signing up.
+// Deliberately excludes anclaNumber (it's what verification was granted
+// against), verificationStatus, and shipmentCount — a company vouching for
+// its own shipment volume would be a trust claim, not a fact, so it stays
+// out of self-service.
+export const logisticsProfileUpdateSchema = z.object({
+  companyName: z.string().trim().min(2, "Enter your company name."),
+  address: z.string().trim().min(4, "Enter your business address."),
+  location: z.string().trim().min(2, "Enter your state/city."),
+  establishedYear: z
+    .union([z.literal(""), z.coerce.number().int().min(1900, "Year looks too early.").max(new Date().getFullYear(), "Year can't be in the future.")])
+    .optional()
+    .transform((v) => (v === "" || v === undefined ? null : v)),
+});
