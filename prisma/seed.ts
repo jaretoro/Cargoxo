@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 // The password for every seeded account, so you only need to remember one.
+// Re-applied on every run, so an account whose password was changed while
+// testing (the reset flow, say) is restored by `npm run db:seed`.
 const DEMO_PASSWORD = "Cargoxo123!";
 
 // Backdated dates so subscriptions.createdAt spans real months — this is
@@ -194,7 +196,7 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: "admin@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "admin@cargoxo.com",
       passwordHash,
@@ -206,7 +208,7 @@ async function main() {
 
   const subscribedExporter = await prisma.user.upsert({
     where: { email: "exporter@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "exporter@cargoxo.com",
       passwordHash,
@@ -233,7 +235,7 @@ async function main() {
 
   const unsubscribedExporter = await prisma.user.upsert({
     where: { email: "exporter2@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "exporter2@cargoxo.com",
       passwordHash,
@@ -249,7 +251,7 @@ async function main() {
 
   const verifiedLogistics = await prisma.user.upsert({
     where: { email: "swiftcargo@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "swiftcargo@cargoxo.com",
       passwordHash,
@@ -281,7 +283,7 @@ async function main() {
 
   const portlink = await prisma.user.upsert({
     where: { email: "portlinkfreight@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "portlinkfreight@cargoxo.com",
       passwordHash,
@@ -310,7 +312,7 @@ async function main() {
 
   const newAgent = await prisma.user.upsert({
     where: { email: "newagentco@cargoxo.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "newagentco@cargoxo.com",
       passwordHash,
@@ -340,7 +342,7 @@ async function main() {
   for (const c of EXTRA_LOGISTICS) {
     const user = await prisma.user.upsert({
       where: { email: c.email },
-      update: {},
+      update: { passwordHash },
       create: {
         email: c.email,
         passwordHash,
@@ -403,7 +405,7 @@ async function main() {
   for (const e of EXTRA_EXPORTERS) {
     const exporter = await prisma.user.upsert({
       where: { email: e.email },
-      update: {},
+      update: { passwordHash },
       create: {
         email: e.email,
         passwordHash,

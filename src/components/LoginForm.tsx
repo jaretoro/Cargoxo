@@ -31,7 +31,14 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
         />
       </div>
 
-      <PasswordField autoComplete="current-password" />
+      <div>
+        <PasswordField autoComplete="current-password" />
+        <p className="mt-1 text-right">
+          <Link href="/forgot-password" className="text-xs font-medium text-brand-blue hover:underline">
+            Forgot password?
+          </Link>
+        </p>
+      </div>
 
       <button
         type="submit"

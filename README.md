@@ -212,16 +212,38 @@ rate limiter before running this on serverless or behind more than one node.
 on `/login`. Leave it `"false"` anywhere real — see the note under Quick
 start.
 
+**Email** (`EMAIL_FROM`, `SMTP_URL`): with both unset, mail is printed to the
+server log instead of sent, which is enough to click through password reset
+locally — copy the link out of the terminal. Implement a transport in
+`src/lib/mail.ts` before relying on it, since reset links are useless if
+they can't be delivered.
+
+### Password reset
+
+`/forgot-password` issues a link; `/reset-password?token=…` consumes it. The
+security properties are deliberate, so don't loosen them casually: only a
+SHA-256 hash of the token is stored (a database dump can't be used to take
+over accounts), links expire after an hour and work exactly once, resetting
+burns every other outstanding link for that account, requests are capped at
+three per address per fifteen minutes, and the response is identical whether
+or not the email is registered — as is the login error — so neither can be
+used to discover who has an account.
+
+One caveat: sessions are JWTs, so a reset does not sign out devices that are
+already logged in. Those sessions run until the token expires.
+
 ## Known gaps
 
 Worth knowing before you rely on any of it:
 
-- **No email or notifications at all.** Nobody is told they were verified,
-  rejected, or messaged — both sides have to come back and check.
+- **No email provider is wired up.** Password reset is built and works, but
+  its link is written to the server log rather than sent (see
+  `src/lib/mail.ts` — that's the seam to plug a provider into). Nobody is
+  told they were verified, rejected, or messaged either.
 - **Verification has no evidence attached.** The admin sees a typed ANCLA
   number and address, with no document upload or registry lookup to check
   against, which is thin for the trust signal the product is sold on.
-- **No profile editing for exporters, and no password reset for anyone.**
+- **No profile editing for exporters.**
 - **No tests**, and **no pagination** — every list query loads every row.
 - Rejected companies get told to "contact support", but there's no support
   contact and no way to re-submit.

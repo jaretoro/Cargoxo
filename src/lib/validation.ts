@@ -12,6 +12,19 @@ const phone = z
   .trim()
   .regex(/^(\+234|0)\d{10}$/, "Enter a valid Nigerian phone number, e.g. 08012345678.");
 
+export const passwordResetRequestSchema = z.object({ email });
+
+export const passwordResetSchema = z
+  .object({
+    token: z.string().min(1, "This reset link is invalid."),
+    password,
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.password === d.confirmPassword, {
+    message: "Those passwords don't match.",
+    path: ["confirmPassword"],
+  });
+
 export const exporterRegisterSchema = z.object({
   name,
   email,

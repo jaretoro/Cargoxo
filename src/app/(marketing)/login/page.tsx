@@ -25,6 +25,11 @@ export default async function LoginPage(props: PageProps<"/login">) {
       <h1 className="text-2xl font-bold text-brand-navy">Log in to Cargoxo</h1>
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {searchParams.reset === "1" && (
+        <div className="mt-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+          Password updated — log in with your new one.
+        </div>
+      )}
 
       <div className="mt-6 rounded-xl border border-black/5 bg-white p-6 shadow-sm">
         {demoMode && (
