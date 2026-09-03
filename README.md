@@ -29,9 +29,22 @@ Open http://localhost:3000. Every seeded account uses the password
 | `admin@cargoxo.com` | Admin | manages users + verification queue |
 | `exporter@cargoxo.com` | Exporter | **has** an active subscription — sees full contact details |
 | `exporter2@cargoxo.com` | Exporter | **no** subscription — sees the blurred/locked view |
+| `exporter3@cargoxo.com` | Exporter | subscribed (monthly) — extra data for the admin charts |
+| `exporter4@cargoxo.com` | Exporter | subscribed (yearly) — extra data for the admin charts |
 | `swiftcargo@cargoxo.com` | Logistics | already **VERIFIED** |
 | `portlinkfreight@cargoxo.com` | Logistics | already **VERIFIED** |
-| `newagentco@cargoxo.com` | Logistics | **PENDING** — approve it from `/admin/logistics` to see it appear in exporter search |
+| `newagentco@cargoxo.com` | Logistics | **PENDING** — approve it from `/admin/logistics` |
+
+The seed also creates six more verified logistics companies (SeaLink,
+NigerDelta, Kano Northern, Atlantic, Onne Port, Ogun State) so search,
+filtering and sorting have something real to work against. Some carry an
+active subscription, which is what renders the "Premium Yearly Member" /
+"Monthly Member" badge on their card.
+
+Those one-click buttons on `/login` only appear when `NEXT_PUBLIC_DEMO_MODE`
+is `"true"` **and** the build isn't production — they sign in as seeded
+accounts (including admin) with a publicly known password, so they must
+never be enabled on a real deployment.
 
 To reset the database back to this seeded state at any point: delete
 `prisma/dev.db` and re-run `npx prisma db push && npm run db:seed`.
@@ -67,9 +80,22 @@ src/app/api/                 the 3 things that have to be a real HTTP route:
                               NextAuth's own handler, the Stripe webhook
                               (Stripe posts here directly), and /api/chat
                               (called from the browser via fetch)
-src/app/(pages)/             one folder per route, matching the URL
-src/components/              shared UI: Navbar, Footer, ChatWidget, forms
+src/app/(marketing)/         public site — home, pricing, login, register.
+                              A route group, so it supplies the Navbar and
+                              Footer itself without imposing them on /admin
+                              or /dashboard. Route groups don't affect URLs.
+src/app/admin/               admin portal — its own sidebar shell, with
+                              overview, verifications, users, subscriptions,
+                              analytics, notifications
+src/app/dashboard/           the two logged-in dashboards, exporter and
+                              logistics, each with their own layout
+src/components/              shared UI: Navbar, Footer, ChatWidget, forms,
+                              AgentCard, admin sidebar/charts
 ```
+
+Because the root layout is deliberately bare, each section owns its own
+chrome. That's why `/admin` can have a full dark sidebar without the
+marketing header sitting above it.
 
 ### Why Server Actions instead of a JSON API
 
@@ -112,9 +138,43 @@ subscription by just hitting the success URL without actually paying.
 ### Verification queue
 
 A logistics company's `LogisticsProfile.verificationStatus` starts as
-`PENDING` at registration. It only shows up in exporter search results once
-an admin flips it to `VERIFIED` from `/admin/logistics`
-(`verifyLogisticsAction` in `src/app/actions/admin.ts`).
+`PENDING` at registration, and an admin flips it to `VERIFIED` or `REJECTED`
+from `/admin/logistics` (`verifyLogisticsAction` in
+`src/app/actions/admin.ts`).
+
+Search shows both `VERIFIED` and `PENDING` companies, with a badge marking
+which is which, and a "Verified Only" toggle to hide the pending ones.
+`REJECTED` companies never appear. Being verified is what unlocks
+*contact*, not visibility: a `PENDING` company can't be messaged or called,
+and `startConversationAction` re-checks that server-side rather than relying
+on the card hiding the button.
+
+### Company profiles
+
+Registration collects only the essentials (company name, ANCLA number,
+address, location). Everything else on a marketplace card — cargo types,
+trade routes, year established — is filled in afterwards at
+`/dashboard/logistics/profile`. A listing with no cargo types or routes is
+effectively unfindable, since exporters filter on exactly those, so the
+logistics dashboard nags about it until they're set.
+
+The ANCLA number isn't editable there: verification was granted against that
+specific number, so changing it needs an admin. Shipment counts aren't
+self-service either — a company vouching for its own volume would be a claim
+rather than a fact.
+
+### Messaging, saved agents and reviews
+
+A `Connection` doubles as the message thread between the two parties. An
+exporter opens one from an agent's card, and both sides can then reply from
+`/dashboard/exporter/messages` and `/dashboard/logistics/messages`, with
+unread counts driven by `Message.readAt`. Exporters can also bookmark
+companies (the "Saved" tab) — bookmarking is free, since it reveals nothing.
+
+Ratings are aggregated from `Review` rows on every read rather than cached on
+the profile, so a displayed rating can't drift from its underlying reviews.
+There's no UI to *write* a review yet, so outside the seeded data every
+company shows "No reviews yet".
 
 ## Configuration
 
@@ -139,6 +199,32 @@ Stripe and OpenAI works out of the box).
 **OpenAI** (`src/lib/openai.ts`, `src/app/api/chat/route.ts`): put a real
 key in `OPENAI_API_KEY`. Until then, the chat widget stays fully functional
 but replies with a fixed "not connected yet" message instead of erroring.
+
+The chat widget sits on the public marketing pages so prospects can ask
+questions before signing up, which means the endpoint behind it can't
+require a login and *anyone* who finds it is spending your OpenAI credit. It
+defends itself with per-IP rate limiting, caps on message count and total
+characters, and a `max_tokens` ceiling per call. That limiter is in-memory,
+so it's per-instance and resets on restart — swap it for Redis or a hosted
+rate limiter before running this on serverless or behind more than one node.
+
+**Demo mode** (`NEXT_PUBLIC_DEMO_MODE`): enables the one-click login buttons
+on `/login`. Leave it `"false"` anywhere real — see the note under Quick
+start.
+
+## Known gaps
+
+Worth knowing before you rely on any of it:
+
+- **No email or notifications at all.** Nobody is told they were verified,
+  rejected, or messaged — both sides have to come back and check.
+- **Verification has no evidence attached.** The admin sees a typed ANCLA
+  number and address, with no document upload or registry lookup to check
+  against, which is thin for the trust signal the product is sold on.
+- **No profile editing for exporters, and no password reset for anyone.**
+- **No tests**, and **no pagination** — every list query loads every row.
+- Rejected companies get told to "contact support", but there's no support
+  contact and no way to re-submit.
 
 ## Useful commands
 
