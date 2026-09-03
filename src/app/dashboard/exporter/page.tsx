@@ -26,6 +26,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
   const verifiedOnly = sp.verified === "1";
   const sort = typeof sp.sort === "string" && SORTS.some((s) => s.value === sp.sort) ? sp.sort : "relevance";
   const error = typeof sp.error === "string" ? sp.error : null;
+  const justSubscribed = sp.subscribed === "1";
 
   const [profiles, cargoTypeOptions, locationRows, subscription, savedRows, connectionRows, reviewAgg] = await Promise.all([
     prisma.logisticsProfile.findMany({
@@ -116,6 +117,13 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
   return (
     <div>
       {error && <div className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {/* Stripe sends subscribers straight back here rather than to a
+          receipt page — this is what they paid to reach. */}
+      {justSubscribed && isSubscribed && (
+        <div className="mb-6 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+          Subscription active — contact details and messaging are unlocked.
+        </div>
+      )}
 
       {/* The filter controls are split across the toolbar and the sidebar,
           but they submit as one form. Rather than wrapping the whole page

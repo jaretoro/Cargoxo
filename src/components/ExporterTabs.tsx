@@ -11,7 +11,10 @@ export function ExporterTabs({ unreadCount }: { unreadCount: number }) {
     { href: "/dashboard/exporter/connections", label: "My Connections", match: (p: string) => p.startsWith("/dashboard/exporter/connections") },
     { href: "/dashboard/exporter/messages", label: "Messages", match: (p: string) => p.startsWith("/dashboard/exporter/messages"), badge: unreadCount },
     { href: "/dashboard/exporter/saved", label: "Saved", match: (p: string) => p.startsWith("/dashboard/exporter/saved") },
-    { href: "/pricing", label: "Pricing", match: () => false },
+    // Billing rather than Pricing: a marketing page in a workspace nav is
+    // wrong for the half of exporters who already subscribed. This one shows
+    // their plan if they have one, and the plans if they don't.
+    { href: "/dashboard/exporter/billing", label: "Billing", match: (p: string) => p.startsWith("/dashboard/exporter/billing") },
   ];
 
   return (
