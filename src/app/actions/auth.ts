@@ -8,10 +8,12 @@ import { isDemoModeEnabled } from "@/lib/demo";
 // Server Action backing the login form. Auth.js's `signIn` performs a
 // redirect internally on success by throwing a special Next.js redirect
 // error — that must NOT be caught here, only real auth failures should be.
+export type LoginState = { error?: string; email?: string };
+
 export async function loginAction(
-  _prevState: string | undefined,
+  _prevState: LoginState | undefined,
   formData: FormData
-): Promise<string | undefined> {
+): Promise<LoginState | undefined> {
   const email = formData.get("email");
   const password = formData.get("password");
   const callbackUrl = (formData.get("callbackUrl") as string) || "/dashboard";
@@ -24,7 +26,10 @@ export async function loginAction(
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      return "Invalid email or password.";
+      // Hand the email back so a mistyped password doesn't cost you both
+      // fields. Deliberately the same message whether or not the account
+      // exists, so this can't be used to discover registered emails.
+      return { error: "Invalid email or password.", email: typeof email === "string" ? email : undefined };
     }
     throw error;
   }

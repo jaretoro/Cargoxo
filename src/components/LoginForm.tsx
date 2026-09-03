@@ -2,14 +2,21 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { loginAction } from "@/app/actions/auth";
+import { loginAction, type LoginState } from "@/app/actions/auth";
+import { PasswordField } from "@/components/PasswordField";
 
 export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
-  const [error, formAction, pending] = useActionState(loginAction, undefined);
+  const [state, formAction, pending] = useActionState<LoginState | undefined, FormData>(loginAction, undefined);
 
   return (
     <form action={formAction} className="space-y-4">
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
+
+      {state?.error && (
+        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          {state.error}
+        </p>
+      )}
 
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -18,22 +25,13 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           name="email"
           type="email"
           required
+          autoComplete="email"
+          defaultValue={state?.email ?? ""}
           className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-brand-blue"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-brand-blue"
-        />
-      </div>
-
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      <PasswordField autoComplete="current-password" />
 
       <button
         type="submit"
