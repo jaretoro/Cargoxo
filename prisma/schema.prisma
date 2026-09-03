@@ -59,6 +59,11 @@ model User {
 
   connectionsSent     Connection[] @relation("ExporterConnections")
   connectionsReceived Connection[] @relation("LogisticsConnections")
+
+  reviews          Review[]
+  savedAgents      SavedAgent[] @relation("SavedByExporter")
+  savedByExporters SavedAgent[] @relation("SavedLogistics")
+  messages         Message[]
 }
 
 // Profile fields specific to exporters.
@@ -81,10 +86,62 @@ model LogisticsProfile {
   location           String // Nigerian state/city, used for search & filtering
   verificationStatus VerificationStatus @default(PENDING)
   verifiedAt         DateTime?
+  establishedYear    Int?
+  shipmentCount      Int                @default(0)
   createdAt          DateTime           @default(now())
+
+  cargoTypes  CargoType[]
+  tradeRoutes TradeRoute[]
+  reviews     Review[]
 }
 
-// One active subscription record per user (currently only exporters subscribe).
+// A shared, admin-managed vocabulary of cargo categories — lets exporters
+// filter agents by what they actually ship instead of free-text search.
+model CargoType {
+  id                String             @id @default(cuid())
+  name              String             @unique
+  logisticsProfiles LogisticsProfile[]
+}
+
+// A lane a logistics company services, e.g. "Lagos -> Rotterdam".
+model TradeRoute {
+  id                 String           @id @default(cuid())
+  logisticsProfileId String
+  logisticsProfile   LogisticsProfile @relation(fields: [logisticsProfileId], references: [id], onDelete: Cascade)
+  origin             String
+  destination        String
+}
+
+// One exporter's rating of a logistics company. Aggregated on read
+// (avg + count) rather than cached on LogisticsProfile, so it can never
+// drift out of sync with the underlying rows.
+model Review {
+  id                 String           @id @default(cuid())
+  logisticsProfileId String
+  logisticsProfile   LogisticsProfile @relation(fields: [logisticsProfileId], references: [id], onDelete: Cascade)
+  exporterId         String
+  exporter           User             @relation(fields: [exporterId], references: [id], onDelete: Cascade)
+  rating             Int
+  comment            String?
+  createdAt          DateTime         @default(now())
+
+  @@unique([logisticsProfileId, exporterId])
+}
+
+// An exporter bookmarking a logistics company for later (the "Saved" tab).
+model SavedAgent {
+  id          String   @id @default(cuid())
+  exporterId  String
+  exporter    User     @relation("SavedByExporter", fields: [exporterId], references: [id], onDelete: Cascade)
+  logisticsId String
+  logistics   User     @relation("SavedLogistics", fields: [logisticsId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([exporterId, logisticsId])
+}
+
+// One subscription record per user — exporters and logistics companies both
+// subscribe now (logistics membership tiers reuse this same model).
 model Subscription {
   id                   String              @id @default(cuid())
   userId               String              @unique
@@ -94,10 +151,13 @@ model Subscription {
   stripeCustomerId     String?
   stripeSubscriptionId String?             @unique
   currentPeriodEnd     DateTime?
+  createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
 }
 
-// An exporter reaching out to a verified logistics company.
+// An exporter reaching out to a verified logistics company. Also doubles as
+// the message thread between the two once the conversation moves past the
+// initial outreach.
 model Connection {
   id         String           @id @default(cuid())
   exporterId String
@@ -108,5 +168,19 @@ model Connection {
   status     ConnectionStatus @default(PENDING)
   createdAt  DateTime         @default(now())
 
+  messages Message[]
+
   @@unique([exporterId, logisticsId])
+}
+
+// A single message within a Connection's thread.
+model Message {
+  id           String     @id @default(cuid())
+  connectionId String
+  connection   Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  senderId     String
+  sender       User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body         String
+  createdAt    DateTime   @default(now())
+  readAt       DateTime?
 }
