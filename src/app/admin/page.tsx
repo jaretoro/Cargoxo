@@ -21,8 +21,14 @@ function monthlyEquivalent(plan: "MONTHLY" | "YEARLY" | null) {
   return 0;
 }
 
+function daysAgo(n: number): Date {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d;
+}
+
 export default async function AdminOverview() {
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const sevenDaysAgo = daysAgo(7);
 
   const [
     exporterCount,

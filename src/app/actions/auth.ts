@@ -3,6 +3,7 @@
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
+import { isDemoModeEnabled } from "@/lib/demo";
 
 // Server Action backing the login form. Auth.js's `signIn` performs a
 // redirect internally on success by throwing a special Next.js redirect
@@ -47,6 +48,8 @@ const DEMO_ACCOUNTS = new Set([
 ]);
 
 export async function quickLoginAction(formData: FormData) {
+  if (!isDemoModeEnabled()) redirect("/login?error=Demo+login+is+disabled.");
+
   const email = formData.get("email") as string;
   if (!DEMO_ACCOUNTS.has(email)) redirect("/login?error=Unknown+demo+account.");
 

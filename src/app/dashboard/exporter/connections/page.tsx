@@ -15,7 +15,7 @@ export default async function ExporterConnections() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-brand-navy">My Connections</h1>
-      <p className="mt-1 text-sm text-gray-500">Logistics companies you've reached out to and their response.</p>
+      <p className="mt-1 text-sm text-gray-500">Logistics companies you&rsquo;ve reached out to and their response.</p>
 
       <div className="mt-6 divide-y divide-gray-100 rounded-xl border border-black/5 bg-white">
         {connections.map((c) => (

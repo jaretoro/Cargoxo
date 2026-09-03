@@ -27,7 +27,7 @@ export default function AdminPricing() {
       <p className="mt-5 text-xs text-gray-400">
         To change a price: edit the <code className="rounded bg-gray-100 px-1">usd</code> value in{" "}
         <code className="rounded bg-gray-100 px-1">src/lib/pricing.ts</code>, and update the matching Stripe Price ID in the
-        corresponding env var. There's no in-app editor for this yet — it's source-controlled by design so pricing changes go
+        corresponding env var. There&rsquo;s no in-app editor for this yet — it&rsquo;s source-controlled by design so pricing changes go
         through review.
       </p>
     </div>
