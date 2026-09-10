@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/app/actions/auth";
@@ -111,7 +112,9 @@ export function AdminSidebar({
     // is unusable, and a lot of Nigerian exporters and agents are on phones.
     <aside className="flex w-full shrink-0 flex-col bg-brand-navy text-white lg:h-auto lg:w-64">
       <div className="flex items-center gap-2.5 px-5 py-5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-amber text-brand-navy font-bold">C</span>
+        {/* Was a stand-in amber "C" — the admin portal was showing a
+            different mark from the rest of the product. */}
+        <Image src="/logo-mark.png" alt="" width={75} height={36} className="h-9 w-auto" priority />
         <div>
           <p className="text-sm font-bold leading-tight">Cargoxo</p>
           <p className="text-[11px] leading-tight text-white/50">Admin Portal</p>
