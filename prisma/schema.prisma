@@ -118,6 +118,16 @@ model LogisticsProfile {
   reviews     Review[]
 }
 
+// Platform settings an admin can change without a redeploy, stored as
+// key/value so adding one doesn't need a migration. Values are read through
+// src/lib/settings.ts, which supplies defaults — an absent row means "use
+// the default", so the table starts empty and stays sparse.
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 // A shared, admin-managed vocabulary of cargo categories — lets exporters
 // filter agents by what they actually ship instead of free-text search.
 model CargoType {

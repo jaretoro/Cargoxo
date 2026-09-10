@@ -21,15 +21,20 @@ export const PLANS = {
 export type PlanId = keyof typeof PLANS;
 
 // Approximate display-only conversion — Stripe always charges the USD amount.
-// Read from env so the rate can be updated without a code change/redeploy.
+// The env var is the fallback; the live rate normally comes from
+// /admin/settings via getSettings(), so it can be corrected without a
+// redeploy when the naira moves.
 export function ngnPerUsd(): number {
   const raw = process.env.NEXT_PUBLIC_NGN_PER_USD;
   const n = raw ? Number(raw) : NaN;
   return Number.isFinite(n) && n > 0 ? n : 1600;
 }
 
-export function formatNaira(usd: number): string {
-  const ngn = Math.round(usd * ngnPerUsd());
+// Kept synchronous on purpose: callers are server components that already
+// have the settings to hand, and making this async would push a database
+// read into every price label.
+export function formatNaira(usd: number, rate: number = ngnPerUsd()): string {
+  const ngn = Math.round(usd * rate);
   return `₦${ngn.toLocaleString("en-NG")}`;
 }
 

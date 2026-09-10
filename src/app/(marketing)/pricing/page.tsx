@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, formatNaira, yearlySavingsPercent } from "@/lib/pricing";
+import { getSettings } from "@/lib/settings";
 import { createCheckoutAction } from "@/app/actions/billing";
 
 const FEATURES = [
@@ -18,9 +19,10 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
   const error = typeof searchParams.error === "string" ? searchParams.error : null;
   const canceled = searchParams.canceled === "1";
 
-  const subscription = session?.user
-    ? await prisma.subscription.findUnique({ where: { userId: session.user.id } })
-    : null;
+  const [subscription, settings] = await Promise.all([
+    session?.user ? prisma.subscription.findUnique({ where: { userId: session.user.id } }) : null,
+    getSettings(),
+  ]);
   const currentPlan = subscription?.status === "ACTIVE" ? subscription.plan : null;
 
   return (
@@ -65,7 +67,7 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
               <span className="text-4xl font-bold text-gray-900">${plan.usd}</span>
               <span className="text-gray-500">/{plan.interval}</span>
             </p>
-            <p className="mt-1 text-sm text-gray-500">≈ {formatNaira(plan.usd)} / {plan.interval}</p>
+            <p className="mt-1 text-sm text-gray-500">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} / {plan.interval}</p>
 
             <form action={createCheckoutAction} className="mt-6">
               <input type="hidden" name="plan" value={plan.id} />

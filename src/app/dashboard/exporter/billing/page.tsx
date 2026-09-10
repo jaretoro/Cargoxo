@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, formatNaira, yearlySavingsPercent } from "@/lib/pricing";
+import { getSettings } from "@/lib/settings";
 import { createCheckoutAction, createPortalSessionAction } from "@/app/actions/billing";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -25,7 +26,10 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
   const error = typeof sp.error === "string" ? sp.error : null;
   const justSubscribed = sp.subscribed === "1";
 
-  const subscription = await prisma.subscription.findUnique({ where: { userId: session.user.id } });
+  const [subscription, settings] = await Promise.all([
+    prisma.subscription.findUnique({ where: { userId: session.user.id } }),
+    getSettings(),
+  ]);
   const isSubscribed = subscription?.status === "ACTIVE";
   const savings = yearlySavingsPercent();
 
@@ -132,7 +136,7 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
                   ${plan.usd}
                   <span className="text-sm font-normal text-gray-400">/{plan.interval}</span>
                 </p>
-                <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd)} · billed in USD via Stripe</p>
+                <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
                 <button
                   type="submit"
                   className="mt-4 w-full rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"

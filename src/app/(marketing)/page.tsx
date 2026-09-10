@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { PLANS, formatNaira, yearlySavingsPercent } from "@/lib/pricing";
+import { getSettings } from "@/lib/settings";
 
 const DASHBOARD_BY_ROLE: Record<string, string> = {
   ADMIN: "/admin",
@@ -78,7 +79,7 @@ export default async function Home() {
 
   // Real marketplace numbers rather than invented social proof — if the
   // marketplace is small, the page says so honestly.
-  const [verifiedAgents, locationRows, cargoTypeCount, routeCount] = await Promise.all([
+  const [verifiedAgents, locationRows, cargoTypeCount, routeCount, settings] = await Promise.all([
     prisma.logisticsProfile.count({ where: { verificationStatus: "VERIFIED" } }),
     prisma.logisticsProfile.findMany({
       where: { verificationStatus: "VERIFIED" },
@@ -87,6 +88,7 @@ export default async function Home() {
     }),
     prisma.cargoType.count(),
     prisma.tradeRoute.count(),
+    getSettings(),
   ]);
 
   const stats = [
@@ -252,7 +254,7 @@ export default async function Home() {
                 ${plan.usd}
                 <span className="text-sm font-normal text-gray-400">/{plan.interval}</span>
               </p>
-              <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd)} · billed in USD via Stripe</p>
+              <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
             </div>
           ))}
         </div>

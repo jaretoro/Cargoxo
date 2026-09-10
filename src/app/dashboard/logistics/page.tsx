@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { getSettings } from "@/lib/settings";
 import { AgentCard, type AgentCardData } from "@/components/AgentCard";
 
 function StatCard({ value, label, href, tone = "neutral" }: { value: number | string; label: string; href?: string; tone?: "neutral" | "amber" | "blue" }) {
@@ -29,7 +30,7 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
   });
   if (!profile) redirect("/login");
 
-  const [pendingRequests, acceptedRequests, unreadCount, reviewAgg, subscription] = await Promise.all([
+  const [pendingRequests, acceptedRequests, unreadCount, reviewAgg, subscription, settings] = await Promise.all([
     prisma.connection.count({ where: { logisticsId: session.user.id, status: "PENDING" } }),
     prisma.connection.count({ where: { logisticsId: session.user.id, status: "ACCEPTED" } }),
     prisma.message.count({
@@ -37,6 +38,7 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
     }),
     prisma.review.aggregate({ where: { logisticsProfileId: profile.id }, _avg: { rating: true }, _count: { rating: true } }),
     prisma.subscription.findUnique({ where: { userId: session.user.id } }),
+    getSettings(),
   ]);
 
   // The exact card an exporter sees in search — the most direct way to show
@@ -73,8 +75,8 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
       // The admin now has to give a reason, so show it — being told only
       // "contact support" left companies with nothing to act on.
       text: profile.rejectionReason
-        ? `Verification was rejected: ${profile.rejectionReason} Fix it and contact support to be reviewed again.`
-        : "Your verification was rejected. Contact support to resolve it before exporters can contact you.",
+        ? `Verification was rejected: ${profile.rejectionReason} Fix it, then email ${settings.supportEmail} to be reviewed again.`
+        : `Your verification was rejected. Email ${settings.supportEmail} to resolve it before exporters can contact you.`,
       tone: "red" as const,
     },
     profile.cargoTypes.length === 0 && {
