@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { openai, CHAT_MODEL, CARGOXO_SYSTEM_PROMPT } from "@/lib/openai";
+import { openai, CHAT_MODEL, buildSystemPrompt } from "@/lib/openai";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       model: CHAT_MODEL,
       max_tokens: MAX_RESPONSE_TOKENS, // bounds the cost of any single call
       messages: [
-        { role: "system", content: CARGOXO_SYSTEM_PROMPT },
+        { role: "system", content: await buildSystemPrompt() },
         ...messages.slice(-10), // keep the request small; short-term memory is enough for FAQ-style support
       ],
     });
