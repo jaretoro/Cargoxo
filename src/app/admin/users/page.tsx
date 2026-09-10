@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteUserAction } from "@/app/actions/admin";
+import { getPageInfo, parsePage } from "@/lib/pagination";
+import { Pagination } from "@/components/Pagination";
 
 const TABS = [
   { key: "ALL", label: "All" },
@@ -25,22 +27,32 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
   const error = typeof sp.error === "string" ? sp.error : null;
   const activeTab = TABS.find((t) => t.key === role)?.key ?? "ALL";
 
+  const where = {
+    role: activeTab === "ALL" ? ({ not: "ADMIN" } as const) : activeTab,
+    ...(q
+      ? {
+          OR: [
+            { name: { contains: q } },
+            { email: { contains: q } },
+            { logisticsProfile: { companyName: { contains: q } } },
+            { exporterProfile: { companyName: { contains: q } } },
+          ],
+        }
+      : {}),
+  };
+
+  // Count first so the page number can be clamped before the rows are
+  // fetched — otherwise ?page=99 would run a query guaranteed to return
+  // nothing.
+  const total = await prisma.user.count({ where });
+  const pageInfo = getPageInfo(total, parsePage(sp.page));
+
   const users = await prisma.user.findMany({
-    where: {
-      role: activeTab === "ALL" ? { not: "ADMIN" } : activeTab,
-      ...(q
-        ? {
-            OR: [
-              { name: { contains: q } },
-              { email: { contains: q } },
-              { logisticsProfile: { companyName: { contains: q } } },
-              { exporterProfile: { companyName: { contains: q } } },
-            ],
-          }
-        : {}),
-    },
+    where,
     include: { subscription: true, logisticsProfile: true },
     orderBy: { createdAt: "desc" },
+    skip: pageInfo.skip,
+    take: pageInfo.pageSize,
   });
 
   // Carry the current filter through the confirm/cancel round trip so
@@ -49,6 +61,9 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
     const params = new URLSearchParams();
     if (activeTab !== "ALL") params.set("role", activeTab);
     if (q) params.set("q", q);
+    // Keep the page too, so confirming a delete on page 3 doesn't bounce
+    // you back to page 1.
+    if (pageInfo.page > 1) params.set("page", String(pageInfo.page));
     for (const [k, v] of Object.entries(extra ?? {})) params.set(k, v);
     const s = params.toString();
     return s ? `?${s}` : "";
@@ -99,7 +114,8 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
 
       {q && (
         <p className="mt-3 text-sm text-gray-500">
-          {users.length} {users.length === 1 ? "result" : "results"} for &ldquo;{q}&rdquo;
+          {/* the total, not users.length — that's only the current page */}
+          {total} {total === 1 ? "result" : "results"} for &ldquo;{q}&rdquo;
         </p>
       )}
 
@@ -190,6 +206,8 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
           </tbody>
         </table>
       </div>
+
+      <Pagination info={pageInfo} basePath="/admin/users" params={sp} label="users" />
     </div>
   );
 }

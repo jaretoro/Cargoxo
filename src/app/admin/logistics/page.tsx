@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { verifyLogisticsAction } from "@/app/actions/admin";
+import { getPageInfo, parsePage } from "@/lib/pagination";
+import { Pagination } from "@/components/Pagination";
 
 const TABS = [
   { key: "PENDING", label: "Pending" },
@@ -15,11 +17,16 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
   const error = typeof sp.error === "string" ? sp.error : null;
   const activeTab = TABS.find((t) => t.key === status)?.key ?? "PENDING";
 
+  const where = activeTab === "ALL" ? undefined : { verificationStatus: activeTab };
+  const pageInfo = getPageInfo(await prisma.logisticsProfile.count({ where }), parsePage(sp.page));
+
   const [companies, pendingCount, verifiedCount, rejectedCount, totalCount] = await Promise.all([
     prisma.logisticsProfile.findMany({
-      where: activeTab === "ALL" ? undefined : { verificationStatus: activeTab },
+      where,
       include: { user: { select: { name: true, email: true, phone: true } } },
       orderBy: [{ verificationStatus: "asc" }, { createdAt: "desc" }],
+      skip: pageInfo.skip,
+      take: pageInfo.pageSize,
     }),
     prisma.logisticsProfile.count({ where: { verificationStatus: "PENDING" } }),
     prisma.logisticsProfile.count({ where: { verificationStatus: "VERIFIED" } }),
@@ -136,6 +143,8 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
           </p>
         )}
       </div>
+
+      <Pagination info={pageInfo} basePath="/admin/logistics" params={sp} label="companies" />
     </div>
   );
 }

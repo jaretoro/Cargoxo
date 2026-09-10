@@ -2,6 +2,8 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AgentCard, type AgentCardData } from "@/components/AgentCard";
+import { getPageInfo, parsePage } from "@/lib/pagination";
+import { Pagination } from "@/components/Pagination";
 
 function toArray(v: string | string[] | undefined): string[] {
   if (!v) return [];
@@ -103,6 +105,18 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
   }
 
   const verifiedInResults = agents.filter((a) => a.verificationStatus === "VERIFIED").length;
+
+  // Paged after sorting rather than in the query, because two of the sort
+  // options rank by rating, which is aggregated from Review rows on read
+  // instead of cached on the profile. Sorting in SQL would mean
+  // denormalising that back onto LogisticsProfile, which is exactly the
+  // drift the aggregate-on-read choice avoids.
+  //
+  // So this bounds what gets rendered, not what gets read: every matching
+  // company is still loaded. Fine at this size; revisit if the marketplace
+  // reaches the point where that read hurts.
+  const pageInfo = getPageInfo(agents.length, parsePage(sp.page));
+  const pageAgents = agents.slice(pageInfo.skip, pageInfo.skip + pageInfo.pageSize);
 
   const currentQuery = new URLSearchParams();
   if (q) currentQuery.set("q", q);
@@ -228,7 +242,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
 
           <div className="min-w-0 flex-1">
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {agents.map((agent) => (
+              {pageAgents.map((agent) => (
                 <AgentCard key={agent.logisticsProfileId} agent={agent} isSubscribed={isSubscribed} backTo={backTo} />
               ))}
               {agents.length === 0 && (
@@ -237,6 +251,8 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
                 </p>
               )}
             </div>
+
+            <Pagination info={pageInfo} basePath="/dashboard/exporter" params={sp} label="companies" />
           </div>
         </div>
     </div>

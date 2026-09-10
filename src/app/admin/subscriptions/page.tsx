@@ -1,8 +1,16 @@
 import { prisma } from "@/lib/prisma";
+import { getPageInfo, parsePage } from "@/lib/pagination";
+import { Pagination } from "@/components/Pagination";
 
-export default async function AdminSubscriptions() {
+export default async function AdminSubscriptions(props: PageProps<"/admin/subscriptions">) {
+  const sp = await props.searchParams;
+  const where = { status: { not: "NONE" as const } };
+
+  const total = await prisma.subscription.count({ where });
+  const pageInfo = getPageInfo(total, parsePage(sp.page));
+
   const subscriptions = await prisma.subscription.findMany({
-    where: { status: { not: "NONE" } },
+    where,
     include: {
       user: {
         select: {
@@ -15,6 +23,8 @@ export default async function AdminSubscriptions() {
       },
     },
     orderBy: { createdAt: "desc" },
+    skip: pageInfo.skip,
+    take: pageInfo.pageSize,
   });
 
   return (
@@ -69,6 +79,8 @@ export default async function AdminSubscriptions() {
           </tbody>
         </table>
       </div>
+
+      <Pagination info={pageInfo} basePath="/admin/subscriptions" params={sp} label="subscriptions" />
     </div>
   );
 }
