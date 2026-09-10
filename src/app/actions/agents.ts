@@ -52,13 +52,22 @@ export async function startConversationAction(formData: FormData) {
   const logisticsId = formData.get("logisticsId") as string;
   const body = (formData.get("body") as string)?.trim();
 
+  // Every rejection path comes back to the compose page carrying the typed
+  // message. A subscription that lapsed mid-draft used to bounce the
+  // exporter to the browse page and lose whatever they'd written.
+  const backToCompose = (message: string) => {
+    const params = new URLSearchParams({ logistics: logisticsId ?? "", error: message });
+    if (body) params.set("draft", body);
+    redirect(`/dashboard/exporter/messages/new?${params.toString()}`);
+  };
+
+  if (!logisticsId) redirect("/dashboard/exporter");
+
   const subscription = await prisma.subscription.findUnique({ where: { userId: session.user.id } });
   if (subscription?.status !== "ACTIVE") {
-    redirect("/dashboard/exporter?error=An+active+subscription+is+required+to+message+logistics+companies.");
+    backToCompose("An active subscription is required to message logistics companies.");
   }
-  if (!logisticsId || !body) {
-    redirect(`/dashboard/exporter/messages/new?logistics=${logisticsId}&error=A+message+is+required.`);
-  }
+  if (!body) backToCompose("A message is required.");
 
   const logistics = await prisma.logisticsProfile.findUnique({ where: { userId: logisticsId } });
   if (!logistics || logistics.verificationStatus !== "VERIFIED") {
