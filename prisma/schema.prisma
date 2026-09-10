@@ -106,6 +106,9 @@ model LogisticsProfile {
   location           String // Nigerian state/city, used for search & filtering
   verificationStatus VerificationStatus @default(PENDING)
   verifiedAt         DateTime?
+  // Why a company was rejected. Without it, rejection is a dead end: the
+  // company is told to "contact support" with no idea what to fix.
+  rejectionReason    String?
   establishedYear    Int?
   shipmentCount      Int                @default(0)
   createdAt          DateTime           @default(now())

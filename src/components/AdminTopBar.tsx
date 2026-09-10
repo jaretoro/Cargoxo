@@ -21,15 +21,20 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
 
   return (
     <header className="flex items-center justify-end gap-3 border-b border-black/5 bg-white px-6 py-3">
-      <div className="relative hidden md:block">
+      {/* A real search, not decoration — it used to be an input that looked
+          functional and did nothing, which is worse than having none. */}
+      <form action="/admin/users" className="relative hidden md:block">
         <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
           <SearchIcon />
         </span>
         <input
+          name="q"
+          type="search"
           placeholder="Search users, companies…"
+          aria-label="Search users and companies"
           className="w-64 rounded-md border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-brand-blue"
         />
-      </div>
+      </form>
       <span className="hidden rounded-md border border-gray-200 px-3 py-2 text-xs font-medium text-gray-500 lg:inline-block">{dateLabel}</span>
       <button className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100" aria-label="Notifications">
         <BellIcon />

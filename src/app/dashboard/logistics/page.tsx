@@ -70,7 +70,11 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
     },
     profile.verificationStatus === "REJECTED" && {
       key: "rejected",
-      text: "Your verification was rejected. Contact support to resolve it before exporters can contact you.",
+      // The admin now has to give a reason, so show it — being told only
+      // "contact support" left companies with nothing to act on.
+      text: profile.rejectionReason
+        ? `Verification was rejected: ${profile.rejectionReason} Fix it and contact support to be reviewed again.`
+        : "Your verification was rejected. Contact support to resolve it before exporters can contact you.",
       tone: "red" as const,
     },
     profile.cargoTypes.length === 0 && {

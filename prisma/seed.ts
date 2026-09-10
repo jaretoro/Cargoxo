@@ -174,6 +174,9 @@ async function applyLogisticsDetails(
       // leaving whatever an admin clicked through while testing.
       verificationStatus: status,
       verifiedAt: status === "VERIFIED" ? profile.verifiedAt ?? new Date() : null,
+      // Clear any reason left over from a rejection during testing, so a
+      // company restored to PENDING doesn't still carry one.
+      rejectionReason: status === "REJECTED" ? profile.rejectionReason : null,
     },
   });
 

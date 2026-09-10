@@ -9,12 +9,10 @@ const TABS = [
   { key: "ALL", label: "All" },
 ] as const;
 
-export default async function AdminLogisticsQueue({
-  searchParams,
-}: {
-  searchParams: Promise<{ status?: string }>;
-}) {
-  const { status } = await searchParams;
+export default async function AdminLogisticsQueue(props: PageProps<"/admin/logistics">) {
+  const sp = await props.searchParams;
+  const status = typeof sp.status === "string" ? sp.status : undefined;
+  const error = typeof sp.error === "string" ? sp.error : null;
   const activeTab = TABS.find((t) => t.key === status)?.key ?? "PENDING";
 
   const [companies, pendingCount, verifiedCount, rejectedCount, totalCount] = await Promise.all([
@@ -40,6 +38,8 @@ export default async function AdminLogisticsQueue({
     <div>
       <h1 className="text-2xl font-bold text-brand-navy">Logistics verification queue</h1>
       <p className="mt-1 text-sm text-gray-500">Approve or reject companies based on their ANCLA number and details.</p>
+
+      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
 
       <div className="mt-6 flex gap-1 border-b border-gray-200">
         {TABS.map((t) => (
@@ -87,7 +87,13 @@ export default async function AdminLogisticsQueue({
               <div className="sm:col-span-2"><dt className="inline font-medium text-gray-700">Address: </dt><dd className="inline">{c.address}</dd></div>
             </dl>
 
-            <div className="mt-4 flex gap-2">
+            {c.verificationStatus === "REJECTED" && c.rejectionReason && (
+              <p className="mt-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+                <span className="font-medium">Rejected:</span> {c.rejectionReason}
+              </p>
+            )}
+
+            <div className="mt-4 flex flex-wrap items-end gap-2">
               <form action={verifyLogisticsAction}>
                 <input type="hidden" name="userId" value={c.userId} />
                 <input type="hidden" name="status" value="VERIFIED" />
@@ -99,15 +105,26 @@ export default async function AdminLogisticsQueue({
                   Approve
                 </button>
               </form>
-              <form action={verifyLogisticsAction}>
+
+              {/* Rejecting requires a reason. Without one the company is just
+                  told to "contact support" and has no idea what to fix. */}
+              <form action={verifyLogisticsAction} className="flex flex-wrap items-end gap-2">
                 <input type="hidden" name="userId" value={c.userId} />
                 <input type="hidden" name="status" value="REJECTED" />
+                <label className="text-xs text-gray-500">
+                  <span className="sr-only">Reason for rejecting {c.companyName}</span>
+                  <input
+                    name="rejectionReason"
+                    defaultValue={c.rejectionReason ?? ""}
+                    placeholder="Reason, e.g. ANCLA number not found"
+                    className="w-72 rounded-md border border-gray-300 px-3 py-1.5 text-sm outline-none focus:border-brand-blue"
+                  />
+                </label>
                 <button
                   type="submit"
-                  disabled={c.verificationStatus === "REJECTED"}
-                  className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Reject
+                  {c.verificationStatus === "REJECTED" ? "Update reason" : "Reject"}
                 </button>
               </form>
             </div>
