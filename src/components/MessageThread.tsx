@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { sendMessageAction } from "@/app/actions/agents";
+import { SubmitButton } from "@/components/SubmitButton";
 
 // The exporter and logistics thread pages were near-identical copies, so
 // the markup lives here once and each side passes in who it's talking to.
@@ -147,9 +148,9 @@ export function MessageThread({
           placeholder="Type a message…"
           className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
         />
-        <button type="submit" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Send
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

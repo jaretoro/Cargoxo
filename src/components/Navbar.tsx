@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { Logo } from "@/components/Logo";
 import { logoutAction } from "@/app/actions/auth";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const DASHBOARD_BY_ROLE: Record<string, string> = {
   ADMIN: "/admin",
@@ -34,12 +35,12 @@ export async function Navbar() {
                 Dashboard
               </Link>
               <form action={logoutAction}>
-                <button
-                  type="submit"
+                <SubmitButton
+                  pendingLabel="Signing out…"
                   className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   Log out
-                </button>
+                </SubmitButton>
               </form>
             </>
           ) : (

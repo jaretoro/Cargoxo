@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { logoutAction } from "@/app/actions/auth";
+import { SubmitButton } from "@/components/SubmitButton";
 
 function initials(name: string) {
   return name
@@ -57,12 +58,12 @@ export function DashboardHeader({
           </span>
 
           <form action={logoutAction}>
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel="Signing out…"
               className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Log out
-            </button>
+            </SubmitButton>
           </form>
         </div>
       </div>

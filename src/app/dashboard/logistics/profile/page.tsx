@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { updateLogisticsProfileAction } from "@/app/actions/logistics";
+import { SubmitButton } from "@/components/SubmitButton";
 
 // Blank route rows offered on top of whatever is already saved, so there's
 // always somewhere to add a lane without needing JavaScript.
@@ -172,12 +173,12 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
           <p className="mt-2 text-xs text-gray-400">Save to get more empty rows.</p>
         </section>
 
-        <button
-          type="submit"
+        <SubmitButton
+          pendingLabel="Saving…"
           className="w-full rounded-md bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy"
         >
           Save profile
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

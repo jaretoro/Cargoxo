@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/lib/settings";
 import { PLANS, formatNaira } from "@/lib/pricing";
 import { updateSettingsAction, addCargoTypeAction, deleteCargoTypeAction } from "@/app/actions/settings";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function AdminSettings(props: PageProps<"/admin/settings">) {
   const sp = await props.searchParams;
@@ -66,9 +67,9 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
           </div>
         </div>
 
-        <button type="submit" className="mt-6 rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Saving…" className="mt-6 rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Save settings
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="mt-6 rounded-xl border border-black/5 bg-white p-6 shadow-sm">
@@ -101,9 +102,9 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
                     <form action={deleteCargoTypeAction}>
                       <input type="hidden" name="id" value={c.id} />
                       <input type="hidden" name="confirm" value="yes" />
-                      <button type="submit" className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700">
+                      <SubmitButton pendingLabel="Deleting…" className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700">
                         Delete
-                      </button>
+                      </SubmitButton>
                     </form>
                     <Link href="/admin/settings" className="text-xs font-medium text-gray-500 hover:text-brand-navy">
                       Cancel
@@ -131,9 +132,9 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
             placeholder="Add a cargo type, e.g. Livestock"
             className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
           />
-          <button type="submit" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+          <SubmitButton pendingLabel="Adding…" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
             Add
-          </button>
+          </SubmitButton>
         </form>
       </div>
 

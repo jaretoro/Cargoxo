@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAction } from "@/app/actions/auth";
+import { SubmitIconButton } from "@/components/SubmitButton";
 
 type IconName = "grid" | "shield" | "users" | "card" | "tag" | "chart" | "bell" | "gear" | "signout";
 
@@ -200,10 +201,10 @@ export function AdminSidebar({
         </div>
 
         <form action={logoutAction} className="max-lg:shrink-0">
-          <button type="submit" className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
+          <SubmitIconButton className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
             <Icon name="signout" />
             Sign Out
-          </button>
+          </SubmitIconButton>
         </form>
       </div>
     </aside>

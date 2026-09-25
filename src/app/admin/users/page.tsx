@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { deleteUserAction } from "@/app/actions/admin";
 import { getPageInfo, parsePage } from "@/lib/pagination";
 import { Pagination } from "@/components/Pagination";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const TABS = [
   { key: "ALL", label: "All" },
@@ -176,9 +177,9 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                         <form action={deleteUserAction}>
                           <input type="hidden" name="userId" value={u.id} />
                           <input type="hidden" name="confirm" value="yes" />
-                          <button type="submit" className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700">
+                          <SubmitButton pendingLabel="Deleting…" className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700">
                             Delete
-                          </button>
+                          </SubmitButton>
                         </form>
                         <Link href={`/admin/users${filterQuery()}`} className="text-xs font-medium text-gray-500 hover:text-brand-navy">
                           Cancel

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyLogisticsAction } from "@/app/actions/admin";
 import { getPageInfo, parsePage } from "@/lib/pagination";
 import { Pagination } from "@/components/Pagination";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const TABS = [
   { key: "PENDING", label: "Pending" },
@@ -104,13 +105,13 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
               <form action={verifyLogisticsAction}>
                 <input type="hidden" name="userId" value={c.userId} />
                 <input type="hidden" name="status" value="VERIFIED" />
-                <button
-                  type="submit"
+                <SubmitButton
+                  pendingLabel="Approving…"
                   disabled={c.verificationStatus === "VERIFIED"}
-                  className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy"
                 >
                   Approve
-                </button>
+                </SubmitButton>
               </form>
 
               {/* Rejecting requires a reason. Without one the company is just
@@ -127,12 +128,12 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
                     className="w-72 rounded-md border border-gray-300 px-3 py-1.5 text-sm outline-none focus:border-brand-blue"
                   />
                 </label>
-                <button
-                  type="submit"
+                <SubmitButton
+                  pendingLabel="Saving…"
                   className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   {c.verificationStatus === "REJECTED" ? "Update reason" : "Reject"}
-                </button>
+                </SubmitButton>
               </form>
             </div>
           </div>

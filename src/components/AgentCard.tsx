@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { toggleSaveAction } from "@/app/actions/agents";
+import { SubmitIconButton } from "@/components/SubmitButton";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
@@ -230,15 +231,14 @@ export function AgentCard({
         <form action={toggleSaveAction}>
           <input type="hidden" name="logisticsId" value={agent.userId} />
           <input type="hidden" name="redirectTo" value={backTo} />
-          <button
-            type="submit"
+          <SubmitIconButton
             aria-label={agent.isSaved ? "Remove from saved" : "Save"}
             className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-50"
           >
             <svg width="16" height="16" viewBox="0 0 20 20" fill={agent.isSaved ? "#0b2d52" : "none"} stroke="#0b2d52" strokeWidth="1.5" aria-hidden="true">
               <path d="M5 3h10a1 1 0 011 1v13l-6-3.5L4 17V4a1 1 0 011-1z" strokeLinejoin="round" />
             </svg>
-          </button>
+          </SubmitIconButton>
         </form>
       </div>
     </div>

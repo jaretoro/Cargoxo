@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { startConversationAction } from "@/app/actions/agents";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
@@ -90,9 +91,9 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
           placeholder="Describe your shipment — cargo type, volume, destination, timeline…"
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
         />
-        <button type="submit" className="w-full rounded-md bg-brand-blue px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="w-full rounded-md bg-brand-blue px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Send message
-        </button>
+        </SubmitButton>
         <p className="text-xs text-gray-400">
           They&rsquo;ll see your contact details and can accept or decline. You can keep talking in the thread either way.
         </p>

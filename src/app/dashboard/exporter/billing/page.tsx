@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { PLANS, formatNaira, yearlySavingsPercent } from "@/lib/pricing";
 import { getSettings } from "@/lib/settings";
 import { createCheckoutAction, createPortalSessionAction } from "@/app/actions/billing";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const STATUS_STYLES: Record<string, string> = {
   ACTIVE: "bg-green-100 text-green-700",
@@ -87,12 +88,12 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
             </dl>
 
             <form action={createPortalSessionAction} className="mt-5">
-              <button
-                type="submit"
+              <SubmitButton
+                pendingLabel="Opening Stripe…"
                 className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
               >
                 Manage billing
-              </button>
+              </SubmitButton>
               <p className="mt-2 text-xs text-gray-400">
                 Change plan, update your card or cancel — handled securely by Stripe.
               </p>

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { respondConnectionAction } from "@/app/actions/connections";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const STATUS_STYLES: Record<string, string> = {
   ACCEPTED: "bg-green-100 text-green-700",
@@ -103,16 +104,16 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                         <form action={respondConnectionAction}>
                           <input type="hidden" name="connectionId" value={r.id} />
                           <input type="hidden" name="status" value="ACCEPTED" />
-                          <button type="submit" className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
+                          <SubmitButton pendingLabel="Accepting…" className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
                             Accept
-                          </button>
+                          </SubmitButton>
                         </form>
                         <form action={respondConnectionAction}>
                           <input type="hidden" name="connectionId" value={r.id} />
                           <input type="hidden" name="status" value="DECLINED" />
-                          <button type="submit" className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                          <SubmitButton pendingLabel="Declining…" className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
                             Decline
-                          </button>
+                          </SubmitButton>
                         </form>
                       </>
                     )}
