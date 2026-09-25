@@ -55,20 +55,20 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-brand-navy sm:text-4xl">Simple, transparent pricing</h1>
-        <p className="mt-3 text-gray-600">
+        <h1 className="text-3xl font-bold text-ink sm:text-4xl">Simple, transparent pricing</h1>
+        <p className="mt-3 text-ink-soft">
           Browsing Cargoxo is free. A subscription is what lets you contact the companies you
           find. Billed in USD via Stripe; Naira amounts are an approximate guide.
         </p>
       </div>
 
       {error && (
-        <div className="mx-auto mt-6 max-w-lg rounded-md bg-red-50 px-4 py-3 text-center text-sm text-red-700">
+        <div className="mx-auto mt-6 max-w-lg bg-bad-tint px-4 py-3 text-center text-sm text-bad">
           {decodeURIComponent(error)}
         </div>
       )}
       {canceled && (
-        <div className="mx-auto mt-6 max-w-lg rounded-md bg-gray-50 px-4 py-3 text-center text-sm text-gray-600">
+        <div className="mx-auto mt-6 max-w-lg bg-paper-deep px-4 py-3 text-center text-sm text-ink-soft">
           Checkout was canceled — no charge was made.
         </div>
       )}
@@ -77,37 +77,37 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
         {(Object.values(PLANS)).map((plan) => (
           <div
             key={plan.id}
-            className={`relative rounded-2xl border p-6 shadow-sm ${
-              plan.id === "YEARLY" ? "border-brand-blue ring-1 ring-brand-blue" : "border-black/10"
-            }`}
+            className={`relative border p-6 ${
+ plan.id === "YEARLY" ? "border-ochre ring-1 ring-ochre" : "border-rule"
+ }`}
           >
             {/* Only advertise a discount when there actually is one. At the
                 current prices ($5/mo, $60/yr) the yearly plan costs exactly
                 12 months, so this would otherwise render "Save 0%". */}
             {plan.id === "YEARLY" && yearlySavingsPercent() > 0 && (
-              <span className="absolute -top-3 left-6 rounded-full bg-brand-blue-deep px-3 py-1 text-xs font-semibold text-white">
+              <span className="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 text-xs font-semibold text-paper">
                 Save {yearlySavingsPercent()}%
               </span>
             )}
-            <h2 className="text-lg font-semibold text-brand-navy">{plan.label}</h2>
+            <h2 className="text-lg font-semibold text-ink">{plan.label}</h2>
             <p className="mt-2">
-              <span className="text-4xl font-bold text-gray-900">${plan.usd}</span>
-              <span className="text-gray-500">/{plan.interval}</span>
+              <span className="text-4xl font-bold text-ink">${plan.usd}</span>
+              <span className="text-muted">/{plan.interval}</span>
             </p>
-            <p className="mt-1 text-sm text-gray-500">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} / {plan.interval}</p>
+            <p className="mt-1 text-sm text-muted">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} / {plan.interval}</p>
 
             <form action={createCheckoutAction} className="mt-6">
               <input type="hidden" name="plan" value={plan.id} />
               {currentPlan === plan.id ? (
-                <button type="button" disabled className="w-full rounded-md bg-gray-100 px-4 py-2.5 font-semibold text-gray-500">
+                <button type="button" disabled className="w-full bg-paper-deep px-4 py-2.5 font-semibold text-muted">
                   Current plan
                 </button>
               ) : (
                 <SubmitButton
                   pendingLabel="Opening checkout…"
-                  className={`w-full rounded-md px-4 py-2.5 font-semibold text-white ${
-                    plan.id === "YEARLY" ? "bg-brand-blue-deep hover:bg-brand-navy" : "bg-gray-800 hover:bg-brand-navy"
-                  }`}
+                  className={`w-full px-4 py-2.5 font-semibold text-paper ${
+ plan.id === "YEARLY" ? "bg-ink hover:bg-ink-hover" : "bg-ink-soft hover:bg-ink"
+ }`}
                 >
                   Subscribe {plan.label.toLowerCase()}
                 </SubmitButton>
@@ -122,13 +122,13 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
           a comparison and then showed no difference — and inventing a
           difference would bake in a plan structure that isn't settled. */}
       <div className="mt-12 grid gap-6 sm:grid-cols-2">
-        <div className="rounded-xl border border-brand-blue/30 bg-brand-sky/5 p-6">
-          <h2 className="font-semibold text-brand-navy">What a subscription unlocks</h2>
-          <p className="mt-1 text-xs text-gray-500">Identical on both plans — only the billing period differs.</p>
-          <ul className="mt-4 space-y-2.5 text-sm text-gray-700">
+        <div className="border border-rule bg-paper-deep p-6">
+          <h2 className="font-semibold text-ink">What a subscription unlocks</h2>
+          <p className="mt-1 text-xs text-muted">Identical on both plans — only the billing period differs.</p>
+          <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
             {PAID.map((f) => (
               <li key={f} className="flex gap-2.5">
-                <span className="text-brand-blue-deep">
+                <span className="text-ochre">
                   <CheckIcon />
                 </span>
                 {f}
@@ -137,13 +137,13 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
           </ul>
         </div>
 
-        <div className="rounded-xl border border-black/10 p-6">
-          <h2 className="font-semibold text-brand-navy">Free for everyone</h2>
-          <p className="mt-1 text-xs text-gray-500">No card needed — just register as an exporter.</p>
-          <ul className="mt-4 space-y-2.5 text-sm text-gray-700">
+        <div className="border border-rule p-6">
+          <h2 className="font-semibold text-ink">Free for everyone</h2>
+          <p className="mt-1 text-xs text-muted">No card needed — just register as an exporter.</p>
+          <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
             {FREE.map((f) => (
               <li key={f} className="flex gap-2.5">
-                <span className="text-gray-500">
+                <span className="text-muted">
                   <CheckIcon />
                 </span>
                 {f}
@@ -153,7 +153,7 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
         </div>
       </div>
 
-      <p className="mt-8 text-center text-xs text-gray-500">
+      <p className="mt-8 text-center text-xs text-muted">
         Logistics companies list and get verified for free. They can also take a paid membership
         at these same prices, which shows a member badge on their listing.
       </p>

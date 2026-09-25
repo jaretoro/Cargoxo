@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Direction A's pairing: a characterful serif for display, a technical
+// grotesque for everything else. Fraunces is variable, so no weight list is
+// needed — next/font ships the wght axis by default and leaves the optical
+// and "wonk" axes out to keep the file small.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// IBM Plex Sans is not variable on Google Fonts, so its weights are listed.
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,8 +31,8 @@ export const metadata: Metadata = {
 // chrome instead, since neither wants the marketing site's header/footer.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+    <html lang="en" className={`${fraunces.variable} ${plexSans.variable} h-full antialiased`}>
+      <body className="min-h-full font-sans">{children}</body>
     </html>
   );
 }

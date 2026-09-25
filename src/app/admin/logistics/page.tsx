@@ -44,24 +44,24 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-brand-navy">Logistics verification queue</h1>
-      <p className="mt-1 text-sm text-gray-500">Approve or reject companies based on their ANCLA number and details.</p>
+      <h1 className="text-2xl font-bold text-ink">Logistics verification queue</h1>
+      <p className="mt-1 text-sm text-muted">Approve or reject companies based on their ANCLA number and details.</p>
 
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
 
-      <div className="mt-6 flex flex-wrap gap-1 border-b border-gray-200">
+      <div className="mt-6 flex flex-wrap gap-1 border-b border-rule">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={t.key === "PENDING" ? "/admin/logistics" : `/admin/logistics?status=${t.key}`}
             className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-              activeTab === t.key
-                ? "border-brand-blue text-brand-navy"
-                : "border-transparent text-gray-500 hover:text-brand-navy"
-            }`}
+ activeTab === t.key
+ ? "border-ochre text-ink"
+ : "border-transparent text-muted hover:text-ink"
+ }`}
           >
             {t.label}
-            <span className={`rounded-full px-1.5 py-0.5 text-xs ${activeTab === t.key ? "bg-brand-sky/20 text-brand-blue-deep" : "bg-gray-100 text-gray-600"}`}>
+            <span className={`rounded-full px-1.5 py-0.5 text-xs ${activeTab === t.key ? "bg-wait-tint text-ochre" : "bg-paper-deep text-ink-soft"}`}>
               {counts[t.key]}
             </span>
           </Link>
@@ -70,33 +70,33 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
 
       <div className="mt-6 space-y-3">
         {companies.map((c) => (
-          <div key={c.id} className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+          <div key={c.id} className="border border-rule bg-surface p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="font-semibold text-brand-navy">{c.companyName}</h3>
-                <p className="text-sm text-gray-500">{c.user.name} · {c.user.email} · {c.user.phone}</p>
+                <h3 className="font-semibold text-ink">{c.companyName}</h3>
+                <p className="text-sm text-muted">{c.user.name} · {c.user.email} · {c.user.phone}</p>
               </div>
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                  c.verificationStatus === "VERIFIED"
-                    ? "bg-green-100 text-green-700"
-                    : c.verificationStatus === "REJECTED"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
-                }`}
+ c.verificationStatus === "VERIFIED"
+ ? "bg-ok-tint text-ok"
+ : c.verificationStatus === "REJECTED"
+ ? "bg-bad-tint text-bad"
+ : "bg-wait-tint text-wait"
+ }`}
               >
                 {c.verificationStatus}
               </span>
             </div>
 
-            <dl className="mt-3 grid gap-1 text-sm text-gray-600 sm:grid-cols-2">
-              <div><dt className="inline font-medium text-gray-700">ANCLA number: </dt><dd className="inline">{c.anclaNumber}</dd></div>
-              <div><dt className="inline font-medium text-gray-700">Location: </dt><dd className="inline">{c.location}</dd></div>
-              <div className="sm:col-span-2"><dt className="inline font-medium text-gray-700">Address: </dt><dd className="inline">{c.address}</dd></div>
+            <dl className="mt-3 grid gap-1 text-sm text-ink-soft sm:grid-cols-2">
+              <div><dt className="inline font-medium text-ink-soft">ANCLA number: </dt><dd className="inline">{c.anclaNumber}</dd></div>
+              <div><dt className="inline font-medium text-ink-soft">Location: </dt><dd className="inline">{c.location}</dd></div>
+              <div className="sm:col-span-2"><dt className="inline font-medium text-ink-soft">Address: </dt><dd className="inline">{c.address}</dd></div>
             </dl>
 
             {c.verificationStatus === "REJECTED" && c.rejectionReason && (
-              <p className="mt-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p className="mt-3 bg-bad-tint px-3 py-2 text-sm text-bad">
                 <span className="font-medium">Rejected:</span> {c.rejectionReason}
               </p>
             )}
@@ -108,7 +108,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
                 <SubmitButton
                   pendingLabel="Approving…"
                   disabled={c.verificationStatus === "VERIFIED"}
-                  className="rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-medium text-white hover:bg-brand-navy"
+                  className="bg-ink px-3 py-2.5 text-sm font-medium text-paper hover:bg-ink-hover"
                 >
                   Approve
                 </SubmitButton>
@@ -119,18 +119,18 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
               <form action={verifyLogisticsAction} className="flex flex-wrap items-end gap-2">
                 <input type="hidden" name="userId" value={c.userId} />
                 <input type="hidden" name="status" value="REJECTED" />
-                <label className="text-xs text-gray-500">
+                <label className="text-xs text-muted">
                   <span className="sr-only">Reason for rejecting {c.companyName}</span>
                   <input
                     name="rejectionReason"
                     defaultValue={c.rejectionReason ?? ""}
                     placeholder="Reason, e.g. ANCLA number not found"
-                    className="w-72 rounded-md border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-brand-blue"
+                    className="w-72 border border-rule px-3 py-2.5 text-sm outline-none focus:border-ink"
                   />
                 </label>
                 <SubmitButton
                   pendingLabel="Saving…"
-                  className="rounded-md border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="border border-rule px-3 py-2.5 text-sm font-medium text-ink-soft hover:bg-paper-deep"
                 >
                   {c.verificationStatus === "REJECTED" ? "Update reason" : "Reject"}
                 </SubmitButton>
@@ -139,7 +139,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
           </div>
         ))}
         {companies.length === 0 && (
-          <p className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
+          <p className="border border-dashed border-rule p-8 text-center text-sm text-muted">
             {activeTab === "ALL" ? "No logistics companies registered yet." : `No ${activeTab.toLowerCase()} companies.`}
           </p>
         )}

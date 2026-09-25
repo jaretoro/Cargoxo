@@ -111,49 +111,49 @@ export function AdminSidebar({
     // Below lg the sidebar becomes a horizontal strip across the top: a
     // fixed 16rem column leaves ~145px of content on a 390px phone, which
     // is unusable, and a lot of Nigerian exporters and agents are on phones.
-    <aside className="flex w-full shrink-0 flex-col bg-brand-navy text-white lg:h-auto lg:w-64">
+    <aside className="flex w-full shrink-0 flex-col bg-ink text-paper lg:h-auto lg:w-64">
       <div className="flex items-center gap-2.5 px-5 py-5">
         {/* Was a stand-in amber "C" — the admin portal was showing a
             different mark from the rest of the product. */}
         <Image src="/logo-mark.png" alt="" width={75} height={36} className="h-9 w-auto" priority />
         <div>
           <p className="text-sm font-bold leading-tight">Cargoxo</p>
-          <p className="text-[11px] leading-tight text-white/50">Admin Portal</p>
+          <p className="text-[11px] leading-tight text-on-ink-muted">Admin Portal</p>
         </div>
       </div>
 
       <nav className="mt-4 flex-1 gap-6 space-y-6 overflow-x-auto px-3 max-lg:flex max-lg:space-y-0 lg:overflow-y-auto">
         <div>
-          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/60">Management</p>
+          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-on-ink-muted">Management</p>
           <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {managementLinks.map((l) => (
               <Link
                 key={l.to}
                 href={l.to}
-                className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive(l.to, l.end) ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
-                }`}
+                className={`flex items-center justify-between gap-2 px-3 py-2.5 text-sm font-medium transition-colors ${
+ isActive(l.to, l.end) ? "bg-ink-hover text-paper" : "text-on-ink hover:bg-surface/5 hover:text-paper"
+ }`}
               >
                 <span className="flex items-center gap-2.5">
                   <Icon name={l.icon} />
                   {l.label}
                 </span>
-                {l.badge > 0 && <span className="rounded-full bg-brand-amber px-1.5 py-0.5 text-[11px] font-semibold text-brand-navy">{l.badge}</span>}
+                {l.badge > 0 && <span className="rounded-full bg-ochre-soft px-1.5 py-0.5 text-[11px] font-semibold text-ink">{l.badge}</span>}
               </Link>
             ))}
           </div>
         </div>
 
         <div>
-          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/60">Reports</p>
+          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-on-ink-muted">Reports</p>
           <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {reportLinks.map((l) => (
               <Link
                 key={l.to}
                 href={l.to}
-                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive(l.to) ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
-                }`}
+                className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors ${
+ isActive(l.to) ? "bg-ink-hover text-paper" : "text-on-ink hover:bg-surface/5 hover:text-paper"
+ }`}
               >
                 <Icon name={l.icon} />
                 {l.label}
@@ -163,30 +163,30 @@ export function AdminSidebar({
         </div>
       </nav>
 
-      <div className="border-t border-white/10 px-3 py-3 max-lg:flex max-lg:items-center max-lg:justify-between max-lg:gap-3">
+      <div className="border-t border-rule-dark px-3 py-3 max-lg:flex max-lg:items-center max-lg:justify-between max-lg:gap-3">
         <div className="space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
           <Link
             href="/admin/notifications"
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              isActive("/admin/notifications") ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
-            }`}
+            className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors ${
+ isActive("/admin/notifications") ? "bg-ink-hover text-paper" : "text-on-ink hover:bg-surface/5 hover:text-paper"
+ }`}
           >
             <Icon name="bell" />
             Notifications
           </Link>
           <Link
             href="/admin/settings"
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              isActive("/admin/settings") ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
-            }`}
+            className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium transition-colors ${
+ isActive("/admin/settings") ? "bg-ink-hover text-paper" : "text-on-ink hover:bg-surface/5 hover:text-paper"
+ }`}
           >
             <Icon name="gear" />
             Settings
           </Link>
         </div>
 
-        <div className="mt-3 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2.5 max-lg:mt-0 max-lg:hidden xl:flex">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-amber text-xs font-bold text-brand-navy">
+        <div className="mt-3 flex items-center gap-2.5 bg-surface/5 px-3 py-2.5 max-lg:mt-0 max-lg:hidden xl:flex">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ochre-soft text-xs font-bold text-ink">
             {adminName
               .split(/\s+/)
               .filter(Boolean)
@@ -196,12 +196,12 @@ export function AdminSidebar({
           </span>
           <div className="min-w-0">
             <p className="truncate text-xs font-semibold">{adminName}</p>
-            <p className="truncate text-[11px] text-white/50">{adminEmail}</p>
+            <p className="truncate text-[11px] text-on-ink-muted">{adminEmail}</p>
           </div>
         </div>
 
         <form action={logoutAction} className="max-lg:shrink-0">
-          <SubmitIconButton className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
+          <SubmitIconButton className="mt-2 flex w-full items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-on-ink hover:bg-surface/5 hover:text-paper max-lg:mt-0">
             <Icon name="signout" />
             Sign Out
           </SubmitIconButton>

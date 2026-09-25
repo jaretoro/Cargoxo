@@ -40,8 +40,8 @@ export default async function ExporterMessages() {
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-brand-navy">Messages</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-ink">Messages</h1>
+          <p className="mt-1 text-sm text-muted">
             {totalUnread > 0
               ? `${totalUnread} unread ${totalUnread === 1 ? "message" : "messages"}`
               : "You're all caught up."}
@@ -49,33 +49,33 @@ export default async function ExporterMessages() {
         </div>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-black/5 bg-white shadow-sm">
+      <div className="mt-6 overflow-hidden border border-rule bg-surface">
         {threads.map((t, i) => (
           <Link
             key={t.id}
             href={`/dashboard/exporter/messages/${t.id}`}
-            className={`flex items-center gap-4 px-5 py-4 transition-colors hover:bg-gray-50 ${
-              i > 0 ? "border-t border-gray-100" : ""
-            } ${t.unread > 0 ? "bg-brand-sky/5" : ""}`}
+            className={`flex items-center gap-4 px-5 py-4 transition-colors hover:bg-paper-deep ${
+ i > 0 ? "border-t border-rule" : ""
+ } ${t.unread > 0 ? "bg-paper-deep" : ""}`}
           >
             <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(t.companyName)}`}>
               {initials(t.companyName)}
             </span>
 
             <div className="min-w-0 flex-1">
-              <p className={`truncate ${t.unread > 0 ? "font-semibold text-brand-navy" : "font-medium text-gray-800"}`}>
+              <p className={`truncate ${t.unread > 0 ? "font-semibold text-ink" : "font-medium text-ink"}`}>
                 {t.companyName}
               </p>
-              <p className={`truncate text-sm ${t.unread > 0 ? "text-gray-700" : "text-gray-500"}`}>
-                {!t.lastFromThem && <span className="text-gray-500">You: </span>}
+              <p className={`truncate text-sm ${t.unread > 0 ? "text-ink-soft" : "text-muted"}`}>
+                {!t.lastFromThem && <span className="text-muted">You: </span>}
                 {t.lastMessage}
               </p>
             </div>
 
             <div className="flex shrink-0 flex-col items-end gap-1.5">
-              <span className="text-xs text-gray-500">{shortDate(t.lastAt)}</span>
+              <span className="text-xs text-muted">{shortDate(t.lastAt)}</span>
               {t.unread > 0 && (
-                <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">{t.unread}</span>
+                <span className="rounded-full bg-ink px-1.5 py-0.5 text-xs font-semibold text-paper">{t.unread}</span>
               )}
             </div>
           </Link>
@@ -83,13 +83,13 @@ export default async function ExporterMessages() {
 
         {threads.length === 0 && (
           <div className="p-10 text-center">
-            <p className="text-sm font-medium text-gray-700">No conversations yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
+            <p className="text-sm font-medium text-ink-soft">No conversations yet</p>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
               Message a logistics company from their card and the thread will appear here.
             </p>
             <Link
               href="/dashboard/exporter"
-              className="mt-4 inline-block rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+              className="mt-4 inline-block bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover"
             >
               Browse agents
             </Link>

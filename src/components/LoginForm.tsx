@@ -13,13 +13,13 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       {state?.error && (
-        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="bg-bad-tint px-3 py-2 text-sm text-bad">
           {state.error}
         </p>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+        <label htmlFor="email" className="block text-sm font-medium text-ink-soft">Email</label>
         <input
           id="email"
           name="email"
@@ -27,14 +27,14 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           required
           autoComplete="email"
           defaultValue={state?.email ?? ""}
-          className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-brand-blue"
+          className="mt-1 w-full border border-rule px-3 py-2 outline-none focus:border-ink"
         />
       </div>
 
       <div>
         <PasswordField autoComplete="current-password" />
         <p className="mt-1 text-right">
-          <Link href="/forgot-password" className="text-xs font-medium text-brand-blue-deep hover:underline">
+          <Link href="/forgot-password" className="text-xs font-medium text-ochre hover:underline">
             Forgot password?
           </Link>
         </p>
@@ -43,18 +43,18 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full bg-ink px-4 py-2 font-semibold text-paper hover:bg-ink-hover disabled:opacity-50"
       >
         {pending ? "Logging in…" : "Log in"}
       </button>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-muted">
         No account?{" "}
-        <Link href="/register" className="font-medium text-brand-blue-deep hover:underline">
+        <Link href="/register" className="font-medium text-ochre hover:underline">
           Register as an exporter
         </Link>{" "}
         or{" "}
-        <Link href="/register/logistics" className="font-medium text-brand-blue-deep hover:underline">
+        <Link href="/register/logistics" className="font-medium text-ochre hover:underline">
           as a logistics company
         </Link>
         .

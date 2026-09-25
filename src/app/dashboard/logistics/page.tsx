@@ -6,11 +6,11 @@ import { getSettings } from "@/lib/settings";
 import { AgentCard, type AgentCardData } from "@/components/AgentCard";
 
 function StatCard({ value, label, href, tone = "neutral" }: { value: number | string; label: string; href?: string; tone?: "neutral" | "amber" | "blue" }) {
-  const valueTone = { neutral: "text-brand-navy", amber: "text-amber-600", blue: "text-brand-blue-deep" }[tone];
+  const valueTone = { neutral: "text-ink", amber: "text-wait", blue: "text-ochre" }[tone];
   const body = (
-    <div className="rounded-xl border border-black/5 bg-white p-5 shadow-sm transition-shadow hover:shadow">
+    <div className="border border-rule bg-surface p-5">
       <p className={`text-3xl font-bold ${valueTone}`}>{value}</p>
-      <p className="mt-1 text-sm text-gray-500">{label}</p>
+      <p className="mt-1 text-sm text-muted">{label}</p>
     </div>
   );
   return href ? <Link href={href}>{body}</Link> : body;
@@ -104,15 +104,15 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
 
   return (
     <div>
-      {error && <div className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mb-6 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
       {justSubscribed && (
-        <div className="mb-6 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="mb-6 bg-ok-tint px-4 py-3 text-sm text-ok">
           Membership active — your listing now carries a member badge.
         </div>
       )}
 
-      <h1 className="text-2xl font-bold text-brand-navy">{profile.companyName}</h1>
-      <p className="mt-1 text-sm text-gray-500">
+      <h1 className="text-2xl font-bold text-ink">{profile.companyName}</h1>
+      <p className="mt-1 text-sm text-muted">
         {profile.location} · ANCLA {profile.anclaNumber}
       </p>
 
@@ -127,21 +127,21 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
       </div>
 
       {todos.length > 0 && (
-        <div className="mt-6 rounded-xl border border-black/5 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-brand-navy">Next steps</h2>
+        <div className="mt-6 border border-rule bg-surface p-5">
+          <h2 className="text-sm font-semibold text-ink">Next steps</h2>
           <ul className="mt-3 space-y-3">
             {todos.map((t) => (
               <li key={t.key} className="flex flex-wrap items-start justify-between gap-3 text-sm">
-                <span className="flex items-start gap-2.5 text-gray-600">
+                <span className="flex items-start gap-2.5 text-ink-soft">
                   <span
                     className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                      t.tone === "red" ? "bg-red-500" : t.tone === "blue" ? "bg-brand-blue-deep" : "bg-amber-500"
-                    }`}
+ t.tone === "red" ? "bg-bad" : t.tone === "blue" ? "bg-ink" : "bg-wait-tint0"
+ }`}
                   />
                   {t.text}
                 </span>
                 {t.href && t.cta && (
-                  <Link href={t.href} className="shrink-0 text-sm font-medium text-brand-blue-deep hover:underline">
+                  <Link href={t.href} className="shrink-0 text-sm font-medium text-ochre hover:underline">
                     {t.cta} →
                   </Link>
                 )}
@@ -154,10 +154,10 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
       <div className="mt-8">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-brand-navy">How exporters see you</h2>
-            <p className="mt-1 text-sm text-gray-500">Your live listing in search results.</p>
+            <h2 className="font-semibold text-ink">How exporters see you</h2>
+            <p className="mt-1 text-sm text-muted">Your live listing in search results.</p>
           </div>
-          <Link href="/dashboard/logistics/profile" className="tap text-sm font-medium text-brand-blue-deep hover:underline">
+          <Link href="/dashboard/logistics/profile" className="tap text-sm font-medium text-ochre hover:underline">
             Edit profile →
           </Link>
         </div>

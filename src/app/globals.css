@@ -1,38 +1,98 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Direction A — "Port Authority".
+
+   Warm paper ground, deep ink, a burnt-ochre accent. Rules and typography
+   carry the design: there are no card shadows and no rounded corners except
+   on avatars and pills. Fraunces (serif) sets headings, IBM Plex Sans sets
+   everything else.
+
+   Every pair below was measured against WCAG AA before being adopted — the
+   weakest is 5.45:1 (muted on paper), against the 4.5:1 the standard asks.
+--------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #101828;
-  /* Brand palette, matched to the Cargoxo logo's navy/sky-blue globe+ship mark. */
-  --brand-navy: #0b2d52;
-  --brand-blue: #1a8fe3;
-  /* The brand blue is only 3.45:1 against white, so 14px white button text
-     on it failed WCAG AA (4.5:1) everywhere in the app — and it failed the
-     same way as link text on white. This is the same hue darkened to 5.10:1,
-     used wherever the blue has to carry text: button fills and body links.
-     The vivid --brand-blue stays for borders, rings, checkbox accents and
-     chart strokes, where only the 3:1 non-text threshold applies. */
-  --brand-blue-deep: #1572b6;
-  --brand-sky: #6fd0ff;
-  /* One step up from navy — active nav items and the MRR card's gradient
-     need something that reads as "same colour, lifted" against the sidebar. */
-  --brand-navy-light: #16436f;
-  /* Warm accent, used sparingly in the admin portal for badges, avatars and
-     the sidebar mark, so counts needing attention stand out against navy. */
-  --brand-amber: #f0a500;
+  --paper: #f7f4ed; /* the page ground */
+  --paper-deep: #f0ebe0; /* banding on the ground: table heads, wells */
+  --surface: #fffdf9; /* a block lifted off the ground, by a hair */
+
+  --ink: #17222e;
+  --ink-hover: #26333f;
+  --ink-soft: #4d4639; /* body copy */
+  --muted: #6b6257; /* secondary copy, captions */
+
+  --rule: #d8d0c1; /* the hairline that does most of the work */
+  --rule-dark: #2c3a49; /* the same, on an ink surface */
+
+  --ochre: #8f4d1c; /* links, eyebrows, numerals */
+  --ochre-hover: #6b3813;
+  --ochre-soft: #e0a45f; /* the accent, on ink */
+
+  --on-ink: #ede8dc;
+  --on-ink-muted: #bfb9ac;
+
+  /* Status, re-tuned to sit on a warm ground rather than Tailwind's cool
+     greens and reds, which clashed with the paper. */
+  --ok: #2c5e3f;
+  --ok-tint: #e3ede4;
+  --bad: #8c2f1d;
+  --bad-tint: #f7e7e2;
+  --wait: #7a4414;
+  --wait-tint: #f4e8d6;
+
+  /* Six avatar grounds, all carrying paper-coloured initials at 5.9:1 or
+     better. Drawn from the same warm family as the rest of the palette so a
+     wall of agent cards doesn't turn into confetti. */
+  --avatar-1: #17222e;
+  --avatar-2: #8f4d1c;
+  --avatar-3: #2c5e3f;
+  --avatar-4: #8c2f1d;
+  --avatar-5: #33456b;
+  --avatar-6: #6b4a2a;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-brand-navy: var(--brand-navy);
-  --color-brand-navy-light: var(--brand-navy-light);
-  --color-brand-blue: var(--brand-blue);
-  --color-brand-blue-deep: var(--brand-blue-deep);
-  --color-brand-sky: var(--brand-sky);
-  --color-brand-amber: var(--brand-amber);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-surface: var(--surface);
+
+  --color-ink: var(--ink);
+  --color-ink-hover: var(--ink-hover);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+
+  --color-rule: var(--rule);
+  --color-rule-dark: var(--rule-dark);
+
+  --color-ochre: var(--ochre);
+  --color-ochre-hover: var(--ochre-hover);
+  --color-ochre-soft: var(--ochre-soft);
+
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+
+  --color-avatar-1: var(--avatar-1);
+  --color-avatar-2: var(--avatar-2);
+  --color-avatar-3: var(--avatar-3);
+  --color-avatar-4: var(--avatar-4);
+  --color-avatar-5: var(--avatar-5);
+  --color-avatar-6: var(--avatar-6);
+
+  --color-ok: var(--ok);
+  --color-ok-tint: var(--ok-tint);
+  --color-bad: var(--bad);
+  --color-bad-tint: var(--bad-tint);
+  --color-wait: var(--wait);
+  --color-wait-tint: var(--wait-tint);
+
+  --font-sans: var(--font-plex-sans);
+  --font-display: var(--font-fraunces);
 }
 
 body {
@@ -41,20 +101,29 @@ body {
 }
 
 @layer base {
+  /* Headings are the serif, everywhere, without touching every heading in
+     the app. A few small label-style headings opt back out with `font-sans`. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
+    letter-spacing: -0.02em;
+  }
+
   /* There was no designed focus state anywhere: inputs shifted a 1px border
      and buttons and links fell back to whatever the browser drew, which on
-     the navy sidebar is close to invisible. One rule covers every control,
+     the ink surfaces is close to invisible. One rule covers every control,
      and :focus-visible means it appears for keyboard users without ringing
      on every mouse click. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--brand-blue-deep);
+    outline: 2px solid var(--ochre);
     outline-offset: 2px;
   }
 
-  /* On navy surfaces the blue ring disappears into the background; the sky
-     tone reads at 8:1 there. */
-  .bg-brand-navy :where(a, button, input, summary, [tabindex]):focus-visible {
-    outline-color: var(--brand-sky);
+  /* On ink the ochre ring muddies into the background; the soft tone reads
+     at 7.4:1 there. */
+  .bg-ink :where(a, button, input, summary, [tabindex]):focus-visible {
+    outline-color: var(--ochre-soft);
   }
 }
 
@@ -68,6 +137,15 @@ body {
   .tap {
     padding-block: 0.75rem;
     margin-block: -0.75rem;
+  }
+
+  /* Direction A's small caps label: used for eyebrows, column heads and the
+     exporter/logistics sub-labels. */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
 }
 

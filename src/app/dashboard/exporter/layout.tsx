@@ -23,7 +23,7 @@ export default async function ExporterLayout({ children }: { children: React.Rea
   const isSubscribed = subscription?.status === "ACTIVE";
 
   return (
-    <div className="min-h-full bg-[#f7f8fa]">
+    <div className="min-h-full bg-[#f7f4ed]">
       <DashboardHeader
         userName={session.user.name ?? "Exporter"}
         subtitle={profile?.companyName}

@@ -12,20 +12,20 @@ const DASHBOARD_BY_ROLE: Record<string, string> = {
 
 const STEPS = [
   {
+    num: "01",
     title: "Register",
-    icon: "user" as const,
     exporter: "Sign up free and browse every listed agent.",
     logistics: "List your company with your ANCLA number and business details.",
   },
   {
+    num: "02",
     title: "Get verified",
-    icon: "shield" as const,
     exporter: "Filter to agents an admin has already checked.",
     logistics: "We review your ANCLA number before you appear as verified.",
   },
   {
+    num: "03",
     title: "Connect",
-    icon: "chat" as const,
     exporter: "Search by state and cargo type, then message an agent directly.",
     logistics: "Reply to exporters and win the shipment.",
   },
@@ -40,36 +40,21 @@ const VERIFICATION_CHECKS = [
   "Company name against the submitted registration",
 ];
 
-function StepIcon({ name }: { name: "user" | "shield" | "chat" }) {
-  const common = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, "aria-hidden": true } as const;
-  if (name === "user") {
-    return (
-      <svg {...common} strokeLinecap="round">
-        <circle cx="12" cy="8" r="3.5" />
-        <path d="M4.5 20c0-4 3.4-7 7.5-7s7.5 3 7.5 7" />
-      </svg>
-    );
-  }
-  if (name === "shield") {
-    return (
-      <svg {...common} strokeLinejoin="round">
-        <path d="M12 3l7 3v5c0 4.5-3 8.3-7 9.5-4-1.2-7-5-7-9.5V6z" />
-        <path d="M9 12l2 2 4-4" strokeLinecap="round" />
-      </svg>
-    );
-  }
-  return (
-    <svg {...common} strokeLinejoin="round">
-      <path d="M4 5h16v11H8l-4 4z" />
-    </svg>
-  );
-}
-
 function CheckIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="mt-0.5 shrink-0">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="mt-0.5 shrink-0"
+    >
+      <path d="M4 12.5l5 5L20 6.5" />
     </svg>
   );
 }
@@ -103,169 +88,188 @@ export default async function Home() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-brand-navy to-[#123a63] text-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6 sm:py-20">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-sky" />
-            Built for Nigeria&apos;s export trade
-          </span>
+      {/* Hero — left-aligned on the paper ground, with the marketplace
+          figures set as a ledger down the right rather than a stat row.
+          The dark ink surface is saved for the verification section below,
+          where the contrast means something. */}
+      <section className="mx-auto max-w-6xl px-4 pt-16 sm:px-6 sm:pt-24">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-7">
+            <p className="eyebrow text-ochre">Built for Nigeria&apos;s export trade</p>
 
-          <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-            Where Nigerian exporters meet verified logistics companies
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-white/80">
-            Find a vetted cargo agent for your shipment, or list your logistics company for
-            exporters to find. Every agent is checked by an admin before they appear as verified.
-          </p>
+            <h1 className="mt-6 text-5xl font-semibold leading-[0.98] text-ink sm:text-6xl lg:text-[76px]">
+              Where Nigerian exporters meet verified logistics companies
+            </h1>
 
-          {/* A logged-in visitor doesn't need sign-up CTAs — send them to
-              their own dashboard instead of back through registration. */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            {dashboardHref ? (
-              <>
-                <Link
-                  href={dashboardHref}
-                  className="rounded-md bg-brand-blue-deep px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
-                >
-                  Go to my dashboard
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
-                >
-                  See pricing
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/register"
-                  className="rounded-md bg-brand-blue-deep px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
-                >
-                  I&apos;m an exporter
-                </Link>
-                <Link
-                  href="/register/logistics"
-                  className="rounded-md border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
-                >
-                  I run a logistics company
-                </Link>
-              </>
-            )}
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+              Find a vetted cargo agent for your shipment, or list your logistics company for
+              exporters to find. Every agent is checked by an admin before they appear as verified.
+            </p>
+
+            {/* A logged-in visitor doesn't need sign-up CTAs — send them to
+                their own dashboard instead of back through registration. */}
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              {dashboardHref ? (
+                <>
+                  <Link
+                    href={dashboardHref}
+                    className="bg-ink px-8 py-4 font-semibold text-paper hover:bg-ink-hover"
+                  >
+                    Go to my dashboard
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="border border-ink px-8 py-4 font-semibold text-ink hover:bg-paper-deep"
+                  >
+                    See pricing
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/register"
+                    className="bg-ink px-8 py-4 font-semibold text-paper hover:bg-ink-hover"
+                  >
+                    I&apos;m an exporter
+                  </Link>
+                  <Link
+                    href="/register/logistics"
+                    className="border border-ink px-8 py-4 font-semibold text-ink hover:bg-paper-deep"
+                  >
+                    I run a logistics company
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
 
-          <dl className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/15 pt-8 sm:grid-cols-4">
+          <dl className="lg:col-span-4 lg:col-start-9">
             {stats.map((s) => (
-              <div key={s.label}>
-                <dt className="text-3xl font-bold">{s.value}</dt>
-                <dd className="mt-1 text-xs uppercase tracking-wide text-white/60">{s.label}</dd>
+              <div key={s.label} className="flex items-baseline justify-between border-b border-rule py-5">
+                <dt className="text-sm uppercase tracking-[0.1em] text-muted">{s.label}</dt>
+                <dd className="font-display text-4xl font-semibold leading-none text-ink">{s.value}</dd>
               </div>
             ))}
+            <p className="mt-5 text-sm leading-relaxed text-muted">
+              Live marketplace figures, counted from the register.
+            </p>
           </dl>
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how-it-works" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <h2 className="text-center text-2xl font-bold text-brand-navy sm:text-3xl">How it works</h2>
-        <p className="mx-auto mt-3 max-w-xl text-center text-sm text-gray-500">
-          The same three steps from either side of the shipment.
-        </p>
+      {/* How it works — three columns divided by rules, not three cards. */}
+      <section id="how-it-works" className="mx-auto max-w-6xl px-4 pt-24 sm:px-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-3 border-b-2 border-ink pb-6">
+          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">How it works</h2>
+          <p className="text-sm text-muted">The same three steps from either side of the shipment.</p>
+        </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
+        <div className="grid sm:grid-cols-3">
           {STEPS.map((step, i) => (
-            <div key={step.title} className="rounded-xl border border-black/5 bg-white p-6 shadow-sm">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-sky/15 text-brand-blue-deep">
-                  <StepIcon name={step.icon} />
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Step {i + 1}</p>
-                  <h3 className="font-semibold text-brand-navy">{step.title}</h3>
-                </div>
+            <div
+              key={step.title}
+              className={`py-9 sm:px-8 ${i === 0 ? "sm:pl-0" : ""} ${
+                i < STEPS.length - 1 ? "border-b border-rule sm:border-b-0 sm:border-r" : ""
+              }`}
+            >
+              <div className="flex items-baseline gap-4">
+                <span className="font-display text-3xl font-semibold text-ochre">{step.num}</span>
+                <h3 className="text-2xl font-semibold text-ink">{step.title}</h3>
               </div>
 
-              <dl className="mt-4 space-y-3 text-sm">
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-brand-blue-deep">Exporters</dt>
-                  <dd className="mt-0.5 text-gray-600">{step.exporter}</dd>
-                </div>
-                <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">Logistics</dt>
-                  <dd className="mt-0.5 text-gray-600">{step.logistics}</dd>
-                </div>
+              <dl>
+                <dt className="eyebrow mt-6 text-ochre">Exporters</dt>
+                <dd className="mt-2 leading-relaxed text-ink-soft">{step.exporter}</dd>
+                <dt className="eyebrow mt-5 text-muted">Logistics</dt>
+                <dd className="mt-2 leading-relaxed text-ink-soft">{step.logistics}</dd>
               </dl>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Trust / verification callout */}
-      <section className="bg-gray-50 py-16">
-        <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">Verified, not just listed</h2>
-            <p className="mt-4 text-gray-600">
-              Anyone can put up a website. On Cargoxo, a logistics company only carries the verified
-              badge after an admin has reviewed their submission — so you aren&apos;t left guessing
-              who is real.
+      {/* Verification — the one ink block on the page. */}
+      <section className="mx-auto mt-24 max-w-6xl px-4 sm:px-6">
+        <div className="grid gap-10 bg-ink px-8 py-14 text-on-ink sm:px-14 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-5">
+            <p className="eyebrow text-ochre-soft">What verification means</p>
+            <h2 className="mt-6 text-3xl font-semibold leading-tight text-paper sm:text-4xl">
+              An admin checks every company by hand
+            </h2>
+            <p className="mt-6 leading-relaxed text-on-ink-muted">
+              Anyone can put up a website. A logistics company only carries the badge after an
+              admin has reviewed their submission, so you aren&apos;t left guessing who is real.
             </p>
-            <p className="mt-4 text-sm text-gray-500">
+            <p className="mt-4 text-sm leading-relaxed text-on-ink-muted">
               Companies awaiting review still appear in search, clearly marked as pending, and
               can&apos;t be contacted until they pass.
             </p>
           </div>
 
-          <div className="rounded-xl border border-black/5 bg-white p-6 shadow-sm">
-            <p className="text-sm font-semibold text-brand-navy">What an admin checks</p>
-            <ul className="mt-4 space-y-3">
-              {VERIFICATION_CHECKS.map((check) => (
-                <li key={check} className="flex items-start gap-2.5 text-sm text-gray-600">
+          <ul className="lg:col-span-6 lg:col-start-7">
+            {VERIFICATION_CHECKS.map((check) => (
+              <li
+                key={check}
+                className="flex items-start gap-4 border-b border-rule-dark py-5 text-lg text-on-ink"
+              >
+                <span className="text-ochre-soft">
                   <CheckIcon />
-                  {check}
-                </li>
-              ))}
-            </ul>
-          </div>
+                </span>
+                {check}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* Pricing teaser */}
-      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-        <h2 className="text-center text-2xl font-bold text-brand-navy sm:text-3xl">Simple pricing for exporters</h2>
-        <p className="mx-auto mt-3 max-w-xl text-center text-sm text-gray-500">
-          Browsing and registering are free. A subscription unlocks agent contact details and
-          messaging. Logistics companies list for free.
-        </p>
+      {/* Pricing teaser — a ledger, matching the hero's stats. */}
+      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-6">
+            <p className="eyebrow text-ochre">Pricing</p>
+            <h2 className="mt-6 text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+              Browsing is free. Contacting is what you pay for.
+            </h2>
+            <p className="mt-6 max-w-lg leading-relaxed text-ink-soft">
+              Register, search and bookmark without a card. A subscription unlocks phone numbers
+              and lets you start a conversation. Logistics companies list for free.
+            </p>
+          </div>
 
-        <div className="mx-auto mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
-          {Object.values(PLANS).map((plan) => (
-            <div key={plan.id} className="rounded-xl border border-black/5 bg-white p-6 text-center shadow-sm">
-              <div className="flex items-center justify-center gap-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{plan.label}</p>
-                {plan.id === "YEARLY" && savings > 0 && (
-                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-                    Save {savings}%
-                  </span>
-                )}
+          <div className="lg:col-span-5 lg:col-start-8">
+            {Object.values(PLANS).map((plan, i) => (
+              <div
+                key={plan.id}
+                className={`flex items-baseline justify-between border-b border-rule py-6 ${
+                  i === 0 ? "border-t-2 border-t-ink" : ""
+                }`}
+              >
+                <div>
+                  <p className="flex items-center gap-2 text-sm uppercase tracking-[0.1em] text-muted">
+                    {plan.label}
+                    {plan.id === "YEARLY" && savings > 0 && (
+                      <span className="bg-ok-tint px-2 py-0.5 text-xs font-semibold tracking-normal text-ok">
+                        Save {savings}%
+                      </span>
+                    )}
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted">
+                    ≈ {formatNaira(plan.usd, settings.ngnPerUsd)} / {plan.interval}
+                  </p>
+                </div>
+                <span className="font-display text-5xl font-semibold leading-none text-ink">
+                  ${plan.usd}
+                </span>
               </div>
-              <p className="mt-2 text-3xl font-bold text-brand-navy">
-                ${plan.usd}
-                <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
-              </p>
-              <p className="mt-1 text-xs text-gray-500">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
-            </div>
-          ))}
-        </div>
+            ))}
 
-        <div className="mt-8 text-center">
-          <Link
-            href="/pricing"
-            className="inline-block rounded-md bg-brand-navy px-6 py-3 font-semibold text-white hover:bg-brand-blue-deep"
-          >
-            See full pricing
-          </Link>
+            <Link
+              href="/pricing"
+              className="mt-7 inline-block bg-ink px-8 py-4 font-semibold text-paper hover:bg-ink-hover"
+            >
+              See what a subscription unlocks
+            </Link>
+          </div>
         </div>
       </section>
     </div>

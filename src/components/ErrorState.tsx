@@ -28,34 +28,34 @@ export function ErrorState({
 }) {
   return (
     <div className="mx-auto flex max-w-lg flex-col items-center px-4 py-20 text-center">
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-700">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-bad-tint text-bad">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9" />
           <path d="M12 7.5v5.5M12 16.5v.01" />
         </svg>
       </span>
 
-      <h1 className="mt-4 text-xl font-bold text-brand-navy">{title}</h1>
-      <p className="mt-2 text-sm text-gray-600">{description}</p>
+      <h1 className="mt-4 text-xl font-bold text-ink">{title}</h1>
+      <p className="mt-2 text-sm text-ink-soft">{description}</p>
 
       {/* The digest is the only handle on a production error, where the real
           message is stripped before it reaches the browser. Showing it means
           a user can quote it in a support email and it can be matched to the
           server log. */}
       {error.digest && (
-        <p className="mt-3 font-mono text-xs text-gray-500">Reference: {error.digest}</p>
+        <p className="mt-3 font-mono text-xs text-muted">Reference: {error.digest}</p>
       )}
 
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
         <button
           onClick={retry}
-          className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+          className="bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover"
         >
           Try again
         </button>
         <Link
           href={homeHref}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="border border-rule px-4 py-2 text-sm font-medium text-ink-soft hover:bg-paper-deep"
         >
           {homeLabel}
         </Link>
@@ -64,7 +64,7 @@ export function ErrorState({
       {/* In development the actual message is far more useful than a generic
           apology; in production it is withheld, since it can leak internals. */}
       {process.env.NODE_ENV !== "production" && error.message && (
-        <pre className="mt-6 w-full overflow-x-auto rounded-md bg-gray-50 p-3 text-left font-mono text-xs text-gray-700">
+        <pre className="mt-6 w-full overflow-x-auto bg-paper-deep p-3 text-left font-mono text-xs text-ink-soft">
           {error.message}
         </pre>
       )}

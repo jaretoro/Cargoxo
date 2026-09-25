@@ -36,19 +36,19 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-bold text-brand-navy">Company profile</h1>
-      <p className="mt-1 text-sm text-gray-500">
+      <h1 className="text-2xl font-bold text-ink">Company profile</h1>
+      <p className="mt-1 text-sm text-muted">
         This is what exporters see about you in search results.{" "}
-        <Link href="/dashboard/logistics" className="font-medium text-brand-blue-deep hover:underline">
+        <Link href="/dashboard/logistics" className="font-medium text-ochre hover:underline">
           See the preview
         </Link>
         .
       </p>
 
-      {saved && <div className="mt-4 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">Profile saved.</div>}
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {saved && <div className="mt-4 bg-ok-tint px-4 py-3 text-sm text-ok">Profile saved.</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
       {isIncomplete && !saved && (
-        <div className="mt-4 rounded-md bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
+        <div className="mt-4 bg-wait-tint px-4 py-3 text-sm text-wait">
           Your listing is missing {selectedCargoIds.size === 0 ? "cargo types" : null}
           {selectedCargoIds.size === 0 && profile.tradeRoutes.length === 0 ? " and " : null}
           {profile.tradeRoutes.length === 0 ? "trade routes" : null}. Exporters filter by both, so adding them makes you far
@@ -57,35 +57,35 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
       )}
 
       <form action={updateLogisticsProfileAction} className="mt-6 space-y-6">
-        <section className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-brand-navy">Business details</h2>
+        <section className="border border-rule bg-surface p-5">
+          <h2 className="text-sm font-semibold text-ink">Business details</h2>
 
           <div className="mt-4 space-y-4">
             <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">Company name</label>
+              <label htmlFor="companyName" className="block text-sm font-medium text-ink-soft">Company name</label>
               <input
                 id="companyName"
                 name="companyName"
                 required
                 defaultValue={profile.companyName}
-                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                className="mt-1 w-full border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
               />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="location" className="block text-sm font-medium text-gray-700">State / city</label>
+                <label htmlFor="location" className="block text-sm font-medium text-ink-soft">State / city</label>
                 <input
                   id="location"
                   name="location"
                   required
                   defaultValue={profile.location}
-                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                  className="mt-1 w-full border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
                 />
               </div>
               <div>
-                <label htmlFor="establishedYear" className="block text-sm font-medium text-gray-700">
-                  Year established <span className="font-normal text-gray-500">(optional)</span>
+                <label htmlFor="establishedYear" className="block text-sm font-medium text-ink-soft">
+                  Year established <span className="font-normal text-muted">(optional)</span>
                 </label>
                 <input
                   id="establishedYear"
@@ -95,27 +95,27 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
                   max={new Date().getFullYear()}
                   placeholder="e.g. 2018"
                   defaultValue={profile.establishedYear ?? ""}
-                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                  className="mt-1 w-full border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Business address</label>
+              <label htmlFor="address" className="block text-sm font-medium text-ink-soft">Business address</label>
               <input
                 id="address"
                 name="address"
                 required
                 defaultValue={profile.address}
-                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                className="mt-1 w-full border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
               />
             </div>
           </div>
 
-          <div className="mt-4 rounded-md bg-gray-50 px-3 py-2.5 text-xs text-gray-500">
+          <div className="mt-4 bg-paper-deep px-3 py-2.5 text-xs text-muted">
             <p>
-              <span className="font-medium text-gray-700">ANCLA number:</span> {profile.anclaNumber}
-              <span className="ml-2 text-gray-500">— can&rsquo;t be edited here</span>
+              <span className="font-medium text-ink-soft">ANCLA number:</span> {profile.anclaNumber}
+              <span className="ml-2 text-muted">— can&rsquo;t be edited here</span>
             </p>
             <p className="mt-1">
               Your verification was granted against this number, so changing it needs an admin. Contact support if it&rsquo;s wrong.
@@ -123,19 +123,19 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
           </div>
         </section>
 
-        <section className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-brand-navy">Cargo types you handle</h2>
-          <p className="mt-1 text-xs text-gray-500">Exporters filter search results by these.</p>
+        <section className="border border-rule bg-surface p-5">
+          <h2 className="text-sm font-semibold text-ink">Cargo types you handle</h2>
+          <p className="mt-1 text-xs text-muted">Exporters filter search results by these.</p>
 
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {allCargoTypes.map((c) => (
-              <label key={c.id} className="flex items-center gap-2 text-sm text-gray-600">
+              <label key={c.id} className="flex items-center gap-2 text-sm text-ink-soft">
                 <input
                   type="checkbox"
                   name="cargo"
                   value={c.id}
                   defaultChecked={selectedCargoIds.has(c.id)}
-                  className="h-4 w-4 accent-brand-blue-deep"
+                  className="h-4 w-4 accent-ochre"
                 />
                 {c.name}
               </label>
@@ -143,9 +143,9 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
           </div>
         </section>
 
-        <section className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-brand-navy">Trade routes</h2>
-          <p className="mt-1 text-xs text-gray-500">
+        <section className="border border-rule bg-surface p-5">
+          <h2 className="text-sm font-semibold text-ink">Trade routes</h2>
+          <p className="mt-1 text-xs text-muted">
             Lanes you service, e.g. Lagos → Rotterdam. Clear both fields of a row to remove it.
           </p>
 
@@ -157,25 +157,25 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
                   defaultValue={r.origin}
                   placeholder="Origin"
                   aria-label={`Route ${i + 1} origin`}
-                  className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                  className="min-w-0 flex-1 border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
                 />
-                <span aria-hidden="true" className="text-gray-500">→</span>
+                <span aria-hidden="true" className="text-muted">→</span>
                 <input
                   name="destination"
                   defaultValue={r.destination}
                   placeholder="Destination"
                   aria-label={`Route ${i + 1} destination`}
-                  className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+                  className="min-w-0 flex-1 border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
                 />
               </div>
             ))}
           </div>
-          <p className="mt-2 text-xs text-gray-500">Save to get more empty rows.</p>
+          <p className="mt-2 text-xs text-muted">Save to get more empty rows.</p>
         </section>
 
         <SubmitButton
           pendingLabel="Saving…"
-          className="w-full rounded-md bg-brand-blue-deep px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy"
+          className="w-full bg-ink px-4 py-2.5 text-sm font-semibold text-paper hover:bg-ink-hover"
         >
           Save profile
         </SubmitButton>

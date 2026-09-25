@@ -28,22 +28,22 @@ export default async function LogisticsMessages() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-bold text-brand-navy">Messages</h1>
+      <h1 className="text-2xl font-bold text-ink">Messages</h1>
 
-      <div className="mt-6 divide-y divide-gray-100 rounded-xl border border-black/5 bg-white">
+      <div className="mt-6 divide-y divide-rule border border-rule bg-surface">
         {threads.map((t) => (
-          <Link key={t.id} href={`/dashboard/logistics/messages/${t.id}`} className="flex items-center justify-between gap-3 px-4 py-4 hover:bg-gray-50">
+          <Link key={t.id} href={`/dashboard/logistics/messages/${t.id}`} className="flex items-center justify-between gap-3 px-4 py-4 hover:bg-paper-deep">
             <div className="min-w-0">
-              <p className={`truncate font-medium ${t.unread > 0 ? "text-brand-navy" : "text-gray-800"}`}>{t.name}</p>
-              <p className="truncate text-sm text-gray-500">{t.lastMessage}</p>
+              <p className={`truncate font-medium ${t.unread > 0 ? "text-ink" : "text-ink"}`}>{t.name}</p>
+              <p className="truncate text-sm text-muted">{t.lastMessage}</p>
             </div>
             <div className="flex shrink-0 items-center gap-3">
-              <span className="text-xs text-gray-500">{t.lastAt.toLocaleDateString()}</span>
-              {t.unread > 0 && <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">{t.unread}</span>}
+              <span className="text-xs text-muted">{t.lastAt.toLocaleDateString()}</span>
+              {t.unread > 0 && <span className="rounded-full bg-ink px-1.5 py-0.5 text-xs font-semibold text-paper">{t.unread}</span>}
             </div>
           </Link>
         ))}
-        {threads.length === 0 && <p className="p-8 text-center text-sm text-gray-500">No conversations yet.</p>}
+        {threads.length === 0 && <p className="p-8 text-center text-sm text-muted">No conversations yet.</p>}
       </div>
     </div>
   );

@@ -59,16 +59,16 @@ export default async function ExporterSaved() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-brand-navy">Saved</h1>
+      <h1 className="text-2xl font-bold text-ink">Saved</h1>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {agents.map((agent) => (
           <AgentCard key={agent.logisticsProfileId} agent={agent} isSubscribed={isSubscribed} backTo="/dashboard/exporter/saved" />
         ))}
         {agents.length === 0 && (
-          <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
+          <p className="col-span-full border border-dashed border-rule p-8 text-center text-sm text-muted">
             Nothing saved yet — bookmark a company from{" "}
-            <Link href="/dashboard/exporter" className="text-brand-blue-deep hover:underline">
+            <Link href="/dashboard/exporter" className="text-ochre hover:underline">
               All Agents
             </Link>
             .

@@ -28,8 +28,8 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-brand-navy">Connection requests</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-ink">Connection requests</h1>
+          <p className="mt-1 text-sm text-muted">
             {pending > 0
               ? `${pending} ${pending === 1 ? "exporter is" : "exporters are"} waiting on your response.`
               : "Exporters who have reached out to you."}
@@ -37,13 +37,13 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
         </div>
       </div>
 
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
 
       <div className="mt-6 space-y-3">
         {requests.map((r) => {
           const name = r.exporter.exporterProfile?.companyName ?? r.exporter.name;
           return (
-            <div key={r.id} className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+            <div key={r.id} className="border border-rule bg-surface p-5">
               <div className="flex items-start gap-4">
                 <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(name)}`}>
                   {initials(name)}
@@ -51,10 +51,10 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="truncate font-semibold text-brand-navy">{name}</h2>
+                    <h2 className="truncate font-semibold text-ink">{name}</h2>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[r.status]}`}>{r.status}</span>
                     {r._count.messages > 0 && (
-                      <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">
+                      <span className="rounded-full bg-ink px-1.5 py-0.5 text-xs font-semibold text-paper">
                         {r._count.messages} new
                       </span>
                     )}
@@ -63,12 +63,12 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                   {/* The exporter reached out first, so their contact details
                       are shown here without a paywall — the subscription
                       gates exporters seeing agents, not the other way round. */}
-                  <p className="mt-0.5 text-xs text-gray-500">
+                  <p className="mt-0.5 text-xs text-muted">
                     {r.exporter.email} · {r.exporter.phone}
                     {r.exporter.exporterProfile?.address && <> · {r.exporter.exporterProfile.address}</>}
                   </p>
 
-                  <p className="mt-2 line-clamp-3 text-sm text-gray-600">{r.message}</p>
+                  <p className="mt-2 line-clamp-3 text-sm text-ink-soft">{r.message}</p>
 
                   <div className="mt-4 flex flex-wrap items-center gap-2">
                     {r.status === "PENDING" && (
@@ -76,14 +76,14 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                         <form action={respondConnectionAction}>
                           <input type="hidden" name="connectionId" value={r.id} />
                           <input type="hidden" name="status" value="ACCEPTED" />
-                          <SubmitButton pendingLabel="Accepting…" className="rounded-md bg-brand-blue-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
+                          <SubmitButton pendingLabel="Accepting…" className="bg-ink px-3 py-1.5 text-sm font-medium text-paper hover:bg-ink-hover">
                             Accept
                           </SubmitButton>
                         </form>
                         <form action={respondConnectionAction}>
                           <input type="hidden" name="connectionId" value={r.id} />
                           <input type="hidden" name="status" value="DECLINED" />
-                          <SubmitButton pendingLabel="Declining…" className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                          <SubmitButton pendingLabel="Declining…" className="border border-rule px-3 py-1.5 text-sm font-medium text-ink-soft hover:bg-paper-deep">
                             Decline
                           </SubmitButton>
                         </form>
@@ -95,16 +95,16 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                         reply without hunting for the thread under Messages. */}
                     <Link
                       href={`/dashboard/logistics/messages/${r.id}`}
-                      className={`rounded-md px-3 py-2.5 text-sm font-medium ${
-                        r.status === "PENDING"
-                          ? "border border-gray-300 text-gray-700 hover:bg-gray-50"
-                          : "bg-brand-blue-deep text-white hover:bg-brand-navy"
-                      }`}
+                      className={`px-3 py-2.5 text-sm font-medium ${
+ r.status === "PENDING"
+ ? "border border-rule text-ink-soft hover:bg-paper-deep"
+ : "bg-ink text-paper hover:bg-ink-hover"
+ }`}
                     >
                       Open conversation
                     </Link>
 
-                    <span className="ml-auto text-xs text-gray-500">
+                    <span className="ml-auto text-xs text-muted">
                       {r.createdAt.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
                     </span>
                   </div>
@@ -115,14 +115,14 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
         })}
 
         {requests.length === 0 && (
-          <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
-            <p className="text-sm font-medium text-gray-700">No requests yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
+          <div className="border border-dashed border-rule bg-surface p-10 text-center">
+            <p className="text-sm font-medium text-ink-soft">No requests yet</p>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
               Exporters find you through search. A complete profile with cargo types and trade routes makes that far more likely.
             </p>
             <Link
               href="/dashboard/logistics/profile"
-              className="mt-4 inline-block rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+              className="mt-4 inline-block bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover"
             >
               Complete your profile
             </Link>

@@ -95,11 +95,11 @@ export function ChatWidget() {
           id={panelId}
           role="dialog"
           aria-label="Cargoxo assistant"
-          className="mb-3 flex h-[28rem] w-80 flex-col overflow-hidden rounded-xl border border-black/10 bg-white shadow-2xl"
+          className="mb-3 flex h-[28rem] w-80 flex-col overflow-hidden border border-rule bg-surface"
         >
-          <div className="flex items-center justify-between bg-brand-navy px-4 py-3 text-white">
+          <div className="flex items-center justify-between bg-ink px-4 py-3 text-paper">
             <span className="font-semibold">Cargoxo Assistant</span>
-            <button onClick={() => setOpen(false)} aria-label="Close chat" className="text-white/80 hover:text-white">
+            <button onClick={() => setOpen(false)} aria-label="Close chat" className="text-on-ink hover:text-paper">
               <CloseIcon />
             </button>
           </div>
@@ -110,17 +110,17 @@ export function ChatWidget() {
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`max-w-[85%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
-                  m.role === "user" ? "ml-auto bg-brand-blue-deep text-white" : "bg-gray-100 text-gray-800"
-                }`}
+                className={`max-w-[85%] whitespace-pre-wrap px-3 py-2 text-sm ${
+ m.role === "user" ? "ml-auto bg-ink text-paper" : "bg-paper-deep text-ink"
+ }`}
               >
                 {m.content}
               </div>
             ))}
-            {loading && <div className="w-fit rounded-lg bg-gray-100 px-3 py-2 text-sm text-gray-500">Typing…</div>}
+            {loading && <div className="w-fit bg-paper-deep px-3 py-2 text-sm text-muted">Typing…</div>}
           </div>
 
-          <form onSubmit={sendMessage} className="flex gap-2 border-t border-black/10 p-2">
+          <form onSubmit={sendMessage} className="flex gap-2 border-t border-rule p-2">
             <input
               ref={inputRef}
               value={input}
@@ -128,12 +128,12 @@ export function ChatWidget() {
               maxLength={MAX_MESSAGE_LENGTH}
               aria-label="Your question"
               placeholder="Ask a question…"
-              className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+              className="min-w-0 flex-1 border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              className="bg-ink px-3 py-2 text-sm font-semibold text-paper disabled:opacity-50"
             >
               Send
             </button>
@@ -146,7 +146,7 @@ export function ChatWidget() {
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
         aria-controls={panelId}
-        className="ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-blue-deep text-white shadow-lg hover:bg-brand-navy"
+        className="ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-ink text-paper hover:bg-ink-hover"
       >
         {open ? <CloseIcon /> : <ChatIcon />}
       </button>

@@ -20,12 +20,12 @@ export function Pagination({
   // controls, which would just be two dead buttons.
   const showControls = info.totalPages > 1;
 
-  const linkClass = "rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50";
-  const disabledClass = "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-400";
+  const linkClass = "border border-rule px-3 py-1.5 text-sm font-medium text-ink-soft hover:bg-paper-deep";
+  const disabledClass = "border border-rule px-3 py-1.5 text-sm font-medium text-muted";
 
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted">
         Showing {info.from}–{info.to} of {info.total} {label}
       </p>
 
@@ -39,7 +39,7 @@ export function Pagination({
             <span className={disabledClass}>Previous</span>
           )}
 
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-muted">
             Page {info.page} of {info.totalPages}
           </span>
 

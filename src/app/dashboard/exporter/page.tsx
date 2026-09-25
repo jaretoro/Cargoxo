@@ -131,11 +131,11 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
 
   return (
     <div>
-      {error && <div className="mb-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mb-6 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
       {/* Stripe sends subscribers straight back here rather than to a
           receipt page — this is what they paid to reach. */}
       {justSubscribed && isSubscribed && (
-        <div className="mb-6 rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="mb-6 bg-ok-tint px-4 py-3 text-sm text-ok">
           Subscription active — contact details and messaging are unlocked.
         </div>
       )}
@@ -146,14 +146,14 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
           invalid HTML, and it breaks hydration), the form stays here and
           the sidebar inputs join it via form="agent-filters". */}
       <form id="agent-filters">
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-black/5 bg-white p-3 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3 border border-rule bg-surface p-3">
           <div className="relative min-w-[220px] flex-1">
             <svg
               width="16"
               height="16"
               viewBox="0 0 20 20"
               fill="none"
-              stroke="#9ca3af"
+              stroke="#6b6257"
               strokeWidth="1.8"
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
               aria-hidden="true"
@@ -165,11 +165,11 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
               name="q"
               defaultValue={q}
               placeholder="Search by company name, state, ANCLA number…"
-              className="w-full rounded-md border border-gray-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-brand-blue"
+              className="w-full border border-rule py-2 pl-9 pr-3 text-sm outline-none focus:border-ink"
             />
           </div>
 
-          <select name="sort" defaultValue={sort} className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue">
+          <select name="sort" defaultValue={sort} className="border border-rule px-3 py-2 text-sm outline-none focus:border-ink">
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
                 {s.label}
@@ -177,12 +177,12 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
             ))}
           </select>
 
-          <label className="flex items-center gap-2 text-sm text-gray-600">
-            <input type="checkbox" name="verified" value="1" defaultChecked={verifiedOnly} className="h-4 w-4 accent-brand-blue-deep" />
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            <input type="checkbox" name="verified" value="1" defaultChecked={verifiedOnly} className="h-4 w-4 accent-ochre" />
             Verified Only
           </label>
 
-          <button type="submit" className="rounded-md bg-brand-blue-deep px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy">
+          <button type="submit" className="bg-ink px-4 py-2.5 text-sm font-semibold text-paper hover:bg-ink-hover">
             Search
           </button>
         </div>
@@ -190,9 +190,9 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-brand-navy">{agents.length} Logistics Companies</h1>
-            <p className="mt-0.5 flex items-center gap-1.5 text-sm text-gray-500">
-              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#16a34a" strokeWidth="1.8" aria-hidden="true">
+            <h1 className="text-2xl font-bold text-ink">{agents.length} Logistics Companies</h1>
+            <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted">
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#2c5e3f" strokeWidth="1.8" aria-hidden="true">
                 <path d="M10 2l6 2.5v5c0 4-2.6 6.7-6 8-3.4-1.3-6-4-6-8v-5z" strokeLinejoin="round" />
                 <path d="M7.5 10l1.8 1.8L12.5 8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -200,7 +200,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
             </p>
           </div>
           {!isSubscribed && (
-            <Link href="/pricing" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+            <Link href="/pricing" className="bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover">
               Subscribe to unlock contacts
             </Link>
           )}
@@ -214,12 +214,12 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
                 the .filters rules in globals.css. Before this, a phone user
                 scrolled past every state and cargo-type checkbox before
                 reaching the first company. */}
-            <details className="filters rounded-xl border border-black/5 bg-white shadow-sm">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-4 text-sm font-semibold text-brand-navy">
+            <details className="filters border border-rule bg-surface">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-4 text-sm font-semibold text-ink">
                 <span className="flex items-center gap-2">
                   Refine Results
                   {activeFilterCount > 0 && (
-                    <span className="rounded-full bg-brand-sky/25 px-2 py-0.5 text-xs font-semibold text-brand-blue-deep">
+                    <span className="rounded-full bg-wait-tint px-2 py-0.5 text-xs font-semibold text-ochre">
                       {activeFilterCount}
                     </span>
                   )}
@@ -230,14 +230,14 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
               </summary>
 
               <div className="filters-body px-4 pb-4 lg:pt-4">
-              <h2 className="hidden text-sm font-semibold text-brand-navy lg:block">Refine Results</h2>
+              <h2 className="hidden text-sm font-semibold text-ink lg:block">Refine Results</h2>
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">State / Location</p>
-                <div className="mt-2 max-h-40 space-y-1.5 overflow-y-auto pr-1 text-sm text-gray-600">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">State / Location</p>
+                <div className="mt-2 max-h-40 space-y-1.5 overflow-y-auto pr-1 text-sm text-ink-soft">
                   {locations.map((loc) => (
                     <label key={loc} className="flex items-center gap-2">
-                      <input form="agent-filters" type="checkbox" name="state" value={loc} defaultChecked={states.includes(loc)} className="h-3.5 w-3.5 accent-brand-blue-deep" />
+                      <input form="agent-filters" type="checkbox" name="state" value={loc} defaultChecked={states.includes(loc)} className="h-3.5 w-3.5 accent-ochre" />
                       {loc}
                     </label>
                   ))}
@@ -245,18 +245,18 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
               </div>
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Cargo Type</p>
-                <div className="mt-2 space-y-1.5 text-sm text-gray-600">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">Cargo Type</p>
+                <div className="mt-2 space-y-1.5 text-sm text-ink-soft">
                   {cargoTypeOptions.map((c) => (
                     <label key={c.id} className="flex items-center gap-2">
-                      <input form="agent-filters" type="checkbox" name="cargo" value={c.name} defaultChecked={cargoNames.includes(c.name)} className="h-3.5 w-3.5 accent-brand-blue-deep" />
+                      <input form="agent-filters" type="checkbox" name="cargo" value={c.name} defaultChecked={cargoNames.includes(c.name)} className="h-3.5 w-3.5 accent-ochre" />
                       {c.name}
                     </label>
                   ))}
                 </div>
               </div>
 
-              <button form="agent-filters" type="submit" className="mt-5 w-full rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy">
+              <button form="agent-filters" type="submit" className="mt-5 w-full bg-ink px-3 py-2.5 text-sm font-semibold text-paper hover:bg-ink-hover">
                 Apply filters
               </button>
               </div>
@@ -269,7 +269,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
                 <AgentCard key={agent.logisticsProfileId} agent={agent} isSubscribed={isSubscribed} backTo={backTo} />
               ))}
               {agents.length === 0 && (
-                <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
+                <p className="col-span-full border border-dashed border-rule p-8 text-center text-sm text-muted">
                   No logistics companies match your filters.
                 </p>
               )}

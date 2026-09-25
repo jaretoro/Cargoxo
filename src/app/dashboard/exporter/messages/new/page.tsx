@@ -26,7 +26,7 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
 
   return (
     <div className="mx-auto max-w-lg">
-      <Link href="/dashboard/exporter" className="text-sm font-medium text-brand-blue-deep hover:underline">
+      <Link href="/dashboard/exporter" className="text-sm font-medium text-ochre hover:underline">
         ← Back to agents
       </Link>
 
@@ -35,8 +35,8 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
           {initials(logistics.companyName)}
         </span>
         <div className="min-w-0">
-          <h1 className="truncate text-xl font-bold text-brand-navy">{logistics.companyName}</h1>
-          <p className="truncate text-sm text-gray-500">
+          <h1 className="truncate text-xl font-bold text-ink">{logistics.companyName}</h1>
+          <p className="truncate text-sm text-muted">
             {logistics.location} · ANCLA {logistics.anclaNumber}
           </p>
         </div>
@@ -45,18 +45,18 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
       {logistics.cargoTypes.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-1.5">
           {logistics.cargoTypes.map((c) => (
-            <span key={c.id} className="rounded-full bg-brand-sky/15 px-2 py-0.5 text-xs font-medium text-brand-navy">
+            <span key={c.id} className="rounded-full bg-wait-tint px-2 py-0.5 text-xs font-medium text-ink">
               {c.name}
             </span>
           ))}
         </div>
       )}
 
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
 
-      <form action={startConversationAction} className="mt-6 space-y-3 rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+      <form action={startConversationAction} className="mt-6 space-y-3 border border-rule bg-surface p-5">
         <input type="hidden" name="logisticsId" value={logisticsId} />
-        <label htmlFor="body" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="body" className="block text-sm font-medium text-ink-soft">
           Your first message
         </label>
         <textarea
@@ -67,12 +67,12 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
           maxLength={2000}
           defaultValue={draft}
           placeholder="Describe your shipment — cargo type, volume, destination, timeline…"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+          className="w-full border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
         />
-        <SubmitButton pendingLabel="Sending…" className="w-full rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="w-full bg-ink px-3 py-2 text-sm font-semibold text-paper hover:bg-ink-hover">
           Send message
         </SubmitButton>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted">
           They&rsquo;ll see your contact details and can accept or decline. You can keep talking in the thread either way.
         </p>
       </form>

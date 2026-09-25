@@ -3,14 +3,14 @@
 // visibly jump when the data arrives.
 
 export function SkeletonLine({ className = "" }: { className?: string }) {
-  return <div className={`animate-pulse rounded bg-gray-200 ${className}`} />;
+  return <div className={`animate-pulse bg-rule ${className}`} />;
 }
 
 export function SkeletonCard() {
   return (
-    <div className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+    <div className="border border-rule bg-surface p-5">
       <div className="flex items-center gap-3">
-        <div className="h-10 w-10 shrink-0 animate-pulse rounded-full bg-gray-200" />
+        <div className="h-10 w-10 shrink-0 animate-pulse rounded-full bg-rule" />
         <div className="min-w-0 flex-1 space-y-2">
           <SkeletonLine className="h-3.5 w-2/3" />
           <SkeletonLine className="h-3 w-1/3" />

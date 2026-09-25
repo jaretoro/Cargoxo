@@ -18,7 +18,7 @@ export function ExporterTabs({ unreadCount }: { unreadCount: number }) {
   ];
 
   return (
-    <div className="flex flex-wrap gap-1 border-b border-gray-200">
+    <div className="flex flex-wrap gap-1 border-b border-rule">
       {tabs.map((t) => {
         const active = t.match(pathname);
         return (
@@ -26,12 +26,12 @@ export function ExporterTabs({ unreadCount }: { unreadCount: number }) {
             key={t.href}
             href={t.href}
             className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-              active ? "border-brand-blue text-brand-navy" : "border-transparent text-gray-500 hover:text-brand-navy"
-            }`}
+ active ? "border-ochre text-ink" : "border-transparent text-muted hover:text-ink"
+ }`}
           >
             {t.label}
             {!!t.badge && (
-              <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">{t.badge}</span>
+              <span className="rounded-full bg-ink px-1.5 py-0.5 text-xs font-semibold text-paper">{t.badge}</span>
             )}
           </Link>
         );

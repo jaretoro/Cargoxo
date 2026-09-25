@@ -5,7 +5,7 @@ import { MrrTrendChart, VerificationGauge } from "@/components/AdminCharts";
 
 function TrendBadge({ deltaLabel }: { deltaLabel: string }) {
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">
+    <span className="inline-flex items-center gap-1 text-xs font-medium text-ok">
       <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M4 13l5-5 3 3 5-6" />
         <path d="M13 5h4v4" />
@@ -81,10 +81,10 @@ export default async function AdminOverview() {
   return (
     <div>
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl bg-gradient-to-br from-brand-navy to-brand-navy-light p-6 text-white shadow-sm">
+        <div className="bg-ink p-6 text-paper">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-white/60">Monthly Recurring Revenue</p>
-            <span className="rounded-lg bg-white/10 p-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-on-ink-muted">Monthly Recurring Revenue</p>
+            <span className="bg-surface/10 p-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <rect x="3" y="6" width="18" height="12" rx="2" />
                 <path d="M3 10h18" />
@@ -92,29 +92,29 @@ export default async function AdminOverview() {
             </span>
           </div>
           <p className="mt-3 text-4xl font-bold">${mrr.toLocaleString()}</p>
-          <p className="mt-2 text-xs text-white/60">
+          <p className="mt-2 text-xs text-on-ink-muted">
             {activeSubs.length} active subscriptions · {yearlySubs} yearly (${yearlyAnnualRevenue.toLocaleString()}/yr) + {monthlySubs} monthly (${monthlyRevenue.toLocaleString()}/mo)
           </p>
           {mrrGrowthPct !== null && (
-            <p className={`mt-3 flex items-center gap-1.5 text-xs font-medium ${mrrGrowthPct >= 0 ? "text-emerald-300" : "text-red-300"}`}>
+            <p className={`mt-3 flex items-center gap-1.5 text-xs font-medium ${mrrGrowthPct >= 0 ? "text-ochre-soft" : "text-ochre-soft"}`}>
               {mrrGrowthPct >= 0 ? "+" : ""}
               {mrrGrowthPct}% vs last month
             </p>
           )}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <div className="border border-rule bg-surface p-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Active Subscriptions</p>
-            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue-deep">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Active Subscriptions</p>
+            <span className="bg-wait-tint p-2 text-ochre">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <rect x="3" y="6" width="18" height="12" rx="2" />
                 <path d="M3 10h18" />
               </svg>
             </span>
           </div>
-          <p className="mt-3 text-4xl font-bold text-brand-navy">{activeSubs.length}</p>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-3 text-4xl font-bold text-ink">{activeSubs.length}</p>
+          <p className="mt-2 text-xs text-muted">
             {yearlySubs} yearly · {monthlySubs} monthly
           </p>
           {newSubsThisWeek > 0 && (
@@ -124,17 +124,17 @@ export default async function AdminOverview() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <div className="border border-rule bg-surface p-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">ANCLA Verification Rate</p>
-            <span className="rounded-lg bg-emerald-50 p-2 text-emerald-600">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">ANCLA Verification Rate</p>
+            <span className="bg-ok-tint p-2 text-ok">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M12 3l7 3v5c0 4.5-3 8.3-7 9.5-4-1.2-7-5-7-9.5V6z" strokeLinejoin="round" />
               </svg>
             </span>
           </div>
-          <p className="mt-3 text-4xl font-bold text-brand-navy">{anclaVerificationRate}%</p>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-3 text-4xl font-bold text-ink">{anclaVerificationRate}%</p>
+          <p className="mt-2 text-xs text-muted">
             {verifiedCount} of {logisticsCount} companies verified
           </p>
           {verifiedThisWeek > 0 && (
@@ -146,28 +146,28 @@ export default async function AdminOverview() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <div className="border border-rule bg-surface p-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pending Verifications</p>
-            <span className="rounded-lg bg-red-50 p-2 text-red-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Pending Verifications</p>
+            <span className="bg-bad-tint p-2 text-bad">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M12 9v4M12 17h.01" strokeLinecap="round" />
                 <path d="M10.3 3.9L2.9 17a1.8 1.8 0 001.6 2.7h15a1.8 1.8 0 001.6-2.7L13.7 3.9a1.8 1.8 0 00-3.4 0z" strokeLinejoin="round" />
               </svg>
             </span>
           </div>
-          <p className={`mt-3 text-3xl font-bold ${pendingCount > 0 ? "text-red-600" : "text-brand-navy"}`}>{pendingCount}</p>
+          <p className={`mt-3 text-3xl font-bold ${pendingCount > 0 ? "text-bad" : "text-ink"}`}>{pendingCount}</p>
           {pendingCount > 0 && (
-            <Link href="/admin/logistics" className="tap mt-2 inline-block text-xs font-medium text-brand-blue-deep hover:underline">
+            <Link href="/admin/logistics" className="tap mt-2 inline-block text-xs font-medium text-ochre hover:underline">
               Review queue →
             </Link>
           )}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <div className="border border-rule bg-surface p-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Total Registered Users</p>
-            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue-deep">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Total Registered Users</p>
+            <span className="bg-wait-tint p-2 text-ochre">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
                 <circle cx="9" cy="8" r="3.2" />
                 <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
@@ -176,8 +176,8 @@ export default async function AdminOverview() {
               </svg>
             </span>
           </div>
-          <p className="mt-3 text-3xl font-bold text-brand-navy">{totalUsers.toLocaleString()}</p>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-3 text-3xl font-bold text-ink">{totalUsers.toLocaleString()}</p>
+          <p className="mt-2 text-xs text-muted">
             {exporterCount.toLocaleString()} exporters · {logisticsCount} logistics cos.
           </p>
           {newUsersThisWeek > 0 && (
@@ -187,39 +187,39 @@ export default async function AdminOverview() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        <div className="border border-rule bg-surface p-6">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Past Due Subscriptions</p>
-            <span className={`rounded-lg p-2 ${pastDueCount > 0 ? "bg-amber-50 text-amber-600" : "bg-emerald-50 text-emerald-600"}`}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Past Due Subscriptions</p>
+            <span className={`p-2 ${pastDueCount > 0 ? "bg-wait-tint text-wait" : "bg-ok-tint text-ok"}`}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
           </div>
-          <p className={`mt-3 text-3xl font-bold ${pastDueCount > 0 ? "text-amber-600" : "text-brand-navy"}`}>{pastDueCount}</p>
-          <p className="mt-2 text-xs text-gray-500">{pastDueCount > 0 ? "Payment retry needed" : "No revenue at risk right now"}</p>
+          <p className={`mt-3 text-3xl font-bold ${pastDueCount > 0 ? "text-wait" : "text-ink"}`}>{pastDueCount}</p>
+          <p className="mt-2 text-xs text-muted">{pastDueCount > 0 ? "Payment retry needed" : "No revenue at risk right now"}</p>
         </div>
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm lg:col-span-2">
+        <div className="border border-rule bg-surface p-6 lg:col-span-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-brand-navy">Subscription MRR — Last 12 Months</h2>
-              <p className="text-xs text-gray-500">Monthly recurring revenue trend</p>
+              <h2 className="font-semibold text-ink">Subscription MRR — Last 12 Months</h2>
+              <p className="text-xs text-muted">Monthly recurring revenue trend</p>
             </div>
             {mrrGrowthPct !== null && (
               // Zero is flat, not growth: it used to render green with a
               // leading "+", which read as a rise that hadn't happened.
               <span
                 className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                  mrrGrowthPct > 0
-                    ? "bg-emerald-50 text-emerald-600"
-                    : mrrGrowthPct < 0
-                      ? "bg-red-50 text-red-600"
-                      : "bg-gray-100 text-gray-600"
-                }`}
+ mrrGrowthPct > 0
+ ? "bg-ok-tint text-ok"
+ : mrrGrowthPct < 0
+ ? "bg-bad-tint text-bad"
+ : "bg-paper-deep text-ink-soft"
+ }`}
               >
                 {mrrGrowthPct > 0 ? "+" : ""}
                 {mrrGrowthPct}% MoM
@@ -234,17 +234,17 @@ export default async function AdminOverview() {
         {/* Flex column with the gauge on flex-1: the grid stretches this
             card to match the MRR chart beside it, and a fixed-height gauge
             left roughly 200px of empty white underneath. */}
-        <div className="flex flex-col rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
-          <h2 className="font-semibold text-brand-navy">Verification Progress</h2>
-          <p className="text-xs text-gray-500">ANCLA verification completion rate</p>
+        <div className="flex flex-col border border-rule bg-surface p-6">
+          <h2 className="font-semibold text-ink">Verification Progress</h2>
+          <p className="text-xs text-muted">ANCLA verification completion rate</p>
           <div className="relative mt-2 min-h-48 flex-1">
             <VerificationGauge rate={anclaVerificationRate} />
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-3xl font-bold text-brand-navy">{anclaVerificationRate}%</p>
-              <p className="text-xs text-gray-500">verified</p>
+              <p className="text-3xl font-bold text-ink">{anclaVerificationRate}%</p>
+              <p className="text-xs text-muted">verified</p>
             </div>
           </div>
-          <p className="text-center text-xs text-gray-500">
+          <p className="text-center text-xs text-muted">
             {verifiedCount} of {logisticsCount} companies
           </p>
         </div>

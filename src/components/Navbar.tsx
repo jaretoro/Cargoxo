@@ -14,15 +14,15 @@ export async function Navbar() {
   const session = await auth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-gray-600 md:flex">
-          <Link href="/#how-it-works" className="tap hover:text-brand-navy">How it works</Link>
-          <Link href="/pricing" className="tap hover:text-brand-navy">Pricing</Link>
+        <nav className="hidden items-center gap-9 md:flex">
+          <Link href="/#how-it-works" className="tap text-xs font-medium uppercase tracking-[0.13em] text-muted hover:text-ink">How it works</Link>
+          <Link href="/pricing" className="tap text-xs font-medium uppercase tracking-[0.13em] text-muted hover:text-ink">Pricing</Link>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -30,14 +30,14 @@ export async function Navbar() {
             <>
               <Link
                 href={DASHBOARD_BY_ROLE[session.user.role] ?? "/"}
-                className="tap text-sm font-medium text-gray-700 hover:text-brand-navy"
+                className="tap text-xs font-medium uppercase tracking-[0.13em] text-muted hover:text-ink"
               >
                 Dashboard
               </Link>
               <form action={logoutAction}>
                 <SubmitButton
                   pendingLabel="Signing out…"
-                  className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="border border-rule px-5 py-3 text-xs font-medium uppercase tracking-[0.13em] text-ink-soft hover:bg-paper-deep"
                 >
                   Log out
                 </SubmitButton>
@@ -45,12 +45,12 @@ export async function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="tap text-sm font-medium text-gray-700 hover:text-brand-navy">
+              <Link href="/login" className="tap text-xs font-medium uppercase tracking-[0.13em] text-muted hover:text-ink">
                 Log in
               </Link>
               <Link
                 href="/register"
-                className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+                className="bg-ink px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.13em] text-paper hover:bg-ink-hover"
               >
                 Get started
               </Link>

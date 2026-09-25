@@ -20,11 +20,11 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
   const dateLabel = new Date().toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" });
 
   return (
-    <header className="flex items-center justify-end gap-3 border-b border-black/5 bg-white px-6 py-3">
+    <header className="flex items-center justify-end gap-3 border-b border-rule bg-surface px-6 py-3">
       {/* A real search, not decoration — it used to be an input that looked
           functional and did nothing, which is worse than having none. */}
       <form action="/admin/users" className="relative hidden md:block">
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted">
           <SearchIcon />
         </span>
         <input
@@ -32,15 +32,15 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
           type="search"
           placeholder="Search users, companies…"
           aria-label="Search users and companies"
-          className="w-64 rounded-md border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-brand-blue"
+          className="w-64 border border-rule bg-paper-deep py-2 pl-9 pr-3 text-sm outline-none focus:border-ink"
         />
       </form>
-      <span className="hidden rounded-md border border-gray-200 px-3 py-2 text-xs font-medium text-gray-500 lg:inline-block">{dateLabel}</span>
-      <button className="relative rounded-full p-2.5 text-gray-500 hover:bg-gray-100" aria-label="Notifications">
+      <span className="hidden border border-rule px-3 py-2 text-xs font-medium text-muted lg:inline-block">{dateLabel}</span>
+      <button className="relative rounded-full p-2.5 text-muted hover:bg-paper-deep" aria-label="Notifications">
         <BellIcon />
-        {hasUnread && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />}
+        {hasUnread && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-bad" />}
       </button>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-amber text-xs font-bold text-brand-navy">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ochre-soft text-xs font-bold text-ink">
         {adminName
           .split(/\s+/)
           .filter(Boolean)
@@ -48,7 +48,7 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
           .map((p) => p[0]?.toUpperCase())
           .join("")}
       </span>
-      <span className="hidden text-sm font-medium text-gray-700 sm:inline">Admin</span>
+      <span className="hidden text-sm font-medium text-ink-soft sm:inline">Admin</span>
     </header>
   );
 }

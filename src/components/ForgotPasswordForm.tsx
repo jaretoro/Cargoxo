@@ -13,18 +13,18 @@ export function ForgotPasswordForm() {
   if (state?.sent) {
     return (
       <div>
-        <div className="rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">
+        <div className="bg-ok-tint px-4 py-3 text-sm text-ok">
           If an account exists for <span className="font-medium">{state.email}</span>, a reset link is on its way. It
           expires in an hour.
         </div>
-        <p className="mt-4 text-sm text-gray-500">
+        <p className="mt-4 text-sm text-muted">
           Didn&rsquo;t get it? Check spam, or{" "}
-          <Link href="/forgot-password" className="font-medium text-brand-blue-deep hover:underline">
+          <Link href="/forgot-password" className="font-medium text-ochre hover:underline">
             try again
           </Link>
           .
         </p>
-        <Link href="/login" className="mt-4 inline-block text-sm font-medium text-brand-blue-deep hover:underline">
+        <Link href="/login" className="mt-4 inline-block text-sm font-medium text-ochre hover:underline">
           ← Back to log in
         </Link>
       </div>
@@ -34,13 +34,13 @@ export function ForgotPasswordForm() {
   return (
     <form action={formAction} className="space-y-4">
       {state?.error && (
-        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="bg-bad-tint px-3 py-2 text-sm text-bad">
           {state.error}
         </p>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+        <label htmlFor="email" className="block text-sm font-medium text-ink-soft">Email</label>
         <input
           id="email"
           name="email"
@@ -48,21 +48,21 @@ export function ForgotPasswordForm() {
           required
           autoComplete="email"
           defaultValue={state?.email ?? ""}
-          className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-brand-blue"
+          className="mt-1 w-full border border-rule px-3 py-2 outline-none focus:border-ink"
         />
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full bg-ink px-4 py-2 font-semibold text-paper hover:bg-ink-hover disabled:opacity-50"
       >
         {pending ? "Sending…" : "Send reset link"}
       </button>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-muted">
         Remembered it?{" "}
-        <Link href="/login" className="font-medium text-brand-blue-deep hover:underline">
+        <Link href="/login" className="font-medium text-ochre hover:underline">
           Log in
         </Link>
         .

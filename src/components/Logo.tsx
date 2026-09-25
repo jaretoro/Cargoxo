@@ -24,7 +24,7 @@ export function Logo({ size = 28, withWordmark = true }: { size?: number; withWo
         style={{ height: size, width: "auto" }}
       />
       {withWordmark && (
-        <span className="font-bold tracking-tight text-brand-navy" style={{ fontSize: size * 0.75 }}>
+        <span className="font-display font-semibold tracking-tight text-ink" style={{ fontSize: size * 0.88 }}>
           Cargoxo
         </span>
       )}

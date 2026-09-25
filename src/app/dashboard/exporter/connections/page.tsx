@@ -35,14 +35,14 @@ export default async function ExporterConnections() {
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-brand-navy">My Connections</h1>
-          <p className="mt-1 text-sm text-gray-500">Logistics companies you&rsquo;ve reached out to and their response.</p>
+          <h1 className="text-2xl font-bold text-ink">My Connections</h1>
+          <p className="mt-1 text-sm text-muted">Logistics companies you&rsquo;ve reached out to and their response.</p>
         </div>
         {counts.total > 0 && (
           <div className="flex gap-2 text-xs">
-            <span className="rounded-full bg-white px-3 py-1.5 font-medium text-gray-600 shadow-sm">{counts.total} total</span>
-            <span className="rounded-full bg-green-100 px-3 py-1.5 font-medium text-green-700">{counts.accepted} accepted</span>
-            <span className="rounded-full bg-amber-100 px-3 py-1.5 font-medium text-amber-700">{counts.pending} pending</span>
+            <span className="rounded-full bg-surface px-3 py-1.5 font-medium text-ink-soft">{counts.total} total</span>
+            <span className="rounded-full bg-ok-tint px-3 py-1.5 font-medium text-ok">{counts.accepted} accepted</span>
+            <span className="rounded-full bg-wait-tint px-3 py-1.5 font-medium text-wait">{counts.pending} pending</span>
           </div>
         )}
       </div>
@@ -51,7 +51,7 @@ export default async function ExporterConnections() {
         {connections.map((c) => {
           const name = c.logistics.logisticsProfile?.companyName ?? c.logistics.name;
           return (
-            <div key={c.id} className="rounded-xl border border-black/5 bg-white p-5 shadow-sm">
+            <div key={c.id} className="border border-rule bg-surface p-5">
               <div className="flex items-start gap-4">
                 <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(name)}`}>
                   {initials(name)}
@@ -59,31 +59,31 @@ export default async function ExporterConnections() {
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="truncate font-semibold text-brand-navy">{name}</h2>
+                    <h2 className="truncate font-semibold text-ink">{name}</h2>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status]}`}>{c.status}</span>
                     {c._count.messages > 0 && (
-                      <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">
+                      <span className="rounded-full bg-ink px-1.5 py-0.5 text-xs font-semibold text-paper">
                         {c._count.messages} new
                       </span>
                     )}
                   </div>
 
                   {c.logistics.logisticsProfile?.location && (
-                    <p className="mt-0.5 text-xs text-gray-500">{c.logistics.logisticsProfile.location}</p>
+                    <p className="mt-0.5 text-xs text-muted">{c.logistics.logisticsProfile.location}</p>
                   )}
 
-                  <p className="mt-2 line-clamp-2 text-sm text-gray-600">{c.message}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-ink-soft">{c.message}</p>
 
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted">
                       {STATUS_HINTS[c.status]}{" "}
-                      <span className="text-gray-500">
+                      <span className="text-muted">
                         · {(c.messages[0]?.createdAt ?? c.createdAt).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
                       </span>
                     </p>
                     <Link
                       href={`/dashboard/exporter/messages/${c.id}`}
-                      className="rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-medium text-white hover:bg-brand-navy"
+                      className="bg-ink px-3 py-2.5 text-sm font-medium text-paper hover:bg-ink-hover"
                     >
                       Open conversation
                     </Link>
@@ -95,14 +95,14 @@ export default async function ExporterConnections() {
         })}
 
         {connections.length === 0 && (
-          <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
-            <p className="text-sm font-medium text-gray-700">No connections yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
+          <div className="border border-dashed border-rule bg-surface p-10 text-center">
+            <p className="text-sm font-medium text-ink-soft">No connections yet</p>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
               When you message a logistics company, it shows up here with their response.
             </p>
             <Link
               href="/dashboard/exporter"
-              className="mt-4 inline-block rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+              className="mt-4 inline-block bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover"
             >
               Browse agents
             </Link>

@@ -20,7 +20,7 @@ export default async function LogisticsLayout({ children }: { children: React.Re
   ]);
 
   return (
-    <div className="min-h-full bg-[#f7f8fa]">
+    <div className="min-h-full bg-[#f7f4ed]">
       <DashboardHeader
         userName={session.user.name ?? "Logistics"}
         subtitle={profile?.companyName}

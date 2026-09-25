@@ -28,14 +28,14 @@ export function DashboardHeader({
   statusTone?: "positive" | "warning" | "negative" | "neutral";
 }) {
   const toneClasses = {
-    positive: "bg-green-100 text-green-700",
-    warning: "bg-amber-100 text-amber-700",
-    negative: "bg-red-100 text-red-700",
-    neutral: "bg-gray-100 text-gray-600",
+    positive: "bg-ok-tint text-ok",
+    warning: "bg-wait-tint text-wait",
+    negative: "bg-bad-tint text-bad",
+    neutral: "bg-paper-deep text-ink-soft",
   }[statusTone];
 
   return (
-    <header className="border-b border-black/5 bg-white">
+    <header className="border-b border-rule bg-surface">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="shrink-0">
           <Logo />
@@ -49,18 +49,18 @@ export function DashboardHeader({
           )}
 
           <div className="hidden min-w-0 text-right sm:block">
-            <p className="truncate text-sm font-medium text-brand-navy">{userName}</p>
-            {subtitle && <p className="truncate text-xs text-gray-500">{subtitle}</p>}
+            <p className="truncate text-sm font-medium text-ink">{userName}</p>
+            {subtitle && <p className="truncate text-xs text-muted">{subtitle}</p>}
           </div>
 
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-navy text-xs font-semibold text-white">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper">
             {initials(userName)}
           </span>
 
           <form action={logoutAction}>
             <SubmitButton
               pendingLabel="Signing out…"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="border border-rule px-3 py-2 text-sm font-medium text-ink-soft hover:bg-paper-deep"
             >
               Log out
             </SubmitButton>

@@ -16,7 +16,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       <input type="hidden" name="token" value={token} />
 
       {state?.error && (
-        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="bg-bad-tint px-3 py-2 text-sm text-bad">
           {state.error}
           {state.tokenInvalid && (
             <>
@@ -42,7 +42,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full bg-ink px-4 py-2 font-semibold text-paper hover:bg-ink-hover disabled:opacity-50"
       >
         {pending ? "Saving…" : "Set new password"}
       </button>

@@ -26,7 +26,7 @@ export function LogisticsTabs({ unreadCount, pendingRequests }: { unreadCount: n
   ];
 
   return (
-    <div className="flex flex-wrap gap-1 border-b border-gray-200">
+    <div className="flex flex-wrap gap-1 border-b border-rule">
       {tabs.map((t) => {
         const active = t.match(pathname);
         return (
@@ -34,15 +34,15 @@ export function LogisticsTabs({ unreadCount, pendingRequests }: { unreadCount: n
             key={t.href}
             href={t.href}
             className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-              active ? "border-brand-blue text-brand-navy" : "border-transparent text-gray-500 hover:text-brand-navy"
-            }`}
+ active ? "border-ochre text-ink" : "border-transparent text-muted hover:text-ink"
+ }`}
           >
             {t.label}
             {!!t.badge && (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
-                  t.tone === "amber" ? "bg-amber-100 text-amber-700" : "bg-brand-blue-deep text-white"
-                }`}
+ t.tone === "amber" ? "bg-wait-tint text-wait" : "bg-ink text-paper"
+ }`}
               >
                 {t.badge}
               </span>

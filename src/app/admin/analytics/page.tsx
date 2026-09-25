@@ -11,12 +11,12 @@ export default async function AdminAnalytics() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-brand-navy">Analytics</h1>
-      <p className="mt-1 text-sm text-gray-500">Cargo demand across the logistics network.</p>
+      <h1 className="text-xl font-bold text-ink">Analytics</h1>
+      <p className="mt-1 text-sm text-muted">Cargo demand across the logistics network.</p>
 
-      <div className="mt-5 rounded-xl border border-black/5 bg-white p-6 shadow-sm">
-        <h2 className="font-semibold text-brand-navy">Cargo type demand</h2>
-        <p className="text-xs text-gray-500">Verified companies offering each cargo type</p>
+      <div className="mt-5 border border-rule bg-surface p-6">
+        <h2 className="font-semibold text-ink">Cargo type demand</h2>
+        <p className="text-xs text-muted">Verified companies offering each cargo type</p>
         <div className="mt-4 h-80">
           <CargoDemandChart data={data} />
         </div>

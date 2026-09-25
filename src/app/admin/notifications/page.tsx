@@ -36,19 +36,19 @@ export default async function AdminNotifications() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-brand-navy">Notifications</h1>
+      <h1 className="text-xl font-bold text-ink">Notifications</h1>
 
-      <div className="mt-5 divide-y divide-gray-100 rounded-xl border border-black/5 bg-white shadow-sm">
+      <div className="mt-5 divide-y divide-rule border border-rule bg-surface">
         {items.map((n) => (
           <div key={n.id} className="flex items-start gap-3 px-4 py-4">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-blue-deep" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
             <div>
-              <p className="text-sm text-gray-700">{n.text}</p>
-              <p className="text-xs text-gray-500">{n.at.toLocaleString()}</p>
+              <p className="text-sm text-ink-soft">{n.text}</p>
+              <p className="text-xs text-muted">{n.at.toLocaleString()}</p>
             </div>
           </div>
         ))}
-        {items.length === 0 && <p className="px-4 py-8 text-center text-sm text-gray-500">Nothing yet.</p>}
+        {items.length === 0 && <p className="px-4 py-8 text-center text-sm text-muted">Nothing yet.</p>}
       </div>
     </div>
   );

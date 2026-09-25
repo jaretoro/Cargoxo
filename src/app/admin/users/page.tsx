@@ -72,19 +72,19 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-brand-navy">Manage users</h1>
+      <h1 className="text-2xl font-bold text-ink">Manage users</h1>
 
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
 
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-3 border-b border-gray-200">
+      <div className="mt-6 flex flex-wrap items-end justify-between gap-3 border-b border-rule">
         <div className="flex gap-1">
           {TABS.map((t) => (
             <Link
               key={t.key}
               href={`/admin/users${t.key === "ALL" ? (q ? `?q=${encodeURIComponent(q)}` : "") : `?role=${t.key}${q ? `&q=${encodeURIComponent(q)}` : ""}`}`}
               className={`border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
-                activeTab === t.key ? "border-brand-blue text-brand-navy" : "border-transparent text-gray-500 hover:text-brand-navy"
-              }`}
+ activeTab === t.key ? "border-ochre text-ink" : "border-transparent text-muted hover:text-ink"
+ }`}
             >
               {t.label}
             </Link>
@@ -97,15 +97,15 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
             name="q"
             defaultValue={q}
             placeholder="Search name, email or company…"
-            className="w-56 rounded-md border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-brand-blue"
+            className="w-56 border border-rule px-3 py-2.5 text-sm outline-none focus:border-ink"
           />
-          <button type="submit" className="rounded-md border border-gray-300 px-3 py-2.5 text-sm font-medium hover:bg-gray-50">
+          <button type="submit" className="border border-rule px-3 py-2.5 text-sm font-medium hover:bg-paper-deep">
             Search
           </button>
           {q && (
             <Link
               href={`/admin/users${activeTab === "ALL" ? "" : `?role=${activeTab}`}`}
-              className="self-center text-sm text-gray-500 hover:text-brand-navy"
+              className="self-center text-sm text-muted hover:text-ink"
             >
               Clear
             </Link>
@@ -114,15 +114,15 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
       </div>
 
       {q && (
-        <p className="mt-3 text-sm text-gray-500">
+        <p className="mt-3 text-sm text-muted">
           {/* the total, not users.length — that's only the current page */}
           {total} {total === 1 ? "result" : "results"} for &ldquo;{q}&rdquo;
         </p>
       )}
 
-      <div className="mt-4 overflow-x-auto rounded-xl border border-black/5 bg-white shadow-sm">
+      <div className="mt-4 overflow-x-auto border border-rule bg-surface">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-gray-100 text-xs uppercase tracking-wide text-gray-500">
+          <thead className="border-b border-rule text-xs uppercase tracking-wide text-muted">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Email</th>
@@ -132,7 +132,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
               <th className="px-4 py-3" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-rule">
             {users.map((u) => {
               const statusLabel =
                 u.role === "LOGISTICS"
@@ -142,30 +142,30 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                     : "Not subscribed";
               const statusColor =
                 statusLabel === "VERIFIED" || statusLabel === "Subscribed"
-                  ? "bg-green-100 text-green-700"
+                  ? "bg-ok-tint text-ok"
                   : statusLabel === "REJECTED"
-                    ? "bg-red-100 text-red-700"
+                    ? "bg-bad-tint text-bad"
                     : statusLabel === "PENDING"
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-gray-100 text-gray-600";
+                      ? "bg-wait-tint text-wait"
+                      : "bg-paper-deep text-ink-soft";
               const confirming = confirmingId === u.id;
 
               return (
-                <tr key={u.id} className={confirming ? "bg-red-50/60" : undefined}>
+                <tr key={u.id} className={confirming ? "bg-bad-tint/60" : undefined}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-sky/20 text-xs font-semibold text-brand-navy">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wait-tint text-xs font-semibold text-ink">
                         {initials(u.name)}
                       </span>
-                      <span className="font-medium text-gray-800">{u.name}</span>
+                      <span className="font-medium text-ink">{u.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{u.email}</td>
-                  <td className="px-4 py-3 text-gray-500">{u.role}</td>
+                  <td className="px-4 py-3 text-muted">{u.email}</td>
+                  <td className="px-4 py-3 text-muted">{u.role}</td>
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusColor}`}>{statusLabel}</span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-muted">
                     {u.createdAt.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -173,22 +173,22 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                         connections and reviews with it and there's no undo. */}
                     {confirming ? (
                       <div className="flex items-center justify-end gap-2">
-                        <span className="text-xs text-red-700">Delete permanently?</span>
+                        <span className="text-xs text-bad">Delete permanently?</span>
                         <form action={deleteUserAction}>
                           <input type="hidden" name="userId" value={u.id} />
                           <input type="hidden" name="confirm" value="yes" />
-                          <SubmitButton pendingLabel="Deleting…" className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-red-700">
+                          <SubmitButton pendingLabel="Deleting…" className="bg-bad px-2.5 py-1 text-xs font-semibold text-paper hover:bg-ochre-hover">
                             Delete
                           </SubmitButton>
                         </form>
-                        <Link href={`/admin/users${filterQuery()}`} className="text-xs font-medium text-gray-500 hover:text-brand-navy">
+                        <Link href={`/admin/users${filterQuery()}`} className="text-xs font-medium text-muted hover:text-ink">
                           Cancel
                         </Link>
                       </div>
                     ) : (
                       <Link
                         href={`/admin/users${filterQuery({ confirmDelete: u.id })}`}
-                        className="tap text-sm font-medium text-red-600 hover:underline"
+                        className="tap text-sm font-medium text-bad hover:underline"
                       >
                         Remove
                       </Link>
@@ -199,7 +199,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
             })}
             {users.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted">
                   {q ? `No users match “${q}”.` : "No users yet."}
                 </td>
               </tr>

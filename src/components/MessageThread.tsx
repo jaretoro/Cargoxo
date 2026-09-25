@@ -62,7 +62,7 @@ export function MessageThread({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link href={backHref} className="text-sm font-medium text-brand-blue-deep hover:underline">
+      <Link href={backHref} className="text-sm font-medium text-ochre hover:underline">
         ← All messages
       </Link>
 
@@ -72,32 +72,32 @@ export function MessageThread({
         </span>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="truncate text-xl font-bold text-brand-navy">{counterpartName}</h1>
+            <h1 className="truncate text-xl font-bold text-ink">{counterpartName}</h1>
             <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[status]}`}>{status}</span>
           </div>
-          {counterpartSubtitle && <p className="truncate text-sm text-gray-500">{counterpartSubtitle}</p>}
+          {counterpartSubtitle && <p className="truncate text-sm text-muted">{counterpartSubtitle}</p>}
         </div>
       </div>
 
-      {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
+      {error && <div className="mt-4 bg-bad-tint px-4 py-3 text-sm text-bad">{decodeURIComponent(error)}</div>}
 
-      <div className="mt-6 space-y-4 rounded-xl border border-black/5 bg-white p-4 shadow-sm">
+      <div className="mt-6 space-y-4 border border-rule bg-surface p-4">
         {olderCount > 0 && (
-          <p className="text-center text-xs text-gray-500">
+          <p className="text-center text-xs text-muted">
             {olderCount} older {olderCount === 1 ? "message" : "messages"} not shown
           </p>
         )}
 
         {groups.map((group) => (
           <div key={group.day} className="space-y-2">
-            <p className="text-center text-xs font-medium text-gray-500">{group.day}</p>
+            <p className="text-center text-xs font-medium text-muted">{group.day}</p>
             {group.items.map((m) => {
               const mine = m.senderId === currentUserId;
               return (
                 <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${mine ? "bg-brand-blue-deep text-white" : "bg-gray-100 text-gray-700"}`}>
+                  <div className={`max-w-[80%] px-3 py-2 text-sm ${mine ? "bg-ink text-paper" : "bg-paper-deep text-ink-soft"}`}>
                     <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                    <p className={`mt-1 text-right text-xs ${mine ? "text-white/70" : "text-gray-500"}`}>
+                    <p className={`mt-1 text-right text-xs ${mine ? "text-on-ink" : "text-muted"}`}>
                       {m.createdAt.toLocaleTimeString("en-NG", { hour: "numeric", minute: "2-digit" })}
                     </p>
                   </div>
@@ -107,7 +107,7 @@ export function MessageThread({
           </div>
         ))}
 
-        {messages.length === 0 && <p className="text-center text-sm text-gray-500">No messages yet.</p>}
+        {messages.length === 0 && <p className="text-center text-sm text-muted">No messages yet.</p>}
       </div>
 
       <form action={sendMessageAction} className="mt-4 flex gap-2">
@@ -118,9 +118,9 @@ export function MessageThread({
           maxLength={2000}
           autoComplete="off"
           placeholder="Type a message…"
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
+          className="flex-1 border border-rule px-3 py-2 text-sm outline-none focus:border-ink"
         />
-        <SubmitButton pendingLabel="Sending…" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink-hover">
           Send
         </SubmitButton>
       </form>
