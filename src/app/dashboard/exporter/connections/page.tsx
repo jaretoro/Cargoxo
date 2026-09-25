@@ -1,41 +1,13 @@
 import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-
-const STATUS_STYLES: Record<string, string> = {
-  ACCEPTED: "bg-green-100 text-green-700",
-  DECLINED: "bg-red-100 text-red-700",
-  PENDING: "bg-amber-100 text-amber-700",
-};
+import { STATUS_STYLES, avatarStyle, initials } from "@/lib/ui";
 
 const STATUS_HINTS: Record<string, string> = {
   ACCEPTED: "They accepted — carry on in the thread.",
   DECLINED: "They declined this request.",
   PENDING: "Waiting for them to respond.",
 };
-
-const AVATAR_STYLES = [
-  "bg-brand-navy text-white",
-  "bg-brand-blue-deep text-white",
-  "bg-purple-600 text-white",
-  "bg-amber-700 text-white",
-  "bg-emerald-700 text-white",
-  "bg-rose-600 text-white",
-];
-
-function avatarStyle(seed: string) {
-  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-}
 
 export default async function ExporterConnections() {
   const session = await auth();

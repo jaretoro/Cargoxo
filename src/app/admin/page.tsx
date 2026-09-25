@@ -210,8 +210,18 @@ export default async function AdminOverview() {
               <p className="text-xs text-gray-500">Monthly recurring revenue trend</p>
             </div>
             {mrrGrowthPct !== null && (
-              <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${mrrGrowthPct >= 0 ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
-                {mrrGrowthPct >= 0 ? "+" : ""}
+              // Zero is flat, not growth: it used to render green with a
+              // leading "+", which read as a rise that hadn't happened.
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  mrrGrowthPct > 0
+                    ? "bg-emerald-50 text-emerald-600"
+                    : mrrGrowthPct < 0
+                      ? "bg-red-50 text-red-600"
+                      : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {mrrGrowthPct > 0 ? "+" : ""}
                 {mrrGrowthPct}% MoM
               </span>
             )}
@@ -221,10 +231,13 @@ export default async function AdminOverview() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+        {/* Flex column with the gauge on flex-1: the grid stretches this
+            card to match the MRR chart beside it, and a fixed-height gauge
+            left roughly 200px of empty white underneath. */}
+        <div className="flex flex-col rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <h2 className="font-semibold text-brand-navy">Verification Progress</h2>
           <p className="text-xs text-gray-500">ANCLA verification completion rate</p>
-          <div className="relative mt-2 h-48">
+          <div className="relative mt-2 min-h-48 flex-1">
             <VerificationGauge rate={anclaVerificationRate} />
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
               <p className="text-3xl font-bold text-brand-navy">{anclaVerificationRate}%</p>

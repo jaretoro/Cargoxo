@@ -4,29 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { startConversationAction } from "@/app/actions/agents";
 import { SubmitButton } from "@/components/SubmitButton";
-
-const AVATAR_STYLES = [
-  "bg-brand-navy text-white",
-  "bg-brand-blue-deep text-white",
-  "bg-purple-600 text-white",
-  "bg-amber-700 text-white",
-  "bg-emerald-700 text-white",
-  "bg-rose-600 text-white",
-];
-
-function avatarStyle(seed: string) {
-  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-}
+import { avatarStyle, initials } from "@/lib/ui";
 
 export default async function NewConversation(props: PageProps<"/dashboard/exporter/messages/new">) {
   const session = await auth();

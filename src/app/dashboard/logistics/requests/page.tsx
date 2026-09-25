@@ -4,35 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { respondConnectionAction } from "@/app/actions/connections";
 import { SubmitButton } from "@/components/SubmitButton";
-
-const STATUS_STYLES: Record<string, string> = {
-  ACCEPTED: "bg-green-100 text-green-700",
-  DECLINED: "bg-red-100 text-red-700",
-  PENDING: "bg-amber-100 text-amber-700",
-};
-
-const AVATAR_STYLES = [
-  "bg-brand-navy text-white",
-  "bg-brand-blue-deep text-white",
-  "bg-purple-600 text-white",
-  "bg-amber-700 text-white",
-  "bg-emerald-700 text-white",
-  "bg-rose-600 text-white",
-];
-
-function avatarStyle(seed: string) {
-  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-}
+import { STATUS_STYLES, avatarStyle, initials } from "@/lib/ui";
 
 export default async function LogisticsRequests(props: PageProps<"/dashboard/logistics/requests">) {
   const session = await auth();

@@ -1,29 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-
-const AVATAR_STYLES = [
-  "bg-brand-navy text-white",
-  "bg-brand-blue-deep text-white",
-  "bg-purple-600 text-white",
-  "bg-amber-700 text-white",
-  "bg-emerald-700 text-white",
-  "bg-rose-600 text-white",
-];
-
-function avatarStyle(seed: string) {
-  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-}
+import { avatarStyle, initials } from "@/lib/ui";
 
 // "3 Sep", or the year too once it isn't this year — a bare date on every
 // row reads as noise.

@@ -1,29 +1,7 @@
 import Link from "next/link";
 import { toggleSaveAction } from "@/app/actions/agents";
 import { SubmitIconButton } from "@/components/SubmitButton";
-
-const AVATAR_STYLES = [
-  "bg-brand-navy text-white",
-  "bg-brand-blue-deep text-white",
-  "bg-purple-600 text-white",
-  "bg-amber-700 text-white",
-  "bg-emerald-700 text-white",
-  "bg-rose-600 text-white",
-];
-
-function avatarStyle(seed: string) {
-  const hash = [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  return AVATAR_STYLES[hash % AVATAR_STYLES.length];
-}
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join("");
-}
+import { VERIFICATION_STYLES, avatarStyle, initials } from "@/lib/ui";
 
 function LockIcon() {
   return (
@@ -97,28 +75,30 @@ export function AgentCard({
 
   return (
     <div className="flex flex-col rounded-xl border border-black/5 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(agent.companyName)}`}>
-            {initials(agent.companyName)}
-          </span>
-          <div className="min-w-0">
-            {/* Capped at two lines: unbounded wrapping ran long names to
-                three lines and threw the row out of alignment, but a single
-                truncated line cut most names down to a few characters.
-                Full name stays available on hover. */}
-            <h3 className="line-clamp-2 font-semibold leading-tight text-brand-navy" title={agent.companyName}>
-              {agent.companyName}
-            </h3>
-            <p className="truncate text-xs text-gray-500">{agent.location}</p>
-          </div>
+      {/* The badge used to sit beside the name, and being shrink-0 it took
+          its width first — which in the 3-column desktop grid squeezed the
+          name to about half the card and truncated most of them ("SeaLink
+          Freight…", "Kano Norther…"). A title tooltip covered for it, but
+          tooltips don't exist on a phone. The name now gets the full width
+          and the badge sits on its own line beneath. */}
+      <div className="flex min-w-0 items-center gap-3">
+        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${avatarStyle(agent.companyName)}`}>
+          {initials(agent.companyName)}
+        </span>
+        <div className="min-w-0">
+          {/* Still capped at two lines so a very long name can't throw the
+              row out of alignment — but two full-width lines fit almost
+              every real company name. */}
+          <h3 className="line-clamp-2 font-semibold leading-tight text-brand-navy" title={agent.companyName}>
+            {agent.companyName}
+          </h3>
+          <p className="truncate text-xs text-gray-500">{agent.location}</p>
         </div>
-        <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
-            agent.verificationStatus === "VERIFIED" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
-          }`}
-        >
-          {agent.verificationStatus === "VERIFIED" ? "ANCLA Verified" : "Pending"}
+      </div>
+
+      <div className="mt-2.5">
+        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${VERIFICATION_STYLES[agent.verificationStatus]}`}>
+          {agent.verificationStatus === "VERIFIED" ? "ANCLA Verified" : agent.verificationStatus === "REJECTED" ? "Not verified" : "Pending"}
         </span>
       </div>
 
@@ -233,7 +213,7 @@ export function AgentCard({
           <input type="hidden" name="redirectTo" value={backTo} />
           <SubmitIconButton
             aria-label={agent.isSaved ? "Remove from saved" : "Save"}
-            className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-50"
+            className="rounded-md border border-gray-300 p-2.5 text-gray-600 hover:bg-gray-50"
           >
             <svg width="16" height="16" viewBox="0 0 20 20" fill={agent.isSaved ? "#0b2d52" : "none"} stroke="#0b2d52" strokeWidth="1.5" aria-hidden="true">
               <path d="M5 3h10a1 1 0 011 1v13l-6-3.5L4 17V4a1 1 0 011-1z" strokeLinejoin="round" />
