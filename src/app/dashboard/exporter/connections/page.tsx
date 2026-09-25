@@ -111,7 +111,7 @@ export default async function ExporterConnections() {
                     </p>
                     <Link
                       href={`/dashboard/exporter/messages/${c.id}`}
-                      className="rounded-md bg-brand-blue-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy"
+                      className="rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-medium text-white hover:bg-brand-navy"
                     >
                       Open conversation
                     </Link>

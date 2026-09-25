@@ -157,7 +157,7 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
             <h2 className="font-semibold text-brand-navy">How exporters see you</h2>
             <p className="mt-1 text-sm text-gray-500">Your live listing in search results.</p>
           </div>
-          <Link href="/dashboard/logistics/profile" className="text-sm font-medium text-brand-blue-deep hover:underline">
+          <Link href="/dashboard/logistics/profile" className="tap text-sm font-medium text-brand-blue-deep hover:underline">
             Edit profile →
           </Link>
         </div>

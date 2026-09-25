@@ -36,7 +36,7 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
         />
       </form>
       <span className="hidden rounded-md border border-gray-200 px-3 py-2 text-xs font-medium text-gray-500 lg:inline-block">{dateLabel}</span>
-      <button className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100" aria-label="Notifications">
+      <button className="relative rounded-full p-2.5 text-gray-500 hover:bg-gray-100" aria-label="Notifications">
         <BellIcon />
         {hasUnread && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />}
       </button>

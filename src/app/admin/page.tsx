@@ -158,7 +158,7 @@ export default async function AdminOverview() {
           </div>
           <p className={`mt-3 text-3xl font-bold ${pendingCount > 0 ? "text-red-600" : "text-brand-navy"}`}>{pendingCount}</p>
           {pendingCount > 0 && (
-            <Link href="/admin/logistics" className="mt-2 inline-block text-xs font-medium text-brand-blue-deep hover:underline">
+            <Link href="/admin/logistics" className="tap mt-2 inline-block text-xs font-medium text-brand-blue-deep hover:underline">
               Review queue →
             </Link>
           )}

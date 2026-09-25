@@ -21,8 +21,8 @@ export async function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-gray-600 md:flex">
-          <Link href="/#how-it-works" className="hover:text-brand-navy">How it works</Link>
-          <Link href="/pricing" className="hover:text-brand-navy">Pricing</Link>
+          <Link href="/#how-it-works" className="tap hover:text-brand-navy">How it works</Link>
+          <Link href="/pricing" className="tap hover:text-brand-navy">Pricing</Link>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -30,14 +30,14 @@ export async function Navbar() {
             <>
               <Link
                 href={DASHBOARD_BY_ROLE[session.user.role] ?? "/"}
-                className="text-sm font-medium text-gray-700 hover:text-brand-navy"
+                className="tap text-sm font-medium text-gray-700 hover:text-brand-navy"
               >
                 Dashboard
               </Link>
               <form action={logoutAction}>
                 <SubmitButton
                   pendingLabel="Signing out…"
-                  className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   Log out
                 </SubmitButton>
@@ -45,7 +45,7 @@ export async function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-brand-navy">
+              <Link href="/login" className="tap text-sm font-medium text-gray-700 hover:text-brand-navy">
                 Log in
               </Link>
               <Link

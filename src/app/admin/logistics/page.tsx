@@ -49,12 +49,12 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
 
       {error && <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{decodeURIComponent(error)}</div>}
 
-      <div className="mt-6 flex gap-1 border-b border-gray-200">
+      <div className="mt-6 flex flex-wrap gap-1 border-b border-gray-200">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={t.key === "PENDING" ? "/admin/logistics" : `/admin/logistics?status=${t.key}`}
-            className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
               activeTab === t.key
                 ? "border-brand-blue text-brand-navy"
                 : "border-transparent text-gray-500 hover:text-brand-navy"
@@ -108,7 +108,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
                 <SubmitButton
                   pendingLabel="Approving…"
                   disabled={c.verificationStatus === "VERIFIED"}
-                  className="rounded-md bg-brand-blue-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy"
+                  className="rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-medium text-white hover:bg-brand-navy"
                 >
                   Approve
                 </SubmitButton>
@@ -125,12 +125,12 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
                     name="rejectionReason"
                     defaultValue={c.rejectionReason ?? ""}
                     placeholder="Reason, e.g. ANCLA number not found"
-                    className="w-72 rounded-md border border-gray-300 px-3 py-1.5 text-sm outline-none focus:border-brand-blue"
+                    className="w-72 rounded-md border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-brand-blue"
                   />
                 </label>
                 <SubmitButton
                   pendingLabel="Saving…"
-                  className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="rounded-md border border-gray-300 px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   {c.verificationStatus === "REJECTED" ? "Update reason" : "Reject"}
                 </SubmitButton>

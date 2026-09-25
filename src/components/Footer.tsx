@@ -23,14 +23,14 @@ export async function Footer() {
         {/* Signed-in visitors don't need register/log-in links — offering
             them is the same mistake as showing sign-up CTAs in the hero. */}
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
-          <Link href="/pricing" className="hover:text-brand-navy">Pricing</Link>
+          <Link href="/pricing" className="tap hover:text-brand-navy">Pricing</Link>
           {dashboardHref ? (
-            <Link href={dashboardHref} className="hover:text-brand-navy">Dashboard</Link>
+            <Link href={dashboardHref} className="tap hover:text-brand-navy">Dashboard</Link>
           ) : (
             <>
-              <Link href="/register" className="hover:text-brand-navy">Register as exporter</Link>
-              <Link href="/register/logistics" className="hover:text-brand-navy">Register as logistics company</Link>
-              <Link href="/login" className="hover:text-brand-navy">Log in</Link>
+              <Link href="/register" className="tap hover:text-brand-navy">Register as exporter</Link>
+              <Link href="/register/logistics" className="tap hover:text-brand-navy">Register as logistics company</Link>
+              <Link href="/login" className="tap hover:text-brand-navy">Log in</Link>
             </>
           )}
         </nav>

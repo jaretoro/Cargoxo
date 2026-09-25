@@ -125,6 +125,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
   if (verifiedOnly) currentQuery.set("verified", "1");
   if (sort !== "relevance") currentQuery.set("sort", sort);
   const backTo = `/dashboard/exporter${currentQuery.toString() ? `?${currentQuery.toString()}` : ""}`;
+  const activeFilterCount = states.length + cargoNames.length;
 
   const locations = [...new Set(locationRows.map((l) => l.location))].sort();
 
@@ -181,7 +182,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
             Verified Only
           </label>
 
-          <button type="submit" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+          <button type="submit" className="rounded-md bg-brand-blue-deep px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy">
             Search
           </button>
         </div>
@@ -205,10 +206,31 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
           )}
         </div>
 
+        {/* Shown on the collapsed summary so a phone user can tell filters
+            are applied without opening the panel. */}
         <div className="mt-4 flex flex-col gap-6 lg:flex-row">
           <aside className="w-full shrink-0 lg:w-56">
-            <div className="rounded-xl border border-black/5 bg-white p-4 shadow-sm">
-              <h2 className="text-sm font-semibold text-brand-navy">Refine Results</h2>
+            {/* A disclosure on phones, an always-open panel from lg up — see
+                the .filters rules in globals.css. Before this, a phone user
+                scrolled past every state and cargo-type checkbox before
+                reaching the first company. */}
+            <details className="filters rounded-xl border border-black/5 bg-white shadow-sm">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-4 text-sm font-semibold text-brand-navy">
+                <span className="flex items-center gap-2">
+                  Refine Results
+                  {activeFilterCount > 0 && (
+                    <span className="rounded-full bg-brand-sky/25 px-2 py-0.5 text-xs font-semibold text-brand-blue-deep">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 transition-transform" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </summary>
+
+              <div className="filters-body px-4 pb-4 lg:pt-4">
+              <h2 className="hidden text-sm font-semibold text-brand-navy lg:block">Refine Results</h2>
 
               <div className="mt-5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">State / Location</p>
@@ -234,10 +256,11 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
                 </div>
               </div>
 
-              <button form="agent-filters" type="submit" className="mt-5 w-full rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+              <button form="agent-filters" type="submit" className="mt-5 w-full rounded-md bg-brand-blue-deep px-3 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy">
                 Apply filters
               </button>
-            </div>
+              </div>
+            </details>
           </aside>
 
           <div className="min-w-0 flex-1">

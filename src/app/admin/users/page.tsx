@@ -97,9 +97,9 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
             name="q"
             defaultValue={q}
             placeholder="Search name, email or company…"
-            className="w-56 rounded-md border border-gray-300 px-3 py-1.5 text-sm outline-none focus:border-brand-blue"
+            className="w-56 rounded-md border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-brand-blue"
           />
-          <button type="submit" className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium hover:bg-gray-50">
+          <button type="submit" className="rounded-md border border-gray-300 px-3 py-2.5 text-sm font-medium hover:bg-gray-50">
             Search
           </button>
           {q && (
@@ -188,7 +188,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                     ) : (
                       <Link
                         href={`/admin/users${filterQuery({ confirmDelete: u.id })}`}
-                        className="text-sm font-medium text-red-600 hover:underline"
+                        className="tap text-sm font-medium text-red-600 hover:underline"
                       >
                         Remove
                       </Link>

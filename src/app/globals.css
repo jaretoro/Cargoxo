@@ -57,3 +57,48 @@ body {
     outline-color: var(--brand-sky);
   }
 }
+
+@layer components {
+  /* Bare text links in the header, footer and card rows rendered 18–20px
+     tall: fine with a mouse, fiddly with a thumb, and well under the ~44px
+     both Apple and Material ask for. This grows the touch target without
+     changing how the row looks, by padding the link and pulling the same
+     amount straight back out as negative margin. Only use it on flex or
+     block children, where the vertical padding resolves predictably. */
+  .tap {
+    padding-block: 0.75rem;
+    margin-block: -0.75rem;
+  }
+}
+
+/* The agent filters are a disclosure on phones — a summary you tap, rather
+   than ~400px of checkboxes standing between the search box and the first
+   result — and a plain always-open panel from lg up, where the sidebar has
+   room for them.
+
+   Deliberately NOT inside @layer components: Tailwind puts its utilities in a
+   later cascade layer, and a later layer beats an earlier one no matter how
+   specific the selector, so `.flex` on the summary won over a components-layer
+   `display: none`. Unlayered author rules sit above every layer, which is what
+   this needs.
+
+   Keeping it CSS-only also keeps the filters as ONE set of inputs: rendering a
+   phone copy and a desktop copy would submit every value twice.
+
+   Two rules are needed to re-open it, because browsers hide a closed
+   <details> two different ways — older engines with display:none on the
+   children, current ones with content-visibility on ::details-content. */
+@media (width >= 64rem) {
+  details.filters > summary {
+    display: none;
+  }
+
+  details.filters > .filters-body {
+    display: block;
+  }
+
+  details.filters::details-content {
+    content-visibility: visible;
+    block-size: auto;
+  }
+}

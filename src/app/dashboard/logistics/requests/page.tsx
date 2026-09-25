@@ -123,7 +123,7 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                         reply without hunting for the thread under Messages. */}
                     <Link
                       href={`/dashboard/logistics/messages/${r.id}`}
-                      className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                      className={`rounded-md px-3 py-2.5 text-sm font-medium ${
                         r.status === "PENDING"
                           ? "border border-gray-300 text-gray-700 hover:bg-gray-50"
                           : "bg-brand-blue-deep text-white hover:bg-brand-navy"

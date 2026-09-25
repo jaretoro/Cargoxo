@@ -26,14 +26,14 @@ export function LogisticsTabs({ unreadCount, pendingRequests }: { unreadCount: n
   ];
 
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-gray-200">
+    <div className="flex flex-wrap gap-1 border-b border-gray-200">
       {tabs.map((t) => {
         const active = t.match(pathname);
         return (
           <Link
             key={t.href}
             href={t.href}
-            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors ${
+            className={`flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
               active ? "border-brand-blue text-brand-navy" : "border-transparent text-gray-500 hover:text-brand-navy"
             }`}
           >

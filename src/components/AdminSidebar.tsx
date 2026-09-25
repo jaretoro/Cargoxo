@@ -130,7 +130,7 @@ export function AdminSidebar({
               <Link
                 key={l.to}
                 href={l.to}
-                className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive(l.to, l.end) ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
                 }`}
               >
@@ -151,7 +151,7 @@ export function AdminSidebar({
               <Link
                 key={l.to}
                 href={l.to}
-                className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive(l.to) ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
                 }`}
               >
@@ -167,7 +167,7 @@ export function AdminSidebar({
         <div className="space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
           <Link
             href="/admin/notifications"
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               isActive("/admin/notifications") ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
             }`}
           >
@@ -176,7 +176,7 @@ export function AdminSidebar({
           </Link>
           <Link
             href="/admin/settings"
-            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               isActive("/admin/settings") ? "bg-brand-navy-light text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
             }`}
           >
@@ -201,7 +201,7 @@ export function AdminSidebar({
         </div>
 
         <form action={logoutAction} className="max-lg:shrink-0">
-          <SubmitIconButton className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
+          <SubmitIconButton className="mt-2 flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white max-lg:mt-0">
             <Icon name="signout" />
             Sign Out
           </SubmitIconButton>
