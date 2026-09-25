@@ -4,7 +4,7 @@ import { SubmitIconButton } from "@/components/SubmitButton";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
-  "bg-brand-blue text-white",
+  "bg-brand-blue-deep text-white",
   "bg-purple-600 text-white",
   "bg-amber-700 text-white",
   "bg-emerald-700 text-white",
@@ -157,7 +157,7 @@ export function AgentCard({
               {r.origin} → {r.destination}
             </p>
           ))}
-          {extraRoutes > 0 && <p className="text-gray-400">+{extraRoutes} more routes</p>}
+          {extraRoutes > 0 && <p className="text-gray-500">+{extraRoutes} more routes</p>}
         </div>
       )}
 
@@ -174,7 +174,7 @@ export function AgentCard({
         ) : (
           <span />
         )}
-        <span className="text-gray-400">{agent.shipmentCount}+ shipments</span>
+        <span className="text-gray-500">{agent.shipmentCount}+ shipments</span>
       </div>
 
       {/* mt-auto keeps the actions pinned to the card's bottom edge, so they
@@ -182,13 +182,13 @@ export function AgentCard({
           detail (tags, routes, membership). */}
       <div className={`mt-auto flex items-center gap-2 pt-4 ${preview ? "hidden" : ""}`}>
         {agent.verificationStatus === "PENDING" ? (
-          <p className="flex-1 rounded-md bg-gray-50 px-3 py-2 text-center text-xs text-gray-400">Not yet verified</p>
+          <p className="flex-1 rounded-md bg-gray-50 px-3 py-2 text-center text-xs text-gray-500">Not yet verified</p>
         ) : !isSubscribed ? (
           /* Short label so it stays on one line — "Subscribe to contact"
              wrapped and left this button taller than the ones beside it. */
           <Link
             href="/dashboard/exporter/billing"
-            className="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-sm font-medium text-white hover:bg-brand-navy"
+            className="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-medium text-white hover:bg-brand-navy"
           >
             <LockIcon />
             Unlock
@@ -196,14 +196,14 @@ export function AgentCard({
         ) : agent.connectionId ? (
           <Link
             href={`/dashboard/exporter/messages/${agent.connectionId}`}
-            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
+            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue-deep px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
           >
             {agent.connectionStatus === "ACCEPTED" ? "Message" : "View chat"}
           </Link>
         ) : (
           <Link
             href={`/dashboard/exporter/messages/new?logistics=${agent.userId}`}
-            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
+            className="flex-1 whitespace-nowrap rounded-md bg-brand-blue-deep px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-navy"
           >
             Message
           </Link>
@@ -222,7 +222,7 @@ export function AgentCard({
           ) : (
             <span
               title="Subscribe to see phone numbers"
-              className="cursor-not-allowed rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-300"
+              className="cursor-not-allowed rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-400"
             >
               Call
             </span>

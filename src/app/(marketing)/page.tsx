@@ -126,7 +126,7 @@ export default async function Home() {
               <>
                 <Link
                   href={dashboardHref}
-                  className="rounded-md bg-brand-blue px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
+                  className="rounded-md bg-brand-blue-deep px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
                 >
                   Go to my dashboard
                 </Link>
@@ -141,7 +141,7 @@ export default async function Home() {
               <>
                 <Link
                   href="/register"
-                  className="rounded-md bg-brand-blue px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
+                  className="rounded-md bg-brand-blue-deep px-6 py-3 font-semibold text-white hover:bg-white hover:text-brand-navy"
                 >
                   I&apos;m an exporter
                 </Link>
@@ -177,22 +177,22 @@ export default async function Home() {
           {STEPS.map((step, i) => (
             <div key={step.title} className="rounded-xl border border-black/5 bg-white p-6 shadow-sm">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-sky/15 text-brand-blue">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-sky/15 text-brand-blue-deep">
                   <StepIcon name={step.icon} />
                 </span>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Step {i + 1}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Step {i + 1}</p>
                   <h3 className="font-semibold text-brand-navy">{step.title}</h3>
                 </div>
               </div>
 
               <dl className="mt-4 space-y-3 text-sm">
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Exporters</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-brand-blue-deep">Exporters</dt>
                   <dd className="mt-0.5 text-gray-600">{step.exporter}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-gray-400">Logistics</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">Logistics</dt>
                   <dd className="mt-0.5 text-gray-600">{step.logistics}</dd>
                 </div>
               </dl>
@@ -243,7 +243,7 @@ export default async function Home() {
           {Object.values(PLANS).map((plan) => (
             <div key={plan.id} className="rounded-xl border border-black/5 bg-white p-6 text-center shadow-sm">
               <div className="flex items-center justify-center gap-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{plan.label}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{plan.label}</p>
                 {plan.id === "YEARLY" && savings > 0 && (
                   <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
                     Save {savings}%
@@ -252,9 +252,9 @@ export default async function Home() {
               </div>
               <p className="mt-2 text-3xl font-bold text-brand-navy">
                 ${plan.usd}
-                <span className="text-sm font-normal text-gray-400">/{plan.interval}</span>
+                <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
               </p>
-              <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
+              <p className="mt-1 text-xs text-gray-500">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
             </div>
           ))}
         </div>
@@ -262,7 +262,7 @@ export default async function Home() {
         <div className="mt-8 text-center">
           <Link
             href="/pricing"
-            className="inline-block rounded-md bg-brand-navy px-6 py-3 font-semibold text-white hover:bg-brand-blue"
+            className="inline-block rounded-md bg-brand-navy px-6 py-3 font-semibold text-white hover:bg-brand-blue-deep"
           >
             See full pricing
           </Link>

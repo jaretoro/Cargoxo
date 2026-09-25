@@ -13,7 +13,7 @@ const STATUS_STYLES: Record<string, string> = {
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
-  "bg-brand-blue text-white",
+  "bg-brand-blue-deep text-white",
   "bg-purple-600 text-white",
   "bg-amber-700 text-white",
   "bg-emerald-700 text-white",
@@ -82,7 +82,7 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                     <h2 className="truncate font-semibold text-brand-navy">{name}</h2>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[r.status]}`}>{r.status}</span>
                     {r._count.messages > 0 && (
-                      <span className="rounded-full bg-brand-blue px-1.5 py-0.5 text-xs font-semibold text-white">
+                      <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">
                         {r._count.messages} new
                       </span>
                     )}
@@ -104,7 +104,7 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                         <form action={respondConnectionAction}>
                           <input type="hidden" name="connectionId" value={r.id} />
                           <input type="hidden" name="status" value="ACCEPTED" />
-                          <SubmitButton pendingLabel="Accepting…" className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
+                          <SubmitButton pendingLabel="Accepting…" className="rounded-md bg-brand-blue-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy">
                             Accept
                           </SubmitButton>
                         </form>
@@ -126,13 +126,13 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
                       className={`rounded-md px-3 py-1.5 text-sm font-medium ${
                         r.status === "PENDING"
                           ? "border border-gray-300 text-gray-700 hover:bg-gray-50"
-                          : "bg-brand-blue text-white hover:bg-brand-navy"
+                          : "bg-brand-blue-deep text-white hover:bg-brand-navy"
                       }`}
                     >
                       Open conversation
                     </Link>
 
-                    <span className="ml-auto text-xs text-gray-400">
+                    <span className="ml-auto text-xs text-gray-500">
                       {r.createdAt.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
                     </span>
                   </div>
@@ -145,12 +145,12 @@ export default async function LogisticsRequests(props: PageProps<"/dashboard/log
         {requests.length === 0 && (
           <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
             <p className="text-sm font-medium text-gray-700">No requests yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
+            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
               Exporters find you through search. A complete profile with cargo types and trade routes makes that far more likely.
             </p>
             <Link
               href="/dashboard/logistics/profile"
-              className="mt-4 inline-block rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+              className="mt-4 inline-block rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
             >
               Complete your profile
             </Link>

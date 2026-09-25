@@ -14,7 +14,7 @@ export default function RegisterLogisticsPage() {
       </div>
       <p className="mt-4 text-center text-sm text-gray-500">
         Looking for a logistics company instead?{" "}
-        <Link href="/register" className="font-medium text-brand-blue hover:underline">
+        <Link href="/register" className="font-medium text-brand-blue-deep hover:underline">
           Register as an exporter
         </Link>
         .

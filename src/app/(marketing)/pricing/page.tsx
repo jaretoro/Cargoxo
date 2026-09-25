@@ -85,7 +85,7 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
                 current prices ($5/mo, $60/yr) the yearly plan costs exactly
                 12 months, so this would otherwise render "Save 0%". */}
             {plan.id === "YEARLY" && yearlySavingsPercent() > 0 && (
-              <span className="absolute -top-3 left-6 rounded-full bg-brand-blue px-3 py-1 text-xs font-semibold text-white">
+              <span className="absolute -top-3 left-6 rounded-full bg-brand-blue-deep px-3 py-1 text-xs font-semibold text-white">
                 Save {yearlySavingsPercent()}%
               </span>
             )}
@@ -106,7 +106,7 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
                 <SubmitButton
                   pendingLabel="Opening checkout…"
                   className={`w-full rounded-md px-4 py-2.5 font-semibold text-white ${
-                    plan.id === "YEARLY" ? "bg-brand-blue hover:bg-brand-navy" : "bg-gray-800 hover:bg-brand-navy"
+                    plan.id === "YEARLY" ? "bg-brand-blue-deep hover:bg-brand-navy" : "bg-gray-800 hover:bg-brand-navy"
                   }`}
                 >
                   Subscribe {plan.label.toLowerCase()}
@@ -128,7 +128,7 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
           <ul className="mt-4 space-y-2.5 text-sm text-gray-700">
             {PAID.map((f) => (
               <li key={f} className="flex gap-2.5">
-                <span className="text-brand-blue">
+                <span className="text-brand-blue-deep">
                   <CheckIcon />
                 </span>
                 {f}

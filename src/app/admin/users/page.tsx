@@ -105,7 +105,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
           {q && (
             <Link
               href={`/admin/users${activeTab === "ALL" ? "" : `?role=${activeTab}`}`}
-              className="self-center text-sm text-gray-400 hover:text-brand-navy"
+              className="self-center text-sm text-gray-500 hover:text-brand-navy"
             >
               Clear
             </Link>
@@ -122,7 +122,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-black/5 bg-white shadow-sm">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-gray-100 text-xs uppercase tracking-wide text-gray-400">
+          <thead className="border-b border-gray-100 text-xs uppercase tracking-wide text-gray-500">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Email</th>
@@ -147,7 +147,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                     ? "bg-red-100 text-red-700"
                     : statusLabel === "PENDING"
                       ? "bg-amber-100 text-amber-700"
-                      : "bg-gray-100 text-gray-500";
+                      : "bg-gray-100 text-gray-600";
               const confirming = confirmingId === u.id;
 
               return (
@@ -165,7 +165,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusColor}`}>{statusLabel}</span>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">
+                  <td className="px-4 py-3 text-gray-500">
                     {u.createdAt.toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -199,7 +199,7 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
             })}
             {users.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   {q ? `No users match “${q}”.` : "No users yet."}
                 </td>
               </tr>

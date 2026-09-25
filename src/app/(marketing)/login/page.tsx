@@ -51,12 +51,12 @@ export default async function LoginPage(props: PageProps<"/login">) {
             </div>
 
             <details className="mt-3">
-              <summary className="cursor-pointer text-xs font-medium text-gray-400 hover:text-gray-600">Other demo accounts</summary>
+              <summary className="cursor-pointer text-xs font-medium text-gray-500 hover:text-gray-600">Other demo accounts</summary>
               <div className="mt-2 flex flex-col gap-1.5">
                 {OTHER_DEMO_ACCOUNTS.map((a) => (
                   <form key={a.email} action={quickLoginAction}>
                     <input type="hidden" name="email" value={a.email} />
-                    <button type="submit" className="text-left text-xs font-medium text-brand-blue hover:underline">
+                    <button type="submit" className="text-left text-xs font-medium text-brand-blue-deep hover:underline">
                       {a.label} →
                     </button>
                   </form>
@@ -66,7 +66,7 @@ export default async function LoginPage(props: PageProps<"/login">) {
 
             <div className="my-6 flex items-center gap-3">
               <div className="h-px flex-1 bg-gray-100" />
-              <span className="text-xs text-gray-400">or log in manually</span>
+              <span className="text-xs text-gray-500">or log in manually</span>
               <div className="h-px flex-1 bg-gray-100" />
             </div>
           </>

@@ -21,7 +21,7 @@ export function Pagination({
   const showControls = info.totalPages > 1;
 
   const linkClass = "rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50";
-  const disabledClass = "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-300";
+  const disabledClass = "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-400";
 
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">

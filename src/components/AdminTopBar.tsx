@@ -24,7 +24,7 @@ export function AdminTopBar({ adminName, hasUnread }: { adminName: string; hasUn
       {/* A real search, not decoration — it used to be an input that looked
           functional and did nothing, which is worse than having none. */}
       <form action="/admin/users" className="relative hidden md:block">
-        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
           <SearchIcon />
         </span>
         <input

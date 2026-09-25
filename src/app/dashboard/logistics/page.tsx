@@ -6,7 +6,7 @@ import { getSettings } from "@/lib/settings";
 import { AgentCard, type AgentCardData } from "@/components/AgentCard";
 
 function StatCard({ value, label, href, tone = "neutral" }: { value: number | string; label: string; href?: string; tone?: "neutral" | "amber" | "blue" }) {
-  const valueTone = { neutral: "text-brand-navy", amber: "text-amber-600", blue: "text-brand-blue" }[tone];
+  const valueTone = { neutral: "text-brand-navy", amber: "text-amber-600", blue: "text-brand-blue-deep" }[tone];
   const body = (
     <div className="rounded-xl border border-black/5 bg-white p-5 shadow-sm transition-shadow hover:shadow">
       <p className={`text-3xl font-bold ${valueTone}`}>{value}</p>
@@ -135,13 +135,13 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
                 <span className="flex items-start gap-2.5 text-gray-600">
                   <span
                     className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                      t.tone === "red" ? "bg-red-500" : t.tone === "blue" ? "bg-brand-blue" : "bg-amber-500"
+                      t.tone === "red" ? "bg-red-500" : t.tone === "blue" ? "bg-brand-blue-deep" : "bg-amber-500"
                     }`}
                   />
                   {t.text}
                 </span>
                 {t.href && t.cta && (
-                  <Link href={t.href} className="shrink-0 text-sm font-medium text-brand-blue hover:underline">
+                  <Link href={t.href} className="shrink-0 text-sm font-medium text-brand-blue-deep hover:underline">
                     {t.cta} →
                   </Link>
                 )}
@@ -157,7 +157,7 @@ export default async function LogisticsOverview(props: PageProps<"/dashboard/log
             <h2 className="font-semibold text-brand-navy">How exporters see you</h2>
             <p className="mt-1 text-sm text-gray-500">Your live listing in search results.</p>
           </div>
-          <Link href="/dashboard/logistics/profile" className="text-sm font-medium text-brand-blue hover:underline">
+          <Link href="/dashboard/logistics/profile" className="text-sm font-medium text-brand-blue-deep hover:underline">
             Edit profile →
           </Link>
         </div>

@@ -50,7 +50,7 @@ export function DashboardHeader({
 
           <div className="hidden min-w-0 text-right sm:block">
             <p className="truncate text-sm font-medium text-brand-navy">{userName}</p>
-            {subtitle && <p className="truncate text-xs text-gray-400">{subtitle}</p>}
+            {subtitle && <p className="truncate text-xs text-gray-500">{subtitle}</p>}
           </div>
 
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-navy text-xs font-semibold text-white">

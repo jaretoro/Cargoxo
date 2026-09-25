@@ -177,11 +177,11 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
           </select>
 
           <label className="flex items-center gap-2 text-sm text-gray-600">
-            <input type="checkbox" name="verified" value="1" defaultChecked={verifiedOnly} className="h-4 w-4 accent-brand-blue" />
+            <input type="checkbox" name="verified" value="1" defaultChecked={verifiedOnly} className="h-4 w-4 accent-brand-blue-deep" />
             Verified Only
           </label>
 
-          <button type="submit" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+          <button type="submit" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
             Search
           </button>
         </div>
@@ -199,7 +199,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
             </p>
           </div>
           {!isSubscribed && (
-            <Link href="/pricing" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+            <Link href="/pricing" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
               Subscribe to unlock contacts
             </Link>
           )}
@@ -211,11 +211,11 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
               <h2 className="text-sm font-semibold text-brand-navy">Refine Results</h2>
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">State / Location</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">State / Location</p>
                 <div className="mt-2 max-h-40 space-y-1.5 overflow-y-auto pr-1 text-sm text-gray-600">
                   {locations.map((loc) => (
                     <label key={loc} className="flex items-center gap-2">
-                      <input form="agent-filters" type="checkbox" name="state" value={loc} defaultChecked={states.includes(loc)} className="h-3.5 w-3.5 accent-brand-blue" />
+                      <input form="agent-filters" type="checkbox" name="state" value={loc} defaultChecked={states.includes(loc)} className="h-3.5 w-3.5 accent-brand-blue-deep" />
                       {loc}
                     </label>
                   ))}
@@ -223,18 +223,18 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
               </div>
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Cargo Type</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Cargo Type</p>
                 <div className="mt-2 space-y-1.5 text-sm text-gray-600">
                   {cargoTypeOptions.map((c) => (
                     <label key={c.id} className="flex items-center gap-2">
-                      <input form="agent-filters" type="checkbox" name="cargo" value={c.name} defaultChecked={cargoNames.includes(c.name)} className="h-3.5 w-3.5 accent-brand-blue" />
+                      <input form="agent-filters" type="checkbox" name="cargo" value={c.name} defaultChecked={cargoNames.includes(c.name)} className="h-3.5 w-3.5 accent-brand-blue-deep" />
                       {c.name}
                     </label>
                   ))}
                 </div>
               </div>
 
-              <button form="agent-filters" type="submit" className="mt-5 w-full rounded-md bg-brand-blue px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+              <button form="agent-filters" type="submit" className="mt-5 w-full rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
                 Apply filters
               </button>
             </div>
@@ -246,7 +246,7 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
                 <AgentCard key={agent.logisticsProfileId} agent={agent} isSubscribed={isSubscribed} backTo={backTo} />
               ))}
               {agents.length === 0 && (
-                <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
+                <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
                   No logistics companies match your filters.
                 </p>
               )}

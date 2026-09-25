@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
-  "bg-brand-blue text-white",
+  "bg-brand-blue-deep text-white",
   "bg-purple-600 text-white",
   "bg-amber-700 text-white",
   "bg-emerald-700 text-white",
@@ -89,15 +89,15 @@ export default async function ExporterMessages() {
                 {t.companyName}
               </p>
               <p className={`truncate text-sm ${t.unread > 0 ? "text-gray-700" : "text-gray-500"}`}>
-                {!t.lastFromThem && <span className="text-gray-400">You: </span>}
+                {!t.lastFromThem && <span className="text-gray-500">You: </span>}
                 {t.lastMessage}
               </p>
             </div>
 
             <div className="flex shrink-0 flex-col items-end gap-1.5">
-              <span className="text-xs text-gray-400">{shortDate(t.lastAt)}</span>
+              <span className="text-xs text-gray-500">{shortDate(t.lastAt)}</span>
               {t.unread > 0 && (
-                <span className="rounded-full bg-brand-blue px-1.5 py-0.5 text-xs font-semibold text-white">{t.unread}</span>
+                <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">{t.unread}</span>
               )}
             </div>
           </Link>
@@ -106,12 +106,12 @@ export default async function ExporterMessages() {
         {threads.length === 0 && (
           <div className="p-10 text-center">
             <p className="text-sm font-medium text-gray-700">No conversations yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">
+            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
               Message a logistics company from their card and the thread will appear here.
             </p>
             <Link
               href="/dashboard/exporter"
-              className="mt-4 inline-block rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+              className="mt-4 inline-block rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
             >
               Browse agents
             </Link>

@@ -45,7 +45,7 @@ export function PasswordField({
           {visible ? "Hide" : "Show"}
         </button>
       </div>
-      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-gray-500">{hint}</p>}
     </div>
   );
 }

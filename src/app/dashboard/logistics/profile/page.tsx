@@ -39,7 +39,7 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
       <h1 className="text-2xl font-bold text-brand-navy">Company profile</h1>
       <p className="mt-1 text-sm text-gray-500">
         This is what exporters see about you in search results.{" "}
-        <Link href="/dashboard/logistics" className="font-medium text-brand-blue hover:underline">
+        <Link href="/dashboard/logistics" className="font-medium text-brand-blue-deep hover:underline">
           See the preview
         </Link>
         .
@@ -85,7 +85,7 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
               </div>
               <div>
                 <label htmlFor="establishedYear" className="block text-sm font-medium text-gray-700">
-                  Year established <span className="font-normal text-gray-400">(optional)</span>
+                  Year established <span className="font-normal text-gray-500">(optional)</span>
                 </label>
                 <input
                   id="establishedYear"
@@ -115,7 +115,7 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
           <div className="mt-4 rounded-md bg-gray-50 px-3 py-2.5 text-xs text-gray-500">
             <p>
               <span className="font-medium text-gray-700">ANCLA number:</span> {profile.anclaNumber}
-              <span className="ml-2 text-gray-400">— can&rsquo;t be edited here</span>
+              <span className="ml-2 text-gray-500">— can&rsquo;t be edited here</span>
             </p>
             <p className="mt-1">
               Your verification was granted against this number, so changing it needs an admin. Contact support if it&rsquo;s wrong.
@@ -135,7 +135,7 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
                   name="cargo"
                   value={c.id}
                   defaultChecked={selectedCargoIds.has(c.id)}
-                  className="h-4 w-4 accent-brand-blue"
+                  className="h-4 w-4 accent-brand-blue-deep"
                 />
                 {c.name}
               </label>
@@ -159,7 +159,7 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
                   aria-label={`Route ${i + 1} origin`}
                   className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
                 />
-                <span aria-hidden="true" className="text-gray-400">→</span>
+                <span aria-hidden="true" className="text-gray-500">→</span>
                 <input
                   name="destination"
                   defaultValue={r.destination}
@@ -170,12 +170,12 @@ export default async function LogisticsProfilePage(props: PageProps<"/dashboard/
               </div>
             ))}
           </div>
-          <p className="mt-2 text-xs text-gray-400">Save to get more empty rows.</p>
+          <p className="mt-2 text-xs text-gray-500">Save to get more empty rows.</p>
         </section>
 
         <SubmitButton
           pendingLabel="Saving…"
-          className="w-full rounded-md bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy"
+          className="w-full rounded-md bg-brand-blue-deep px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy"
         >
           Save profile
         </SubmitButton>

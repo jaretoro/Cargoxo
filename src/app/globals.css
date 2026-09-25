@@ -6,6 +6,13 @@
   /* Brand palette, matched to the Cargoxo logo's navy/sky-blue globe+ship mark. */
   --brand-navy: #0b2d52;
   --brand-blue: #1a8fe3;
+  /* The brand blue is only 3.45:1 against white, so 14px white button text
+     on it failed WCAG AA (4.5:1) everywhere in the app — and it failed the
+     same way as link text on white. This is the same hue darkened to 5.10:1,
+     used wherever the blue has to carry text: button fills and body links.
+     The vivid --brand-blue stays for borders, rings, checkbox accents and
+     chart strokes, where only the 3:1 non-text threshold applies. */
+  --brand-blue-deep: #1572b6;
   --brand-sky: #6fd0ff;
   /* One step up from navy — active nav items and the MRR card's gradient
      need something that reads as "same colour, lifted" against the sidebar. */
@@ -21,6 +28,7 @@
   --color-brand-navy: var(--brand-navy);
   --color-brand-navy-light: var(--brand-navy-light);
   --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-deep: var(--brand-blue-deep);
   --color-brand-sky: var(--brand-sky);
   --color-brand-amber: var(--brand-amber);
   --font-sans: var(--font-geist-sans);
@@ -30,4 +38,22 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+@layer base {
+  /* There was no designed focus state anywhere: inputs shifted a 1px border
+     and buttons and links fell back to whatever the browser drew, which on
+     the navy sidebar is close to invisible. One rule covers every control,
+     and :focus-visible means it appears for keyboard users without ringing
+     on every mouse click. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--brand-blue-deep);
+    outline-offset: 2px;
+  }
+
+  /* On navy surfaces the blue ring disappears into the background; the sky
+     tone reads at 8:1 there. */
+  .bg-brand-navy :where(a, button, input, summary, [tabindex]):focus-visible {
+    outline-color: var(--brand-sky);
+  }
 }

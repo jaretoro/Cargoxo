@@ -61,7 +61,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
             }`}
           >
             {t.label}
-            <span className={`rounded-full px-1.5 py-0.5 text-xs ${activeTab === t.key ? "bg-brand-sky/20 text-brand-blue" : "bg-gray-100 text-gray-400"}`}>
+            <span className={`rounded-full px-1.5 py-0.5 text-xs ${activeTab === t.key ? "bg-brand-sky/20 text-brand-blue-deep" : "bg-gray-100 text-gray-600"}`}>
               {counts[t.key]}
             </span>
           </Link>
@@ -108,7 +108,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
                 <SubmitButton
                   pendingLabel="Approving…"
                   disabled={c.verificationStatus === "VERIFIED"}
-                  className="rounded-md bg-brand-blue px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy"
+                  className="rounded-md bg-brand-blue-deep px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-navy"
                 >
                   Approve
                 </SubmitButton>
@@ -139,7 +139,7 @@ export default async function AdminLogisticsQueue(props: PageProps<"/admin/logis
           </div>
         ))}
         {companies.length === 0 && (
-          <p className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
+          <p className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
             {activeTab === "ALL" ? "No logistics companies registered yet." : `No ${activeTab.toLowerCase()} companies.`}
           </p>
         )}

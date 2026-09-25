@@ -50,7 +50,7 @@ export async function Navbar() {
               </Link>
               <Link
                 href="/register"
-                className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+                className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
               >
                 Get started
               </Link>

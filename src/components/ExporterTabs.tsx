@@ -31,7 +31,7 @@ export function ExporterTabs({ unreadCount }: { unreadCount: number }) {
           >
             {t.label}
             {!!t.badge && (
-              <span className="rounded-full bg-brand-blue px-1.5 py-0.5 text-xs font-semibold text-white">{t.badge}</span>
+              <span className="rounded-full bg-brand-blue-deep px-1.5 py-0.5 text-xs font-semibold text-white">{t.badge}</span>
             )}
           </Link>
         );

@@ -41,7 +41,7 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
               defaultValue={settings.supportEmail}
               className="mt-1 w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
             />
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-500">
               Shown to logistics companies whose verification was rejected, so they have somewhere to go.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
               defaultValue={settings.ngnPerUsd}
               className="mt-1 w-40 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
             />
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-500">
               Display only — Stripe still charges in USD. At this rate the {PLANS.MONTHLY.label.toLowerCase()} plan shows as{" "}
               <span className="font-medium text-gray-600">{formatNaira(PLANS.MONTHLY.usd, settings.ngnPerUsd)}</span> and the{" "}
               {PLANS.YEARLY.label.toLowerCase()} plan as{" "}
@@ -67,7 +67,7 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
           </div>
         </div>
 
-        <SubmitButton pendingLabel="Saving…" className="mt-6 rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Saving…" className="mt-6 rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Save settings
         </SubmitButton>
       </form>
@@ -87,7 +87,7 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
               <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
                 <div>
                   <p className="text-sm font-medium text-gray-800">{c.name}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {inUse === 0 ? "Not used by any company" : `Used by ${inUse} ${inUse === 1 ? "company" : "companies"}`}
                   </p>
                 </div>
@@ -121,7 +121,7 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
               </li>
             );
           })}
-          {cargoTypes.length === 0 && <li className="py-3 text-sm text-gray-400">No cargo types yet.</li>}
+          {cargoTypes.length === 0 && <li className="py-3 text-sm text-gray-500">No cargo types yet.</li>}
         </ul>
 
         <form action={addCargoTypeAction} className="mt-4 flex flex-wrap gap-2 border-t border-gray-100 pt-4">
@@ -132,16 +132,16 @@ export default async function AdminSettings(props: PageProps<"/admin/settings">)
             placeholder="Add a cargo type, e.g. Livestock"
             className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
           />
-          <SubmitButton pendingLabel="Adding…" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+          <SubmitButton pendingLabel="Adding…" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
             Add
           </SubmitButton>
         </form>
       </div>
 
-      <p className="mt-4 text-xs text-gray-400">
+      <p className="mt-4 text-xs text-gray-500">
         Plan prices live in <code className="rounded bg-gray-100 px-1">src/lib/pricing.ts</code> alongside their Stripe price
         IDs, so changing them stays a code change —{" "}
-        <Link href="/admin/pricing" className="text-brand-blue hover:underline">
+        <Link href="/admin/pricing" className="text-brand-blue-deep hover:underline">
           see the pricing page
         </Link>
         .

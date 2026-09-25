@@ -55,11 +55,11 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
           <div className="mt-6 rounded-xl border border-black/5 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Current plan</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Current plan</p>
                 <p className="mt-1 text-2xl font-bold text-brand-navy">
                   {subscription.plan ? PLANS[subscription.plan].label : "Subscribed"}
                   {subscription.plan && (
-                    <span className="ml-2 text-sm font-normal text-gray-400">
+                    <span className="ml-2 text-sm font-normal text-gray-500">
                       ${PLANS[subscription.plan].usd}/{PLANS[subscription.plan].interval}
                     </span>
                   )}
@@ -90,11 +90,11 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
             <form action={createPortalSessionAction} className="mt-5">
               <SubmitButton
                 pendingLabel="Opening Stripe…"
-                className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+                className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
               >
                 Manage billing
               </SubmitButton>
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-gray-500">
                 Change plan, update your card or cancel — handled securely by Stripe.
               </p>
             </form>
@@ -128,19 +128,19 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
               <form key={plan.id} action={createCheckoutAction} className="rounded-xl border border-black/5 bg-white p-6 shadow-sm">
                 <input type="hidden" name="plan" value={plan.id} />
                 <div className="flex items-center gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{plan.label}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{plan.label}</p>
                   {plan.id === "YEARLY" && savings > 0 && (
                     <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">Save {savings}%</span>
                   )}
                 </div>
                 <p className="mt-2 text-3xl font-bold text-brand-navy">
                   ${plan.usd}
-                  <span className="text-sm font-normal text-gray-400">/{plan.interval}</span>
+                  <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
                 </p>
-                <p className="mt-1 text-xs text-gray-400">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
+                <p className="mt-1 text-xs text-gray-500">≈ {formatNaira(plan.usd, settings.ngnPerUsd)} · billed in USD via Stripe</p>
                 <button
                   type="submit"
-                  className="mt-4 w-full rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+                  className="mt-4 w-full rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
                 >
                   Subscribe {plan.label.toLowerCase()}
                 </button>
@@ -148,9 +148,9 @@ export default async function ExporterBilling(props: PageProps<"/dashboard/expor
             ))}
           </div>
 
-          <p className="mt-4 text-center text-xs text-gray-400">
+          <p className="mt-4 text-center text-xs text-gray-500">
             Full plan details are on the{" "}
-            <Link href="/pricing" className="text-brand-blue hover:underline">
+            <Link href="/pricing" className="text-brand-blue-deep hover:underline">
               pricing page
             </Link>
             .

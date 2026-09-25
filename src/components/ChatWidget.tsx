@@ -111,7 +111,7 @@ export function ChatWidget() {
               <div
                 key={i}
                 className={`max-w-[85%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
-                  m.role === "user" ? "ml-auto bg-brand-blue text-white" : "bg-gray-100 text-gray-800"
+                  m.role === "user" ? "ml-auto bg-brand-blue-deep text-white" : "bg-gray-100 text-gray-800"
                 }`}
               >
                 {m.content}
@@ -133,7 +133,7 @@ export function ChatWidget() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-md bg-brand-blue px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              className="rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
             >
               Send
             </button>
@@ -146,7 +146,7 @@ export function ChatWidget() {
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
         aria-controls={panelId}
-        className="ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-blue text-white shadow-lg hover:bg-brand-navy"
+        className="ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-blue-deep text-white shadow-lg hover:bg-brand-navy"
       >
         {open ? <CloseIcon /> : <ChatIcon />}
       </button>

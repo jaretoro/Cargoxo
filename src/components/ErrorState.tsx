@@ -49,7 +49,7 @@ export function ErrorState({
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
         <button
           onClick={retry}
-          className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
+          className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy"
         >
           Try again
         </button>

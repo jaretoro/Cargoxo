@@ -7,7 +7,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
-  "bg-brand-blue text-white",
+  "bg-brand-blue-deep text-white",
   "bg-purple-600 text-white",
   "bg-amber-700 text-white",
   "bg-emerald-700 text-white",
@@ -90,7 +90,7 @@ export function MessageThread({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link href={backHref} className="text-sm font-medium text-brand-blue hover:underline">
+      <Link href={backHref} className="text-sm font-medium text-brand-blue-deep hover:underline">
         ← All messages
       </Link>
 
@@ -111,21 +111,21 @@ export function MessageThread({
 
       <div className="mt-6 space-y-4 rounded-xl border border-black/5 bg-white p-4 shadow-sm">
         {olderCount > 0 && (
-          <p className="text-center text-xs text-gray-400">
+          <p className="text-center text-xs text-gray-500">
             {olderCount} older {olderCount === 1 ? "message" : "messages"} not shown
           </p>
         )}
 
         {groups.map((group) => (
           <div key={group.day} className="space-y-2">
-            <p className="text-center text-xs font-medium text-gray-400">{group.day}</p>
+            <p className="text-center text-xs font-medium text-gray-500">{group.day}</p>
             {group.items.map((m) => {
               const mine = m.senderId === currentUserId;
               return (
                 <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${mine ? "bg-brand-blue text-white" : "bg-gray-100 text-gray-700"}`}>
+                  <div className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${mine ? "bg-brand-blue-deep text-white" : "bg-gray-100 text-gray-700"}`}>
                     <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                    <p className={`mt-1 text-right text-xs ${mine ? "text-white/70" : "text-gray-400"}`}>
+                    <p className={`mt-1 text-right text-xs ${mine ? "text-white/70" : "text-gray-500"}`}>
                       {m.createdAt.toLocaleTimeString("en-NG", { hour: "numeric", minute: "2-digit" })}
                     </p>
                   </div>
@@ -135,7 +135,7 @@ export function MessageThread({
           </div>
         ))}
 
-        {messages.length === 0 && <p className="text-center text-sm text-gray-400">No messages yet.</p>}
+        {messages.length === 0 && <p className="text-center text-sm text-gray-500">No messages yet.</p>}
       </div>
 
       <form action={sendMessageAction} className="mt-4 flex gap-2">
@@ -148,7 +148,7 @@ export function MessageThread({
           placeholder="Type a message…"
           className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
         />
-        <SubmitButton pendingLabel="Sending…" className="rounded-md bg-brand-blue px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="rounded-md bg-brand-blue-deep px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Send
         </SubmitButton>
       </form>

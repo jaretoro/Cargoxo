@@ -58,7 +58,7 @@ export function RegisterLogisticsForm() {
           defaultValue={v.anclaNumber ?? ""}
           className={inputClass}
         />
-        <p className="mt-1 text-xs text-gray-400">Used by our admin team to verify your company before you go live.</p>
+        <p className="mt-1 text-xs text-gray-500">Used by our admin team to verify your company before you go live.</p>
       </div>
       <div>
         <label htmlFor="address" className="block text-sm font-medium text-gray-700">Business address</label>
@@ -82,7 +82,7 @@ export function RegisterLogisticsForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
       >
         {pending ? "Submitting…" : "Submit for verification"}
       </button>

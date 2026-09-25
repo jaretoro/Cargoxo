@@ -19,12 +19,12 @@ export function ForgotPasswordForm() {
         </div>
         <p className="mt-4 text-sm text-gray-500">
           Didn&rsquo;t get it? Check spam, or{" "}
-          <Link href="/forgot-password" className="font-medium text-brand-blue hover:underline">
+          <Link href="/forgot-password" className="font-medium text-brand-blue-deep hover:underline">
             try again
           </Link>
           .
         </p>
-        <Link href="/login" className="mt-4 inline-block text-sm font-medium text-brand-blue hover:underline">
+        <Link href="/login" className="mt-4 inline-block text-sm font-medium text-brand-blue-deep hover:underline">
           ← Back to log in
         </Link>
       </div>
@@ -55,14 +55,14 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
       >
         {pending ? "Sending…" : "Send reset link"}
       </button>
 
       <p className="text-center text-sm text-gray-500">
         Remembered it?{" "}
-        <Link href="/login" className="font-medium text-brand-blue hover:underline">
+        <Link href="/login" className="font-medium text-brand-blue-deep hover:underline">
           Log in
         </Link>
         .

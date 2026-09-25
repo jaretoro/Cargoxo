@@ -7,7 +7,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 
 const AVATAR_STYLES = [
   "bg-brand-navy text-white",
-  "bg-brand-blue text-white",
+  "bg-brand-blue-deep text-white",
   "bg-purple-600 text-white",
   "bg-amber-700 text-white",
   "bg-emerald-700 text-white",
@@ -48,7 +48,7 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
 
   return (
     <div className="mx-auto max-w-lg">
-      <Link href="/dashboard/exporter" className="text-sm font-medium text-brand-blue hover:underline">
+      <Link href="/dashboard/exporter" className="text-sm font-medium text-brand-blue-deep hover:underline">
         ← Back to agents
       </Link>
 
@@ -91,10 +91,10 @@ export default async function NewConversation(props: PageProps<"/dashboard/expor
           placeholder="Describe your shipment — cargo type, volume, destination, timeline…"
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-brand-blue"
         />
-        <SubmitButton pendingLabel="Sending…" className="w-full rounded-md bg-brand-blue px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
+        <SubmitButton pendingLabel="Sending…" className="w-full rounded-md bg-brand-blue-deep px-3 py-2 text-sm font-semibold text-white hover:bg-brand-navy">
           Send message
         </SubmitButton>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500">
           They&rsquo;ll see your contact details and can accept or decline. You can keep talking in the thread either way.
         </p>
       </form>

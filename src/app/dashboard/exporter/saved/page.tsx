@@ -66,9 +66,9 @@ export default async function ExporterSaved() {
           <AgentCard key={agent.logisticsProfileId} agent={agent} isSubscribed={isSubscribed} backTo="/dashboard/exporter/saved" />
         ))}
         {agents.length === 0 && (
-          <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-400">
+          <p className="col-span-full rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
             Nothing saved yet — bookmark a company from{" "}
-            <Link href="/dashboard/exporter" className="text-brand-blue hover:underline">
+            <Link href="/dashboard/exporter" className="text-brand-blue-deep hover:underline">
               All Agents
             </Link>
             .

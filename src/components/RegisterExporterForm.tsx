@@ -48,13 +48,13 @@ export function RegisterExporterForm() {
       </div>
       <div>
         <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-          Company name <span className="text-gray-400">(optional)</span>
+          Company name <span className="text-gray-500">(optional)</span>
         </label>
         <input id="companyName" name="companyName" autoComplete="organization" defaultValue={v.companyName ?? ""} className={inputClass} />
       </div>
       <div>
         <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-          Address <span className="text-gray-400">(optional)</span>
+          Address <span className="text-gray-500">(optional)</span>
         </label>
         <input id="address" name="address" autoComplete="street-address" defaultValue={v.address ?? ""} className={inputClass} />
       </div>
@@ -64,7 +64,7 @@ export function RegisterExporterForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
       >
         {pending ? "Creating account…" : "Create exporter account"}
       </button>

@@ -34,7 +34,7 @@ export async function Footer() {
             </>
           )}
         </nav>
-        <p className="text-xs text-gray-400">© {new Date().getFullYear()} Cargoxo. All rights reserved.</p>
+        <p className="text-xs text-gray-500">© {new Date().getFullYear()} Cargoxo. All rights reserved.</p>
       </div>
     </footer>
   );

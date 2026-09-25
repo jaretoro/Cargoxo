@@ -34,7 +34,7 @@ export default async function AdminSubscriptions(props: PageProps<"/admin/subscr
 
       <div className="mt-5 overflow-x-auto rounded-xl border border-black/5 bg-white shadow-sm">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="border-b border-gray-100 text-xs uppercase tracking-wide text-gray-400">
+          <thead className="border-b border-gray-100 text-xs uppercase tracking-wide text-gray-500">
             <tr>
               <th className="px-4 py-3">Account</th>
               <th className="px-4 py-3">Role</th>
@@ -51,27 +51,27 @@ export default async function AdminSubscriptions(props: PageProps<"/admin/subscr
                 <tr key={s.id}>
                   <td className="px-4 py-3">
                     <p className="font-medium text-gray-800">{companyName}</p>
-                    <p className="text-xs text-gray-400">{s.user.email}</p>
+                    <p className="text-xs text-gray-500">{s.user.email}</p>
                   </td>
                   <td className="px-4 py-3 text-gray-500">{s.user.role}</td>
                   <td className="px-4 py-3 text-gray-500">{s.plan === "YEARLY" ? "Yearly" : "Monthly"}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        s.status === "ACTIVE" ? "bg-green-100 text-green-700" : s.status === "PAST_DUE" ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-500"
+                        s.status === "ACTIVE" ? "bg-green-100 text-green-700" : s.status === "PAST_DUE" ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600"
                       }`}
                     >
                       {s.status.replace("_", " ")}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">{s.createdAt.toLocaleDateString()}</td>
-                  <td className="px-4 py-3 text-gray-400">{s.currentPeriodEnd ? s.currentPeriodEnd.toLocaleDateString() : "—"}</td>
+                  <td className="px-4 py-3 text-gray-500">{s.createdAt.toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-gray-500">{s.currentPeriodEnd ? s.currentPeriodEnd.toLocaleDateString() : "—"}</td>
                 </tr>
               );
             })}
             {subscriptions.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
                   No subscriptions yet.
                 </td>
               </tr>

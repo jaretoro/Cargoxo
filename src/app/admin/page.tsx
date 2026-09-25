@@ -105,8 +105,8 @@ export default async function AdminOverview() {
 
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Active Subscriptions</p>
-            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Active Subscriptions</p>
+            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue-deep">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <rect x="3" y="6" width="18" height="12" rx="2" />
                 <path d="M3 10h18" />
@@ -114,7 +114,7 @@ export default async function AdminOverview() {
             </span>
           </div>
           <p className="mt-3 text-4xl font-bold text-brand-navy">{activeSubs.length}</p>
-          <p className="mt-2 text-xs text-gray-400">
+          <p className="mt-2 text-xs text-gray-500">
             {yearlySubs} yearly · {monthlySubs} monthly
           </p>
           {newSubsThisWeek > 0 && (
@@ -126,7 +126,7 @@ export default async function AdminOverview() {
 
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">ANCLA Verification Rate</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">ANCLA Verification Rate</p>
             <span className="rounded-lg bg-emerald-50 p-2 text-emerald-600">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M12 3l7 3v5c0 4.5-3 8.3-7 9.5-4-1.2-7-5-7-9.5V6z" strokeLinejoin="round" />
@@ -134,7 +134,7 @@ export default async function AdminOverview() {
             </span>
           </div>
           <p className="mt-3 text-4xl font-bold text-brand-navy">{anclaVerificationRate}%</p>
-          <p className="mt-2 text-xs text-gray-400">
+          <p className="mt-2 text-xs text-gray-500">
             {verifiedCount} of {logisticsCount} companies verified
           </p>
           {verifiedThisWeek > 0 && (
@@ -148,7 +148,7 @@ export default async function AdminOverview() {
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Pending Verifications</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Pending Verifications</p>
             <span className="rounded-lg bg-red-50 p-2 text-red-500">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M12 9v4M12 17h.01" strokeLinecap="round" />
@@ -158,7 +158,7 @@ export default async function AdminOverview() {
           </div>
           <p className={`mt-3 text-3xl font-bold ${pendingCount > 0 ? "text-red-600" : "text-brand-navy"}`}>{pendingCount}</p>
           {pendingCount > 0 && (
-            <Link href="/admin/logistics" className="mt-2 inline-block text-xs font-medium text-brand-blue hover:underline">
+            <Link href="/admin/logistics" className="mt-2 inline-block text-xs font-medium text-brand-blue-deep hover:underline">
               Review queue →
             </Link>
           )}
@@ -166,8 +166,8 @@ export default async function AdminOverview() {
 
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Total Registered Users</p>
-            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue">
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Total Registered Users</p>
+            <span className="rounded-lg bg-brand-sky/15 p-2 text-brand-blue-deep">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
                 <circle cx="9" cy="8" r="3.2" />
                 <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
@@ -177,7 +177,7 @@ export default async function AdminOverview() {
             </span>
           </div>
           <p className="mt-3 text-3xl font-bold text-brand-navy">{totalUsers.toLocaleString()}</p>
-          <p className="mt-2 text-xs text-gray-400">
+          <p className="mt-2 text-xs text-gray-500">
             {exporterCount.toLocaleString()} exporters · {logisticsCount} logistics cos.
           </p>
           {newUsersThisWeek > 0 && (
@@ -189,7 +189,7 @@ export default async function AdminOverview() {
 
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Past Due Subscriptions</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Past Due Subscriptions</p>
             <span className={`rounded-lg p-2 ${pastDueCount > 0 ? "bg-amber-50 text-amber-600" : "bg-emerald-50 text-emerald-600"}`}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <circle cx="12" cy="12" r="9" />
@@ -198,7 +198,7 @@ export default async function AdminOverview() {
             </span>
           </div>
           <p className={`mt-3 text-3xl font-bold ${pastDueCount > 0 ? "text-amber-600" : "text-brand-navy"}`}>{pastDueCount}</p>
-          <p className="mt-2 text-xs text-gray-400">{pastDueCount > 0 ? "Payment retry needed" : "No revenue at risk right now"}</p>
+          <p className="mt-2 text-xs text-gray-500">{pastDueCount > 0 ? "Payment retry needed" : "No revenue at risk right now"}</p>
         </div>
       </div>
 
@@ -207,7 +207,7 @@ export default async function AdminOverview() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-semibold text-brand-navy">Subscription MRR — Last 12 Months</h2>
-              <p className="text-xs text-gray-400">Monthly recurring revenue trend</p>
+              <p className="text-xs text-gray-500">Monthly recurring revenue trend</p>
             </div>
             {mrrGrowthPct !== null && (
               <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${mrrGrowthPct >= 0 ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"}`}>
@@ -223,15 +223,15 @@ export default async function AdminOverview() {
 
         <div className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
           <h2 className="font-semibold text-brand-navy">Verification Progress</h2>
-          <p className="text-xs text-gray-400">ANCLA verification completion rate</p>
+          <p className="text-xs text-gray-500">ANCLA verification completion rate</p>
           <div className="relative mt-2 h-48">
             <VerificationGauge rate={anclaVerificationRate} />
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
               <p className="text-3xl font-bold text-brand-navy">{anclaVerificationRate}%</p>
-              <p className="text-xs text-gray-400">verified</p>
+              <p className="text-xs text-gray-500">verified</p>
             </div>
           </div>
-          <p className="text-center text-xs text-gray-400">
+          <p className="text-center text-xs text-gray-500">
             {verifiedCount} of {logisticsCount} companies
           </p>
         </div>

@@ -34,7 +34,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       <div>
         <PasswordField autoComplete="current-password" />
         <p className="mt-1 text-right">
-          <Link href="/forgot-password" className="text-xs font-medium text-brand-blue hover:underline">
+          <Link href="/forgot-password" className="text-xs font-medium text-brand-blue-deep hover:underline">
             Forgot password?
           </Link>
         </p>
@@ -43,18 +43,18 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-brand-blue px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
+        className="w-full rounded-md bg-brand-blue-deep px-4 py-2 font-semibold text-white hover:bg-brand-navy disabled:opacity-50"
       >
         {pending ? "Logging in…" : "Log in"}
       </button>
 
       <p className="text-center text-sm text-gray-500">
         No account?{" "}
-        <Link href="/register" className="font-medium text-brand-blue hover:underline">
+        <Link href="/register" className="font-medium text-brand-blue-deep hover:underline">
           Register as an exporter
         </Link>{" "}
         or{" "}
-        <Link href="/register/logistics" className="font-medium text-brand-blue hover:underline">
+        <Link href="/register/logistics" className="font-medium text-brand-blue-deep hover:underline">
           as a logistics company
         </Link>
         .

@@ -41,14 +41,14 @@ export default async function AdminNotifications() {
       <div className="mt-5 divide-y divide-gray-100 rounded-xl border border-black/5 bg-white shadow-sm">
         {items.map((n) => (
           <div key={n.id} className="flex items-start gap-3 px-4 py-4">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-blue" />
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-blue-deep" />
             <div>
               <p className="text-sm text-gray-700">{n.text}</p>
-              <p className="text-xs text-gray-400">{n.at.toLocaleString()}</p>
+              <p className="text-xs text-gray-500">{n.at.toLocaleString()}</p>
             </div>
           </div>
         ))}
-        {items.length === 0 && <p className="px-4 py-8 text-center text-sm text-gray-400">Nothing yet.</p>}
+        {items.length === 0 && <p className="px-4 py-8 text-center text-sm text-gray-500">Nothing yet.</p>}
       </div>
     </div>
   );

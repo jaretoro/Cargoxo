@@ -124,7 +124,7 @@ export function AdminSidebar({
 
       <nav className="mt-4 flex-1 gap-6 space-y-6 overflow-x-auto px-3 max-lg:flex max-lg:space-y-0 lg:overflow-y-auto">
         <div>
-          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/35">Management</p>
+          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/60">Management</p>
           <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {managementLinks.map((l) => (
               <Link
@@ -145,7 +145,7 @@ export function AdminSidebar({
         </div>
 
         <div>
-          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/35">Reports</p>
+          <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-white/60">Reports</p>
           <div className="mt-2 space-y-1 max-lg:flex max-lg:gap-1 max-lg:space-y-0">
             {reportLinks.map((l) => (
               <Link

@@ -16,7 +16,7 @@ export default async function AdminAnalytics() {
 
       <div className="mt-5 rounded-xl border border-black/5 bg-white p-6 shadow-sm">
         <h2 className="font-semibold text-brand-navy">Cargo type demand</h2>
-        <p className="text-xs text-gray-400">Verified companies offering each cargo type</p>
+        <p className="text-xs text-gray-500">Verified companies offering each cargo type</p>
         <div className="mt-4 h-80">
           <CargoDemandChart data={data} />
         </div>

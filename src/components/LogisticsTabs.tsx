@@ -41,7 +41,7 @@ export function LogisticsTabs({ unreadCount, pendingRequests }: { unreadCount: n
             {!!t.badge && (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
-                  t.tone === "amber" ? "bg-amber-100 text-amber-700" : "bg-brand-blue text-white"
+                  t.tone === "amber" ? "bg-amber-100 text-amber-700" : "bg-brand-blue-deep text-white"
                 }`}
               >
                 {t.badge}
