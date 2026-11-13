@@ -14,9 +14,11 @@ live.
 ## Quick start
 
 ```bash
+cp .env.example .env
+docker compose up -d    # local Postgres (or point DATABASE_URL at any Postgres)
 npm install
 npx prisma generate
-npx prisma db push      # creates prisma/dev.db from the schema
+npx prisma migrate deploy   # applies prisma/migrations
 npm run db:seed         # loads sample accounts (see below)
 npm run dev
 ```
@@ -46,13 +48,14 @@ is `"true"` **and** the build isn't production — they sign in as seeded
 accounts (including admin) with a publicly known password, so they must
 never be enabled on a real deployment.
 
-To reset the database back to this seeded state at any point: delete
-`prisma/dev.db` and re-run `npx prisma db push && npm run db:seed`.
+To reset the local database back to this seeded state at any point:
+`npx prisma migrate reset` (drops everything, re-applies migrations and
+re-seeds). Never run that against production.
 
 ## How the app is put together
 
 **Stack:** Next.js 16 (App Router, Turbopack) + TypeScript + Tailwind CSS +
-Prisma/SQLite + Auth.js (NextAuth v5) + Stripe + OpenAI.
+Prisma/PostgreSQL + Auth.js (NextAuth v5) + Stripe + OpenAI.
 
 > Next.js 16 is very new and changed some conventions since Next 14/15 —
 > notably `middleware.ts` is now `proxy.ts` (same idea, renamed, and it now
@@ -178,9 +181,9 @@ company shows "No reviews yet".
 
 ## Configuration
 
-Copy `.env.example` → `.env` if you haven't already (a working `.env` with
-safe local defaults is already checked in for this demo — everything except
-Stripe and OpenAI works out of the box).
+Copy `.env.example` → `.env` (`.env` is gitignored). With the local Postgres
+from `docker-compose.yml`, everything except Stripe and OpenAI works out of
+the box.
 
 **Stripe** (`src/lib/stripe.ts`, `src/app/actions/billing.ts`,
 `src/app/api/stripe/webhook/route.ts`):
@@ -204,9 +207,13 @@ The chat widget sits on the public marketing pages so prospects can ask
 questions before signing up, which means the endpoint behind it can't
 require a login and *anyone* who finds it is spending your OpenAI credit. It
 defends itself with per-IP rate limiting, caps on message count and total
-characters, and a `max_tokens` ceiling per call. That limiter is in-memory,
-so it's per-instance and resets on restart — swap it for Redis or a hosted
-rate limiter before running this on serverless or behind more than one node.
+characters, a `max_tokens` ceiling per call, and a daily cap across all
+visitors (`CHAT_DAILY_LIMIT`, default 2000 replies) as a hard ceiling on
+spend. The limiter (`src/lib/rate-limit.ts`) keeps its counters in the
+`RateLimit` table, so limits survive restarts and are shared by every
+instance — no Redis needed. Set `CLIENT_IP_HEADER` to the header your host
+fills with the real client IP; without it the per-IP limit trusts
+`X-Forwarded-For`, which a client can fake.
 
 **Demo mode** (`NEXT_PUBLIC_DEMO_MODE`): enables the one-click login buttons
 on `/login`. Leave it `"false"` anywhere real — see the note under Quick
@@ -214,9 +221,9 @@ start.
 
 **Email** (`EMAIL_FROM`, `SMTP_URL`): with both unset, mail is printed to the
 server log instead of sent, which is enough to click through password reset
-locally — copy the link out of the terminal. Implement a transport in
-`src/lib/mail.ts` before relying on it, since reset links are useless if
-they can't be delivered.
+locally — copy the link out of the terminal. Set both and `src/lib/mail.ts`
+sends over SMTP via nodemailer, so any SMTP provider works. Set them before
+going live, since reset links are useless if they can't be delivered.
 
 ### Password reset
 
@@ -236,17 +243,35 @@ already logged in. Those sessions run until the token expires.
 
 Worth knowing before you rely on any of it:
 
-- **No email provider is wired up.** Password reset is built and works, but
-  its link is written to the server log rather than sent (see
-  `src/lib/mail.ts` — that's the seam to plug a provider into). Nobody is
-  told they were verified, rejected, or messaged either.
+- **Email only covers password reset.** `src/lib/mail.ts` can send over SMTP
+  once configured, but nobody is told they were verified, rejected, or
+  messaged.
 - **Verification has no evidence attached.** The admin sees a typed ANCLA
   number and address, with no document upload or registry lookup to check
   against, which is thin for the trust signal the product is sold on.
 - **No profile editing for exporters.**
-- **No tests**, and **no pagination** — every list query loads every row.
+- **No tests.**
 - Rejected companies get told to "contact support", but there's no support
   contact and no way to re-submit.
+
+## Deploying (DigitalOcean App Platform + Managed PostgreSQL)
+
+- Build command `npm run build` (generates the Prisma client first); run
+  command `npm start`.
+- Run `npm run db:migrate` against the production database on each deploy
+  (a pre-deploy job, or manually from your machine with the production
+  `DATABASE_URL`). Do **not** run the seed there.
+- Set every variable from `.env.example` as an App Platform environment
+  variable: a fresh `AUTH_SECRET`, `NEXTAUTH_URL` / `NEXT_PUBLIC_APP_URL`
+  set to your domain, live Stripe keys, `NEXT_PUBLIC_DEMO_MODE=false`, and
+  `EMAIL_FROM` / `SMTP_URL`.
+- In Stripe, add a webhook endpoint at `https://<your-domain>/api/stripe/webhook`
+  and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+- Set `CLIENT_IP_HEADER=do-connecting-ip` so the chat's per-IP limit sees
+  the real visitor address. The limiter is database-backed, so running more
+  than one app instance is fine.
+- You'll need an admin account: the seed isn't run in production, so create
+  one deliberately (register, then promote the row's `role` to `ADMIN`).
 
 ## Useful commands
 

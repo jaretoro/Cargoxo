@@ -9,7 +9,7 @@ import Link from "next/link";
 //
 // Next 16 names this prop `retry` (`reset` still exists, but only clears the
 // boundary without re-fetching). retry() re-fetches and re-renders the failed
-// segment, which is what the common causes here need — a dropped SQLite
+// segment, which is what the common causes here need — a dropped database
 // connection or a timed-out query.
 export function ErrorState({
   error,

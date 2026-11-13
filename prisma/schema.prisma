@@ -1,15 +1,14 @@
 // Cargoxo database schema.
-// Using SQLite for the demo (zero setup, single file at prisma/dev.db).
-// To move to production, change `provider` below to "postgresql" and
-// point `url` at a real Postgres connection string — everything else
-// (models, relations, the rest of the app) stays the same.
+// PostgreSQL. Locally, `docker compose up -d` starts one that matches the
+// DATABASE_URL in .env.example; in production point DATABASE_URL at a managed
+// instance (e.g. DigitalOcean Managed PostgreSQL).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -126,6 +125,19 @@ model Setting {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+// Fixed-window request counters for rate limiting (src/lib/rate-limit.ts).
+// Kept in the database rather than process memory so the limit holds across
+// restarts and is shared by every app instance. One row per key; the row is
+// reset in place when a new window starts, and stale rows are swept
+// opportunistically.
+model RateLimit {
+  key         String   @id
+  windowStart DateTime
+  count       Int
+
+  @@index([windowStart])
 }
 
 // A shared, admin-managed vocabulary of cargo categories — lets exporters

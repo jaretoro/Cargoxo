@@ -1,0 +1,16 @@
+# Local development database only. Production uses a managed PostgreSQL
+# instance; this matches the DATABASE_URL in .env.example.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: cargoxo
+      POSTGRES_PASSWORD: cargoxo
+      POSTGRES_DB: cargoxo
+    ports:
+      - "5432:5432"
+    volumes:
+      - cargoxo-db:/var/lib/postgresql/data
+
+volumes:
+  cargoxo-db:

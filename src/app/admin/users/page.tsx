@@ -33,10 +33,10 @@ export default async function AdminUsers(props: PageProps<"/admin/users">) {
     ...(q
       ? {
           OR: [
-            { name: { contains: q } },
-            { email: { contains: q } },
-            { logisticsProfile: { companyName: { contains: q } } },
-            { exporterProfile: { companyName: { contains: q } } },
+            { name: { contains: q, mode: "insensitive" as const } },
+            { email: { contains: q, mode: "insensitive" as const } },
+            { logisticsProfile: { companyName: { contains: q, mode: "insensitive" as const } } },
+            { exporterProfile: { companyName: { contains: q, mode: "insensitive" as const } } },
           ],
         }
       : {}),

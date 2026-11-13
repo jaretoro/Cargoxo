@@ -8,6 +8,8 @@
 // visitor could read it — showing the link in the browser would let anyone
 // reset anyone's password.
 
+import nodemailer, { type Transporter } from "nodemailer";
+
 export type Mail = {
   to: string;
   subject: string;
@@ -35,11 +37,21 @@ export async function sendMail(mail: Mail): Promise<void> {
     return;
   }
 
-  // Deliberately not implemented rather than half-implemented: wire up your
-  // provider here (Resend, Postmark, nodemailer over SMTP_URL, …). Throwing
-  // is safer than silently dropping mail once EMAIL_FROM/SMTP_URL are set,
-  // because a silent failure would look like a working reset flow.
-  throw new Error(
-    "SMTP_URL and EMAIL_FROM are set but no mail transport is implemented in src/lib/mail.ts. Add one, or unset them to fall back to logging.",
-  );
+  // Any provider that speaks SMTP works (Resend, Postmark, Brevo, SES, …):
+  // SMTP_URL is e.g. "smtps://user:pass@smtp.example.com:465". A failure
+  // propagates rather than being swallowed, so a misconfigured provider
+  // shows up as an error instead of a reset flow that silently does nothing.
+  await getTransport().sendMail({
+    from: process.env.EMAIL_FROM,
+    to: mail.to,
+    subject: mail.subject,
+    text: mail.text,
+  });
+}
+
+let transport: Transporter | undefined;
+
+function getTransport(): Transporter {
+  transport ??= nodemailer.createTransport(process.env.SMTP_URL);
+  return transport;
 }

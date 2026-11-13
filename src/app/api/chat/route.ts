@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { openai, CHAT_MODEL, buildSystemPrompt } from "@/lib/openai";
+import { getClientIp, isRateLimited } from "@/lib/rate-limit";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -8,40 +9,33 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 // means it can't be protected with auth(), and instead has to be protected
 // from cost abuse: anyone on the internet can reach it, and every call
 // spends OpenAI credit.
+// Limits are enforced by src/lib/rate-limit.ts, which keeps its counters in
+// the database so they hold across restarts and every app instance.
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS_PER_WINDOW = 10;
+// Per-IP limits can be dodged by anyone with enough addresses, so the whole
+// endpoint is also capped per day: a hard ceiling on OpenAI spend.
+const DAY_MS = 24 * 60 * 60_000;
+const DAILY_GLOBAL_LIMIT = Number(process.env.CHAT_DAILY_LIMIT) || 2_000;
 const MAX_MESSAGES = 20;
 const MAX_TOTAL_CHARS = 4_000;
 const MAX_RESPONSE_TOKENS = 500;
 
-// In-memory, so it resets on restart and is per-instance only. Good enough
-// for a single dev/self-hosted server; swap for Redis or a hosted rate
-// limiter before running this on serverless or behind more than one node.
-const hits = new Map<string, number[]>();
-
-function isRateLimited(key: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(key, recent);
-
-  // Opportunistic cleanup so the map can't grow without bound.
-  if (hits.size > 10_000) {
-    for (const [k, times] of hits) {
-      if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
-    }
-  }
-
-  return recent.length > MAX_REQUESTS_PER_WINDOW;
-}
+const ASSISTANT_UNAVAILABLE = "Something went wrong reaching the assistant. Please try again shortly.";
 
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = getClientIp(request);
 
-  if (isRateLimited(ip)) {
+  let limited: boolean;
+  try {
+    limited = await isRateLimited(`chat:ip:${ip}`, MAX_REQUESTS_PER_WINDOW, WINDOW_MS);
+  } catch (error) {
+    // If the limit can't be checked, refuse rather than spend OpenAI credit unmetered.
+    console.error("Chat rate limit check failed:", error);
+    return NextResponse.json({ reply: ASSISTANT_UNAVAILABLE }, { status: 503 });
+  }
+
+  if (limited) {
     return NextResponse.json(
       { reply: "You're sending messages a bit fast — give it a moment and try again." },
       { status: 429 },
@@ -80,6 +74,20 @@ export async function POST(request: Request) {
     });
   }
 
+  // Counted only here, once a request is about to cost money, so malformed
+  // or per-IP-limited requests don't eat into the day's budget.
+  try {
+    if (await isRateLimited("chat:global", DAILY_GLOBAL_LIMIT, DAY_MS)) {
+      return NextResponse.json(
+        { reply: "The assistant has reached its limit for today. Please try again tomorrow." },
+        { status: 429 },
+      );
+    }
+  } catch (error) {
+    console.error("Chat daily limit check failed:", error);
+    return NextResponse.json({ reply: ASSISTANT_UNAVAILABLE }, { status: 503 });
+  }
+
   try {
     const completion = await openai.chat.completions.create({
       model: CHAT_MODEL,
@@ -95,7 +103,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Chat error:", error);
     return NextResponse.json(
-      { reply: "Something went wrong reaching the assistant. Please try again shortly." },
+      { reply: ASSISTANT_UNAVAILABLE },
       { status: 200 }
     );
   }

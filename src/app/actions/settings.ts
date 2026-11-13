@@ -66,8 +66,8 @@ export async function addCargoTypeAction(formData: FormData) {
 
   // Case-insensitive check so "Frozen foods" can't sit next to "Frozen
   // Foods" — exporters filter on these, and near-duplicates split results.
-  // Compared in JS because Prisma's `mode: "insensitive"` is Postgres-only
-  // and throws on SQLite; the list is short enough that it doesn't matter.
+  // Compared in JS so the error can name the existing spelling; the list is
+  // short enough that it doesn't matter.
   const all = await prisma.cargoType.findMany({ select: { name: true } });
   const clash = all.find((c) => c.name.toLowerCase() === name.toLowerCase());
   if (clash) back(`"${clash.name}" already exists.`);

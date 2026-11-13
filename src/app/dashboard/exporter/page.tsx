@@ -39,9 +39,9 @@ export default async function ExporterBrowse(props: PageProps<"/dashboard/export
         ...(q
           ? {
               OR: [
-                { companyName: { contains: q } },
-                { anclaNumber: { contains: q } },
-                { location: { contains: q } },
+                { companyName: { contains: q, mode: "insensitive" as const } },
+                { anclaNumber: { contains: q, mode: "insensitive" as const } },
+                { location: { contains: q, mode: "insensitive" as const } },
               ],
             }
           : {}),
