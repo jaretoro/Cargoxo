@@ -1,15 +1,19 @@
 // Cargoxo database schema.
 // PostgreSQL. Locally, `docker compose up -d` starts one that matches the
-// DATABASE_URL in .env.example; in production point DATABASE_URL at a managed
-// instance (e.g. DigitalOcean Managed PostgreSQL).
+// URLs in .env.example. In production (Vercel + Neon) the app connects
+// through Neon's connection pooler, because every serverless function opens
+// its own connection and would otherwise exhaust the database; migrations
+// need a direct, unpooled connection, which is what directUrl is for. The
+// Neon integration on Vercel sets both variables automatically.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 enum Role {

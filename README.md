@@ -254,24 +254,31 @@ Worth knowing before you rely on any of it:
 - Rejected companies get told to "contact support", but there's no support
   contact and no way to re-submit.
 
-## Deploying (DigitalOcean App Platform + Managed PostgreSQL)
+## Deploying (Vercel + Neon PostgreSQL)
 
-- Build command `npm run build` (generates the Prisma client first); run
-  command `npm start`.
-- Run `npm run db:migrate` against the production database on each deploy
-  (a pre-deploy job, or manually from your machine with the production
-  `DATABASE_URL`). Do **not** run the seed there.
-- Set every variable from `.env.example` as an App Platform environment
-  variable: a fresh `AUTH_SECRET`, `NEXTAUTH_URL` / `NEXT_PUBLIC_APP_URL`
-  set to your domain, live Stripe keys, `NEXT_PUBLIC_DEMO_MODE=false`, and
-  `EMAIL_FROM` / `SMTP_URL`.
+- Import the GitHub repo into Vercel (Pro plan: Hobby doesn't allow
+  commercial use). Vercel detects Next.js; leave the build settings alone.
+- Add Neon from the Vercel Marketplace (Storage tab) and connect it to the
+  project. That sets `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED`
+  (direct). Create the database in AWS London (`eu-west-2`) to sit next to
+  the app's functions, which `vercel.json` pins to London (`lhr1`).
+- Each deploy runs `vercel-build`, which applies pending migrations
+  (`prisma migrate deploy`) before building. The seed never runs there.
+  Previews migrate whatever database they're connected to, so enable Neon's
+  per-preview branches in the integration if you deploy branches that add
+  migrations.
+- Set the rest of `.env.example` in Project Settings → Environment
+  Variables: a fresh `AUTH_SECRET`, `NEXTAUTH_URL` / `NEXT_PUBLIC_APP_URL`
+  set to your domain, Stripe keys, `OPENAI_API_KEY`,
+  `NEXT_PUBLIC_DEMO_MODE=false`, `EMAIL_FROM` / `SMTP_URL`, and
+  `CLIENT_IP_HEADER=x-real-ip` so the chat's per-IP limit sees the real
+  visitor address. `NEXT_PUBLIC_*` values are baked in at build time, so
+  redeploy after changing them.
 - In Stripe, add a webhook endpoint at `https://<your-domain>/api/stripe/webhook`
   and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
-- Set `CLIENT_IP_HEADER=do-connecting-ip` so the chat's per-IP limit sees
-  the real visitor address. The limiter is database-backed, so running more
-  than one app instance is fine.
-- You'll need an admin account: the seed isn't run in production, so create
-  one deliberately (register, then promote the row's `role` to `ADMIN`).
+- You'll need an admin account: the seed isn't run in production, so
+  register normally, then promote the row in Neon's SQL editor:
+  `UPDATE "User" SET role = 'ADMIN' WHERE email = 'you@example.com';`
 
 ## Useful commands
 
